@@ -1,0 +1,29 @@
+.sidebar {
+  width: 400px;
+  background-color: #f9f9f9;
+  height: 100%;
+  border-right: 1px solid #ddd;
+  padding: 16px;
+  box-sizing: border-box;
+  overflow-y: auto;
+}
+
+.title {
+  margin-bottom: 8px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.text {
+  color: black;
+  font-size: 0.5rem;
+}
+
+.deleteButton {
+  background-color: red;
+}
+
+.deleteText {
+  color: white;
+}

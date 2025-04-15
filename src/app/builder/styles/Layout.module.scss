@@ -1,0 +1,15 @@
+.layout {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.main {
+  display: flex;
+  flex: 1;
+}
+
+.canvasWrapper {
+  flex: 1;
+  overflow: auto;
+}
