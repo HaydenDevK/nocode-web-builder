@@ -21,9 +21,15 @@
 }
 
 .deleteButton {
+  width: 200px;
+  height: 40px;
+  font-size: 1.1rem;
   background-color: red;
+  color: white;
+  margin-top: auto;
 }
 
-.deleteText {
-  color: white;
+.deletePosition {
+  display: flex;
+  justify-content: center;
 }

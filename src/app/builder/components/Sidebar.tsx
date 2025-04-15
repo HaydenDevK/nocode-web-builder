@@ -35,12 +35,9 @@ export default function Sidebar() {
       <List>
         <ListItemText className={styles.text}>배경색</ListItemText>
         <ListItemText className={styles.text}>그리드</ListItemText>
-        <ListItemButton className={styles.deleteButton}>
-          <ListItemText
-            primary="삭제"
-            className={styles.deleteText}
-          ></ListItemText>
-        </ListItemButton>
+        <div className={styles.deletePosition}>
+          <button className={styles.deleteButton}>삭제</button>
+        </div>
       </List>
     </div>
   );
