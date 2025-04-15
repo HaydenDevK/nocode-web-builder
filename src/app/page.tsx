@@ -1,95 +1,57 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+"use client";
+
+import styles from "./page.module.scss";
+import { Box, Button } from "@mui/material";
+import Card from "./components/Card";
+
+const sampleThumbnail =
+  "https://img-wixmp-09d1505942a280459f0fa212.wixmp.com/images/site-snapshotter-web/9942c07d-5870-4eaa-b813-23ec87f4eb28/v1/fit/w_370,h_370/file.jpg";
+
+const TemplateList = [
+  { id: 1, title: "프로모션 페이지", thumbnail: sampleThumbnail },
+  { id: 2, title: "과정 안내 페이지", thumbnail: sampleThumbnail },
+  { id: 3, title: "과정 안내 페이지", thumbnail: sampleThumbnail },
+  { id: 4, title: "과정 안내 페이지", thumbnail: sampleThumbnail },
+];
+
+const DeployedList = [
+  {
+    id: 3,
+    title: "2025 프론트엔드 과정 안내",
+    thumbnail: sampleThumbnail,
+  },
+  { id: 4, title: "2025 백엔드 과정 안내", thumbnail: sampleThumbnail },
+];
 
 export default function Home() {
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol>
-          <li className="hi">
-            Get started by editing <code>src/app/page.tsx</code>.
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+    <Box className={styles.container}>
+      <header className={styles.header}>
+        <p className={styles.title}>Codelt Web Builder</p>
+        <Button variant="contained" className={styles.createButton}>
+          새로 만들기
+        </Button>
+      </header>
 
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.secondary}
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className={styles.footer}>
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+      <Box className={styles.contentWrapper}>
+        <Box className={styles.section}>
+          <p className={styles.sectionTitle}>템플릿</p>
+          <Box className={styles.grid}>
+            {TemplateList.map((item) => (
+              <Card key={item.id} item={{ ...item, type: "template" }} />
+            ))}
+          </Box>
+        </Box>
+
+        <Box className={styles.section}>
+          <p className={styles.sectionTitle}>배포된 사이트</p>
+          <Box className={styles.grid}>
+            {DeployedList.map((item) => (
+              <Card key={item.id} item={{ ...item, type: "deployed" }} />
+            ))}
+          </Box>
+        </Box>
+      </Box>
+    </Box>
   );
 }
