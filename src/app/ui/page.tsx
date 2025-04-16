@@ -26,6 +26,10 @@ export default function Page() {
       label: "Success",
       palette: theme.palette.success,
     },
+    {
+      label: "Mono",
+      palette: theme.palette.mono,
+    },
   ];
 
   return (

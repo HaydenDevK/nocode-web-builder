@@ -29,9 +29,10 @@ const theme = createTheme({
       contrastText: "#ffffff",
     },
     mono: {
-      main: grey[800],
-      light: grey[200],
-      dark: grey[900],
+      main: grey[900],
+      light: grey[600],
+      dark: "#000000",
+      contrastText: "#FFFFFF",
     },
   },
   typography: {
