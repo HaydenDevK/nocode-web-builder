@@ -30,7 +30,7 @@ export default function Home() {
         <Typography variant="h1" color="primary">
           Codelt Web Builder
         </Typography>
-        <Button variant="contained" className={styles.createButton}>
+        <Button variant="contained" color="info" size="large">
           새로 만들기
         </Button>
       </header>

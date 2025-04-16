@@ -15,7 +15,7 @@ type CardProps = {
 export default function Card({ item }: CardProps) {
   const baseButtons = (
     <>
-      <Button variant="outlined" color="primary" className={styles.actionBtn}>
+      <Button variant="outlined" color="info" className={styles.actionBtn}>
         편집
       </Button>
       <Button variant="outlined" color="warning" className={styles.actionBtn}>
@@ -37,7 +37,7 @@ export default function Card({ item }: CardProps) {
               {item.type === "template" && (
                 <Button
                   variant="outlined"
-                  color="primary"
+                  color="info"
                   className={styles.actionBtn}
                 >
                   이 템플릿으로 만들기

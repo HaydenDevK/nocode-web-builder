@@ -66,11 +66,40 @@ export default function Page() {
         이것은 body2 예시입니다. 좀 더 작은 본문 텍스트에 사용됩니다.
       </Typography>
 
+      {/* 2) Palette Colors (Optional) */}
       <Typography variant="h5" sx={{ mt: 4, mb: 2 }}>
-        2. Buttons
+        2. Palette Colors
       </Typography>
       <hr />
-      <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
+      {paletteGroups.map(({ label, palette }) => (
+        <Box key={label} sx={{ mb: 4 }}>
+          <Typography variant="h5" gutterBottom>
+            {label}
+          </Typography>
+          <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
+            {["main", "dark", "light"].map((tone) => (
+              <ColorBox
+                key={tone}
+                label={tone}
+                value={(palette as any)[tone]}
+              />
+            ))}
+          </Box>
+        </Box>
+      ))}
+
+      <Typography variant="h5" sx={{ mt: 4, mb: 2 }}>
+        3. Buttons
+      </Typography>
+      <hr />
+      <Box
+        sx={{
+          display: "flex",
+          gap: 2,
+          flexWrap: "wrap",
+          marginBottom: "1.2rem",
+        }}
+      >
         <Button variant="contained" color="primary">
           Primary
         </Button>
@@ -93,26 +122,66 @@ export default function Page() {
           Success
         </Button>
       </Box>
-      {/* 3) Palette Colors (Optional) */}
-      <Typography variant="h5" sx={{ mt: 4, mb: 2 }}>
-        3. Palette Colors
-      </Typography>
-      {paletteGroups.map(({ label, palette }) => (
-        <Box key={label} sx={{ mb: 4 }}>
-          <Typography variant="h5" gutterBottom>
-            {label}
-          </Typography>
-          <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
-            {["main", "dark", "light", "contrastText"].map((tone) => (
-              <ColorBox
-                key={tone}
-                label={tone}
-                value={(palette as any)[tone]}
-              />
-            ))}
-          </Box>
-        </Box>
-      ))}
+      <Box
+        sx={{
+          display: "flex",
+          gap: 2,
+          flexWrap: "wrap",
+          marginBottom: "1.2rem",
+        }}
+      >
+        <Button variant="contained" color="primary" size="medium">
+          Primary
+        </Button>
+        <Button variant="outlined" color="primary" size="medium">
+          Outlined
+        </Button>
+        <Button variant="text" color="primary" size="medium">
+          Text
+        </Button>
+        <Button variant="contained" color="secondary" size="medium">
+          Secondary
+        </Button>
+        <Button variant="contained" color="error" size="medium">
+          Error
+        </Button>
+        <Button variant="contained" color="warning" size="medium">
+          Warning
+        </Button>
+        <Button variant="contained" color="success" size="medium">
+          Success
+        </Button>
+      </Box>
+      <Box
+        sx={{
+          display: "flex",
+          gap: 2,
+          flexWrap: "wrap",
+          marginBottom: "1.2rem",
+        }}
+      >
+        <Button variant="contained" color="primary" size="large">
+          Primary
+        </Button>
+        <Button variant="outlined" color="primary" size="large">
+          Outlined
+        </Button>
+        <Button variant="text" color="primary" size="large">
+          Text
+        </Button>
+        <Button variant="contained" color="secondary" size="large">
+          Secondary
+        </Button>
+        <Button variant="contained" color="error" size="large">
+          Error
+        </Button>
+        <Button variant="contained" color="warning" size="large">
+          Warning
+        </Button>
+        <Button variant="contained" color="success" size="large">
+          Success
+        </Button>
+      </Box>
     </Box>
   );
 }
