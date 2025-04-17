@@ -50,11 +50,15 @@ const theme = createTheme({
       fontWeight: 600,
     },
     h4: {
-      fontSize: "20px",
+      fontSize: "22px",
       fontWeight: 600,
     },
     h5: {
-      fontSize: "16px",
+      fontSize: "18px",
+      fontWeight: 500,
+    },
+    h6: {
+      fontSize: "14px",
       fontWeight: 500,
     },
     body1: {
