@@ -13,7 +13,6 @@ export default function Canvas() {
 
       <div className={styles.section}>
         <h3>이곳은 이미지 섹션입니다.</h3>
-        <Image src="" alt="Placeholder" width={24} height={24} />
       </div>
     </div>
   );
