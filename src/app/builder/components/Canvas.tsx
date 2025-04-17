@@ -1,7 +1,6 @@
 "use client";
 
 import styles from "../styles/Canvas.module.scss";
-import Image from "next/image";
 
 export default function Canvas() {
   return (
