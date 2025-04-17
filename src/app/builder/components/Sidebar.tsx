@@ -1,5 +1,6 @@
 "use client";
 
+import TextEditor from "@/components/TextEditor";
 import styles from "../styles/Sidebar.module.scss";
 import {
   List,
@@ -39,6 +40,8 @@ export default function Sidebar() {
           <button className={styles.deleteButton}>삭제</button>
         </div>
       </List>
+
+      <TextEditor />
     </div>
   );
 }
