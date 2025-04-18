@@ -1,4 +1,4 @@
-export type ElementType = "섹션" | "버튼" | "텍스트" | "이미지";
+export type ElementType = "section" | "button" | "text" | "image";
 
 interface BaseElement {
   id: string;
@@ -6,12 +6,12 @@ interface BaseElement {
 }
 
 export interface SectionElement extends BaseElement {
-  type: "섹션";
+  type: "section";
   content: string;
 }
 
 export interface ButtonElement extends BaseElement {
-  type: "버튼";
+  type: "button";
   text: string;
   href: string;
   color: string;
@@ -21,13 +21,13 @@ export interface ButtonElement extends BaseElement {
 }
 
 export interface TextElement extends BaseElement {
-  type: "텍스트";
+  type: "text";
   value: string;
   fontSize: number;
 }
 
 export interface ImageElement extends BaseElement {
-  type: "이미지";
+  type: "image";
   url: string;
   width: number;
   height: number;

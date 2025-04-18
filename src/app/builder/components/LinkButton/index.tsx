@@ -13,16 +13,17 @@ export default function LinkButton({ data }: Props) {
   const { selectedId, setSelectedType, setElementProps } =
     useSelectedElementStore();
 
-  const handleClick = () => {
-    setSelectedType("button", id);
-    setElementProps(data);
+  const handleClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setSelectedType(data.type, data.id);
+    setElementProps({ ...data });
   };
 
   const isSelected = selectedId === id;
 
   return (
     <Button
-      href={href}
+      href={data.href}
       onClick={handleClick}
       sx={{
         backgroundColor: color,
@@ -38,7 +39,7 @@ export default function LinkButton({ data }: Props) {
         },
       }}
     >
-      {text}
+      {data.text}
     </Button>
   );
 }

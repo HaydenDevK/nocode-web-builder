@@ -14,26 +14,26 @@ export default function CreateEdirot() {
     const id = crypto.randomUUID();
 
     switch (label) {
-      case "섹션":
-        addElement({ id, type: "섹션", content: "새로운 섹션" });
+      case "section":
+        addElement({ id, type: "section", content: "새로운 섹션" });
         break;
-      case "텍스트":
+      case "text":
         addElement({
           id,
-          type: "텍스트",
+          type: "text",
           value: "텍스트입니다.",
           fontSize: 16,
         });
         break;
-      case "이미지":
-        addElement({ id, type: "이미지", url: "", width: 150, height: 150 });
+      case "image":
+        addElement({ id, type: "image", url: "", width: 150, height: 150 });
         break;
-      case "버튼":
+      case "button":
         addElement({
           id,
-          type: "버튼",
+          type: "button",
           text: "버튼",
-          href: "",
+          href: "-",
           color: "",
           fontSize: 16,
           fontWeight: 500,
@@ -44,10 +44,10 @@ export default function CreateEdirot() {
   };
 
   const icons = [
-    { label: "섹션", icon: <LayoutTemplate size={16} /> },
-    { label: "텍스트", icon: <Text size={16} /> },
-    { label: "이미지", icon: <ImageIcon size={16} /> },
-    { label: "버튼", icon: <SquareMousePointer size={16} /> },
+    { label: "section", icon: <LayoutTemplate size={16} /> },
+    { label: "text", icon: <Text size={16} /> },
+    { label: "image", icon: <ImageIcon size={16} /> },
+    { label: "button", icon: <SquareMousePointer size={16} /> },
   ];
 
   return (

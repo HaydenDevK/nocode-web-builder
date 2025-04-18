@@ -7,7 +7,7 @@ export default function ElementRenderer({
   element: CreateElement;
 }) {
   switch (element.type) {
-    case "버튼":
+    case "button":
       return <LinkButton data={element} />;
     default:
       return null;
