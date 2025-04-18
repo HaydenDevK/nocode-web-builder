@@ -1,18 +1,17 @@
 "use client";
 
 import styles from "../styles/Canvas.module.scss";
+import { useElementStore } from "@/app/store/elements.store";
+import ElementRenderer from "@/app/builder/containers/ElementRenderer";
 
 export default function Canvas() {
+  const { elements } = useElementStore();
+
   return (
     <div className={styles.canvas}>
-      <div className={styles.section}>
-        <h2>내용</h2>
-        <p>이곳은 섹션입니다.</p>
-      </div>
-
-      <div className={styles.section}>
-        <h3>이곳은 이미지 섹션입니다.</h3>
-      </div>
+      {elements.map((element) => (
+        <ElementRenderer key={element.id} element={element} />
+      ))}
     </div>
   );
 }
