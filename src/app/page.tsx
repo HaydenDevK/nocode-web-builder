@@ -2,7 +2,7 @@
 
 import styles from "./page.module.scss";
 import { Box, Button } from "@mui/material";
-import Card from "./components/Card";
+import Card from "@/components/Card";
 
 const sampleThumbnail =
   "https://img-wixmp-09d1505942a280459f0fa212.wixmp.com/images/site-snapshotter-web/9942c07d-5870-4eaa-b813-23ec87f4eb28/v1/fit/w_370,h_370/file.jpg";
