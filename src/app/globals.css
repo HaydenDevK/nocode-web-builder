@@ -1,6 +1,3 @@
-@import url("//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css");
-@import url("//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-jp.css");
-
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -22,8 +19,7 @@ body {
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: "Spoqa Han Sans Neo", -apple-system, BlinkMacSystemFont,
-    "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
