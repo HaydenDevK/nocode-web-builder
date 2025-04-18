@@ -6,6 +6,9 @@
   padding: 16px;
   box-sizing: border-box;
   overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
 }
 
 .title {
@@ -13,11 +16,6 @@
   font-size: 1.1rem;
   font-weight: 600;
   color: #333;
-}
-
-.text {
-  color: black;
-  font-size: 0.5rem;
 }
 
 .deleteButton {

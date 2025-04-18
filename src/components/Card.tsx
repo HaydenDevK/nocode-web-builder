@@ -1,6 +1,6 @@
 "use client";
 
-import { Box } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import styles from "./card.module.scss";
 
 type CardProps = {
@@ -15,8 +15,12 @@ type CardProps = {
 export default function Card({ item }: CardProps) {
   const baseButtons = (
     <>
-      <button className={styles.actionBtn}>편집</button>
-      <button className={styles.actionBtn}>삭제</button>
+      <Button variant="outlined" color="info" className={styles.actionBtn}>
+        편집
+      </Button>
+      <Button variant="outlined" color="warning" className={styles.actionBtn}>
+        삭제
+      </Button>
     </>
   );
 
@@ -31,14 +35,24 @@ export default function Card({ item }: CardProps) {
             <Box className={styles.buttonGroup}>
               {baseButtons}
               {item.type === "template" && (
-                <button className={styles.actionBtn}>
+                <Button
+                  variant="outlined"
+                  color="info"
+                  className={styles.actionBtn}
+                >
                   이 템플릿으로 만들기
-                </button>
+                </Button>
               )}
             </Box>
           </Box>
         </Box>
-        <p className={styles.cardTitle}>{item.title}</p>
+        <Typography
+          variant="body1"
+          color="text.primary"
+          className={styles.cardTitle}
+        >
+          {item.title}
+        </Typography>
       </Box>
     </Box>
   );

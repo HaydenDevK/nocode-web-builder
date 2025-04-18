@@ -1,7 +1,7 @@
 "use client";
 
 import styles from "./page.module.scss";
-import { Box, Button } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import Card from "@/components/Card";
 
 const sampleThumbnail =
@@ -27,15 +27,19 @@ export default function Home() {
   return (
     <Box className={styles.container}>
       <header className={styles.header}>
-        <p className={styles.title}>Codelt Web Builder</p>
-        <Button variant="contained" className={styles.createButton}>
+        <Typography variant="h1" color="primary">
+          Codelt Web Builder
+        </Typography>
+        <Button variant="contained" color="info" size="large">
           새로 만들기
         </Button>
       </header>
 
       <Box className={styles.contentWrapper}>
         <Box className={styles.section}>
-          <p className={styles.sectionTitle}>템플릿</p>
+          <Typography variant="h4" color="mono" gutterBottom>
+            템플릿
+          </Typography>
           <Box className={styles.grid}>
             {TemplateList.map((item) => (
               <Card key={item.id} item={{ ...item, type: "template" }} />
@@ -44,7 +48,9 @@ export default function Home() {
         </Box>
 
         <Box className={styles.section}>
-          <p className={styles.sectionTitle}>배포된 사이트</p>
+          <Typography variant="h4" color="mono" gutterBottom>
+            배포된 사이트
+          </Typography>
           <Box className={styles.grid}>
             {DeployedList.map((item) => (
               <Card key={item.id} item={{ ...item, type: "deployed" }} />
