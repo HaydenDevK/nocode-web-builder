@@ -1,8 +1,8 @@
 "use client";
 
+// Canvas
 import styles from "../styles/Canvas.module.scss";
 import { useElementStore } from "@/app/store/elements.store";
-import { useSelectedElementStore } from "@/app/store/selectedElement.store";
 import ElementRenderer from "@/app/builder/containers/ElementRenderer";
 
 export default function Canvas() {

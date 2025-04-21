@@ -1,5 +1,6 @@
 "use client";
 
+// LinkButton
 import { Button } from "@mui/material";
 import { ButtonElement } from "@/app/builder/types/createElementTypes";
 import { useSelectedElementStore } from "@/app/store/selectedElement.store";
@@ -9,12 +10,19 @@ interface Props {
 }
 
 export default function LinkButton({ data }: Props) {
-  const { id, text, href, color, fontSize, fontWeight, borderRadius } = data;
+  const { id, text, href, color, fontSize, fontWeight } = data;
   const { selectedId, setSelectedType, setElementProps } =
     useSelectedElementStore();
 
   const handleClick = (e: React.MouseEvent) => {
     e.stopPropagation();
+
+    if (!data.href || data.href === "") {
+      e.preventDefault();
+    }
+
+    if (selectedId === data.id) return;
+
     setSelectedType(data.type, data.id);
     setElementProps({ ...data });
   };
@@ -23,17 +31,20 @@ export default function LinkButton({ data }: Props) {
 
   return (
     <Button
-      href={data.href}
-      onClick={handleClick}
+      href={data.href || undefined}
+      onClick={(e) => {
+        e.preventDefault();
+        handleClick(e);
+      }}
       sx={{
         backgroundColor: color,
         fontSize,
-        fontWeight,
-        borderRadius,
-        px: 3,
-        py: 1,
-        border: isSelected ? "2px solid #1976d2" : "none",
-        boxShadow: isSelected ? "0 0 4px #1976d2" : "none",
+        fontWeight: data.fontWeight,
+        width: data.width || "auto",
+        height: data.height || "auto",
+        borderRadius: data.borderRadius || "auto",
+        border: isSelected ? "2px solid purple" : "none",
+        boxShadow: isSelected ? "0 0 4px purple" : "none",
         "&:hover": {
           backgroundColor: color,
         },

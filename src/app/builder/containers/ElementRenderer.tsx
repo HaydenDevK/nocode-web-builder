@@ -1,5 +1,6 @@
+// ElementRenderer
 import { CreateElement } from "@/app/builder/types/createElementTypes";
-import LinkButton from "@/app/builder/components/LinkButton";
+import LinkButton from "@/app/builder/components/createElements/LinkButton";
 
 export default function ElementRenderer({
   element,

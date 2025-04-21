@@ -1,5 +1,5 @@
 import { useSelectedElementStore } from "@/app/store/selectedElement.store";
-import ButtonEditor from "@/app/builder/components/elementEditor/ElementEditor";
+import ButtonEditor from "@/app/builder/components/elementEditor/ButtonEditor";
 import TextEditor from "@/components/TextEditor";
 
 export default function ElementEditor() {

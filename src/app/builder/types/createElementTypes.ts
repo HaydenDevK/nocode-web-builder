@@ -1,3 +1,4 @@
+// createElementTypes
 export type ElementType = "section" | "button" | "text" | "image";
 
 interface BaseElement {
@@ -17,6 +18,8 @@ export interface ButtonElement extends BaseElement {
   color: string;
   fontSize: number;
   fontWeight: number;
+  width: number;
+  height: number;
   borderRadius: number;
 }
 
