@@ -3,6 +3,16 @@
 import { TTextProps } from "@/app/model/types";
 import { useBuilderStore } from "@/app/store/useBuilderStore";
 import React from "react";
+
+const FONT_SIZE_MAP: Record<TTextProps["size"], string> = {
+  h1: "2.5rem",
+  h2: "2rem",
+  h3: "1.75rem",
+  h4: "1.5rem",
+  h5: "1.25rem",
+  h6: "1rem",
+};
+
 interface TextElementProps {
   elementId: string;
 }
@@ -25,6 +35,7 @@ const TextElement: React.FC<TextElementProps> = ({ elementId }) => {
         setSelectedItemInfo({ type: "text", itemId: elementId });
       }}
       style={{
+        fontSize: FONT_SIZE_MAP[props.size] ?? "1rem",
         color: props.color,
         backgroundColor: props.backgroundColor,
         padding: props.padding,
