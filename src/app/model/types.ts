@@ -17,12 +17,14 @@ export type TElement = {
   id: string;
   sectionId: string;
   type: TElementTypes;
-  props: TTextProps;
+  props: TElementProps;
 };
+
+export type TElementProps = TTextProps | any;
 
 export type TTextProps = {
   text: string;
-  size: "h1" | "h2" | "h3";
+  size: "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "body1" | "body2";
   fontFamily: "sans-serif" | "serif" | "monospace";
   fontWeight: string;
   color: string;
@@ -38,5 +40,3 @@ export type TSelectedItemInfo =
   | { type: "image"; itemId: string }
   | { type: "video"; itemId: string }
   | null;
-
-export type TElementProps = TTextProps | any;
