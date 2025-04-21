@@ -1,20 +1,47 @@
 "use client";
 
+import React from "react";
+import { useBuilderStore } from "@/app/store/useBuilderStore";
+import TextElement from "@/components/TextElement";
 import styles from "../styles/Canvas.module.scss";
-import Image from "next/image";
 
-export default function Canvas() {
+const Canvas: React.FC = () => {
+  const sectionIds = useBuilderStore((s) => s.sections.allIds);
+  const sectionsById = useBuilderStore((s) => s.sections.byId);
+  const selectedItemInfo = useBuilderStore((s) => s.selectedItemInfo);
+  const setSelectedItemInfo = useBuilderStore((s) => s.setSelectedItemInfo);
+
   return (
     <div className={styles.canvas}>
-      <div className={styles.section}>
-        <h2>내용</h2>
-        <p>이곳은 섹션입니다.</p>
-      </div>
+      {sectionIds.map((sectionId) => {
+        const section = sectionsById[sectionId];
+        const isSectionSelected =
+          selectedItemInfo?.type === "section" &&
+          selectedItemInfo.itemId === sectionId;
 
-      <div className={styles.section}>
-        <h3>이곳은 이미지 섹션입니다.</h3>
-        <Image src="" alt="Placeholder" width={24} height={24} />
-      </div>
+        return (
+          <div
+            key={sectionId}
+            onClick={() =>
+              setSelectedItemInfo({ type: "section", itemId: sectionId })
+            }
+            style={{
+              backgroundColor: section.props.backgroundColor,
+              padding: section.props.padding,
+              borderRadius: section.props.radius,
+              marginBottom: "1rem",
+              cursor: "pointer",
+              outline: isSectionSelected ? "2px solid #2684FF" : undefined,
+            }}
+          >
+            {section.elementIds.map((elementId) => (
+              <TextElement key={elementId} elementId={elementId} />
+            ))}
+          </div>
+        );
+      })}
     </div>
   );
-}
+};
+
+export default Canvas;

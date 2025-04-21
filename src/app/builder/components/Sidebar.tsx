@@ -1,6 +1,6 @@
 "use client";
 
-import TextEditor from "@/components/TextEditor";
+import Editor from "@/components/Editor";
 import styles from "../styles/Sidebar.module.scss";
 import {
   List,
@@ -41,7 +41,7 @@ export default function Sidebar() {
         </div>
       </List>
 
-      <TextEditor />
+      <Editor />
     </div>
   );
 }
