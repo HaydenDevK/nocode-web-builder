@@ -27,6 +27,10 @@ export default function Page() {
       palette: theme.palette.success,
     },
     {
+      label: "Info",
+      palette: theme.palette.info,
+    },
+    {
       label: "Mono",
       palette: theme.palette.mono,
     },

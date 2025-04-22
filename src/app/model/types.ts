@@ -20,9 +20,11 @@ export type TElement = {
   props: TElementProps;
 };
 
+export type TElementProps = TTextProps | TLinkProps | any;
+
 export type TTextProps = {
   text: string;
-  size: "h1" | "h2" | "h3";
+  size: "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "body1" | "body2";
   fontFamily: "sans-serif" | "serif" | "monospace";
   fontWeight: string;
   color: string;
@@ -48,7 +50,4 @@ export type TSelectedItemInfo =
   | { type: "link"; itemId: string }
   | { type: "image"; itemId: string }
   | { type: "video"; itemId: string }
-  | { type: "button"; itemId: string }
   | null;
-
-export type TElementProps = TTextProps | TLinkProps | any;

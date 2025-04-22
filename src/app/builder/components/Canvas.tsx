@@ -1,19 +1,20 @@
-import styles from "../styles/Canvas.module.scss";
-import { useBuilderStore } from "@/app/store/useBuilder.store";
-import ElementRenderer from "@/app/builder/containers/ElementRenderer";
+"use client";
 
-export default function Canvas() {
-  const sections = useBuilderStore((state) => state.sections);
-  const elements = useBuilderStore((state) => state.elements);
+import React from "react";
+import { useBuilderStore } from "@/app/store/useBuilderStore";
+import Section from "@/components/Section";
+import styles from "../styles/Canvas.module.scss";
+
+const Canvas: React.FC = () => {
+  const sectionIds = useBuilderStore((s) => s.sections.allIds);
 
   return (
     <div className={styles.canvas}>
-      {sections.allIds.map((sectionId) => {
-        const section = sections.byId[sectionId];
-        return section.elementIds.map((elementId) => (
-          <ElementRenderer key={elementId} element={elements.byId[elementId]} />
-        ));
-      })}
+      {sectionIds.map((sectionId) => (
+        <Section key={sectionId} sectionId={sectionId} />
+      ))}
     </div>
   );
-}
+};
+
+export default Canvas;

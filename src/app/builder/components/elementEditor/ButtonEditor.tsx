@@ -1,6 +1,7 @@
-// ButtonEditor.tsx
-import { TextField, Stack, Typography } from "@mui/material";
-import { useBuilderStore } from "@/app/store/useBuilder.store";
+"use client";
+
+import { TextField, Stack } from "@mui/material";
+import { useBuilderStore } from "@/app/store/useBuilderStore";
 
 export default function ButtonEditor({ elementId }: { elementId: string }) {
   const element = useBuilderStore((state) => state.elements.byId[elementId]);
@@ -24,42 +25,47 @@ export default function ButtonEditor({ elementId }: { elementId: string }) {
   };
 
   return (
-    <Stack spacing={2} sx={{ p: 2 }}>
-      <Typography variant="h6">버튼 편집</Typography>
-
+    <Stack spacing={2}>
       <TextField
+        fullWidth
         label="텍스트"
         value={props.text || ""}
         onChange={(e) => handlePropChange("text", e.target.value)}
       />
       <TextField
-        label="텍스트 굵기"
+        fullWidth
+        label="텍스트 굵기 (fontWeight)"
         value={props.fontWeight || ""}
         onChange={(e) => handlePropChange("fontWeight", e.target.value)}
       />
       <TextField
-        label="링크"
+        fullWidth
+        label="링크 주소 (href)"
         value={props.href || ""}
         onChange={(e) => handlePropChange("href", e.target.value)}
       />
       <TextField
-        label="색상"
+        fullWidth
+        label="배경 색상 (color)"
         value={props.color || ""}
         onChange={(e) => handlePropChange("color", e.target.value)}
       />
       <TextField
+        fullWidth
         type="number"
-        label="버튼 둥글기"
+        label="버튼 둥글기 (borderRadius)"
         value={props.borderRadius || ""}
         onChange={(e) => handleNumberChange("borderRadius", e.target.value)}
       />
       <TextField
+        fullWidth
         type="number"
         label="버튼 너비 (px)"
         value={props.width || ""}
         onChange={(e) => handleNumberChange("width", e.target.value)}
       />
       <TextField
+        fullWidth
         type="number"
         label="버튼 높이 (px)"
         value={props.height || ""}

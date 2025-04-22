@@ -3,7 +3,7 @@
 
 import { Text, ImageIcon, SquareMousePointer, Video } from "lucide-react";
 import { Stack, Divider, Typography, Button } from "@mui/material";
-import { useBuilderStore } from "@/app/store/useBuilder.store";
+import { useBuilderStore } from "@/app/store/useBuilderStore";
 import { nanoid } from "nanoid";
 
 export default function CreateEditor() {
@@ -13,30 +13,14 @@ export default function CreateEditor() {
     const id = nanoid();
 
     switch (label) {
-      case "text":
-        addElement({
-          id,
-          sectionId: "section-1",
-          type: "text",
-          props: {
-            text: "텍스트입니다.",
-            size: "h1",
-            fontFamily: "sans-serif",
-            fontWeight: "normal",
-            color: "#000",
-            backgroundColor: "transparent",
-            padding: 0,
-            radius: 0,
-          },
-        });
-        break;
+      // text, image, video 추가 필요
       case "link":
         addElement({
           id,
           sectionId: "section-1",
           type: "link",
           props: {
-            text: "이름을 입력해 주세요",
+            text: "버튼 이름",
             href: "",
             color: "#ffffff",
             fontSize: 16,

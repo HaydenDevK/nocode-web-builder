@@ -2,14 +2,14 @@
 
 // LinkButton
 import { Button } from "@mui/material";
-import { TElement } from "@/app/model/types";
-import { useBuilderStore } from "@/app/store/useBuilder.store";
+import { useBuilderStore } from "@/app/store/useBuilderStore";
 
 interface LinkProps {
-  data: TElement;
+  elementId: string;
 }
 
-export default function LinkButton({ data }: LinkProps) {
+export default function LinkButton({ elementId }: LinkProps) {
+  const element = useBuilderStore((state) => state.elements.byId[elementId]);
   const {
     id,
     type,
@@ -23,7 +23,7 @@ export default function LinkButton({ data }: LinkProps) {
       height,
       borderRadius,
     },
-  } = data;
+  } = element;
   const { selectedItemInfo, setSelectedItemInfo } = useBuilderStore();
 
   const isSelected = selectedItemInfo?.itemId === id;
@@ -48,7 +48,7 @@ export default function LinkButton({ data }: LinkProps) {
         width: width || "auto",
         height: height || "auto",
         borderRadius: borderRadius || "auto",
-        border: isSelected ? "2px solid purple" : "none",
+        border: isSelected ? "2px solid purple" : "1px solid",
         boxShadow: isSelected ? "0 0 4px purple" : "none",
         "&:hover": {
           backgroundColor: color,
