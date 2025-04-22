@@ -8,7 +8,7 @@ export default function Sidebar() {
   return (
     <div className={styles.sidebar}>
       <CreateEditor />
-      <Editor /> {/* hayden */}
+      <Editor />
     </div>
   );
 }
