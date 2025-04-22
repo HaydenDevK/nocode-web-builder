@@ -20,7 +20,12 @@ export type TElement = {
   props: TElementProps;
 };
 
-export type TElementProps = TTextProps | TLinkProps | any;
+export type TElementProps =
+  | TTextProps
+  | TLinkProps
+  | TImageProps
+  | TVideoProps
+  | any;
 
 export type TTextProps = {
   text: string;
@@ -51,3 +56,18 @@ export type TSelectedItemInfo =
   | { type: "image"; itemId: string }
   | { type: "video"; itemId: string }
   | null;
+
+export type TImageProps = {
+  srcType: "url" | "upload";
+  imageURL: string;
+  width: number;
+  align: "left" | "center" | "right";
+  link: string;
+  radius: number;
+};
+
+export type TVideoProps = {
+  videoSrcType: "youtube" | "upload";
+  videoURL: string;
+  width: number;
+};

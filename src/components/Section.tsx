@@ -3,7 +3,9 @@
 import React from "react";
 import { useBuilderStore } from "@/app/store/useBuilderStore";
 import TextElement from "@/components/TextElement";
-import LinkButton from "@/app/builder/components/createButtons/LinkButton";
+import LinkButton from "@/app/builder/components/LinkButton";
+import ImageElement from "./ImageElement";
+import VideoElement from "./VideoElement";
 
 interface SectionProps {
   sectionId: string;
@@ -39,13 +41,13 @@ const Section: React.FC<SectionProps> = ({ sectionId }) => {
           case "text":
             return <TextElement key={elementId} elementId={elementId} />;
           case "image":
-            return <></>; // TODO: ImageElement 추가 시 대체
+            return <ImageElement key={elementId} elementId={elementId} />;
           case "link":
             return (
               <LinkButton key={elementId} elementId={elementId}></LinkButton>
             );
           case "video":
-            return <></>;
+            return <VideoElement key={elementId} elementId={elementId} />;
           default:
             return null;
         }
