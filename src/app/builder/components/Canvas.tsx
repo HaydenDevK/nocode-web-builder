@@ -1,18 +1,19 @@
-"use client";
-
-// Canvas
 import styles from "../styles/Canvas.module.scss";
-import { useElementStore } from "@/app/store/elements.store";
+import { useBuilderStore } from "@/app/store/useBuilder.store";
 import ElementRenderer from "@/app/builder/containers/ElementRenderer";
 
 export default function Canvas() {
-  const { elements } = useElementStore();
+  const sections = useBuilderStore((state) => state.sections);
+  const elements = useBuilderStore((state) => state.elements);
 
   return (
     <div className={styles.canvas}>
-      {elements.map((element) => (
-        <ElementRenderer key={element.id} element={element} />
-      ))}
+      {sections.allIds.map((sectionId) => {
+        const section = sections.byId[sectionId];
+        return section.elementIds.map((elementId) => (
+          <ElementRenderer key={elementId} element={elements.byId[elementId]} />
+        ));
+      })}
     </div>
   );
 }

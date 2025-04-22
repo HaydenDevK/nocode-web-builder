@@ -1,56 +1,60 @@
-// CreateEditor
-import {
-  LayoutTemplate,
-  Text,
-  ImageIcon,
-  SquareMousePointer,
-} from "lucide-react";
-import { Stack, Divider, Typography, Button } from "@mui/material";
-import { useElementStore } from "@/app/store/elements.store";
+// CreateEditor.tsx
+"use client";
 
-export default function CreateEdirot() {
-  const { addElement } = useElementStore();
+import { Text, ImageIcon, SquareMousePointer, Video } from "lucide-react";
+import { Stack, Divider, Typography, Button } from "@mui/material";
+import { useBuilderStore } from "@/app/store/useBuilder.store";
+import { nanoid } from "nanoid";
+
+export default function CreateEditor() {
+  const { addElement } = useBuilderStore();
 
   const handleAdd = (label: string) => {
-    const id = crypto.randomUUID();
+    const id = nanoid();
 
     switch (label) {
-      case "section":
-        addElement({ id, type: "section", content: "새로운 섹션" });
-        break;
       case "text":
         addElement({
           id,
+          sectionId: "section-1",
           type: "text",
-          value: "텍스트입니다.",
-          fontSize: 16,
+          props: {
+            text: "텍스트입니다.",
+            size: "h1",
+            fontFamily: "sans-serif",
+            fontWeight: "normal",
+            color: "#000",
+            backgroundColor: "transparent",
+            padding: 0,
+            radius: 0,
+          },
         });
         break;
-      case "image":
-        addElement({ id, type: "image", url: "", width: 150, height: 150 });
-        break;
-      case "button":
+      case "link":
         addElement({
           id,
-          type: "button",
-          text: "버튼",
-          href: "",
-          color: "",
-          fontSize: 16,
-          fontWeight: 500,
-          width: 100,
-          height: 100,
-          borderRadius: 0,
+          sectionId: "section-1",
+          type: "link",
+          props: {
+            text: "이름을 입력해 주세요",
+            href: "",
+            color: "#ffffff",
+            fontSize: 16,
+            fontWeight: 500,
+            width: 100,
+            height: 50,
+            borderRadius: 4,
+          },
         });
         break;
     }
   };
 
   const icons = [
-    { label: "section", icon: <LayoutTemplate size={16} /> },
     { label: "text", icon: <Text size={16} /> },
+    { label: "link", icon: <SquareMousePointer size={16} /> },
     { label: "image", icon: <ImageIcon size={16} /> },
-    { label: "button", icon: <SquareMousePointer size={16} /> },
+    { label: "video", icon: <Video size={16} /> },
   ];
 
   return (
@@ -58,9 +62,7 @@ export default function CreateEdirot() {
       <Typography variant="h4" color="mono">
         생성
       </Typography>
-
       <Divider />
-
       {icons.map(({ label, icon }) => (
         <Button
           key={label}

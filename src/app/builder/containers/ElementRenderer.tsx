@@ -1,11 +1,11 @@
 // ElementRenderer
-import { CreateElement } from "@/app/builder/types/createElementTypes";
-import LinkButton from "@/app/builder/components/createElements/LinkButton";
+import { TElementProps } from "@/app/model/types";
+import LinkButton from "@/app/builder/components/createButtons/LinkButton";
 
 export default function ElementRenderer({
   element,
 }: {
-  element: CreateElement;
+  element: TElementProps;
 }) {
   switch (element.type) {
     case "button":
