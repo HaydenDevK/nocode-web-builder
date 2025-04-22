@@ -1,18 +1,20 @@
 "use client";
 
+import React from "react";
+import { useBuilderStore } from "@/app/store/useBuilderStore";
+import Section from "@/components/Section";
 import styles from "../styles/Canvas.module.scss";
 
-export default function Canvas() {
+const Canvas: React.FC = () => {
+  const sectionIds = useBuilderStore((s) => s.sections.allIds);
+
   return (
     <div className={styles.canvas}>
-      <div className={styles.section}>
-        <h2>내용</h2>
-        <p>이곳은 섹션입니다.</p>
-      </div>
-
-      <div className={styles.section}>
-        <h3>이곳은 이미지 섹션입니다.</h3>
-      </div>
+      {sectionIds.map((sectionId) => (
+        <Section key={sectionId} sectionId={sectionId} />
+      ))}
     </div>
   );
-}
+};
+
+export default Canvas;
