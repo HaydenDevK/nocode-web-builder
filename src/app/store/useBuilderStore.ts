@@ -68,7 +68,8 @@ interface BuilderState {
   moveSection(): void;
   removeSection(sectionId: string): void;
 
-  addElement(): void;
+  /* Element Action */
+  addElement(element: TElement): void;
   updateElementProps(elementId: string, patch: Partial<TElementProps>): void;
   moveElement(): void;
   removeElement(elementId: string): void;
@@ -124,7 +125,15 @@ export const useBuilderStore = create<BuilderState>()(
     moveSection: () => {},
     removeSection: () => {},
 
-    addElement: () => {},
+    /* Element Actions */
+    addElement: (element: TElement) =>
+      set((state) => {
+        const { id, sectionId } = element;
+        state.elements.byId[id] = element;
+        state.elements.allIds.push(id);
+        state.sections.byId[sectionId].elementIds.push(id);
+      }),
+
     updateElementProps: (elementId, patch) =>
       set((state) => {
         Object.assign(state.elements.byId[elementId].props, patch);

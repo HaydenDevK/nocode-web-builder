@@ -20,7 +20,12 @@ export type TElement = {
   props: TElementProps;
 };
 
-export type TElementProps = TTextProps | TImageProps | TVideoProps;
+export type TElementProps =
+  | TTextProps
+  | TLinkProps
+  | TImageProps
+  | TVideoProps
+  | any;
 
 export type TTextProps = {
   text: string;
@@ -31,6 +36,17 @@ export type TTextProps = {
   backgroundColor: string;
   padding: number;
   radius: number;
+};
+
+export type TLinkProps = {
+  text: string;
+  href: string;
+  color: string;
+  fontSize: number;
+  fontWeight: number;
+  width: number;
+  height: number;
+  borderRadius: number;
 };
 
 export type TSelectedItemInfo =

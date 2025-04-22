@@ -3,6 +3,7 @@
 import React from "react";
 import { useBuilderStore } from "@/app/store/useBuilderStore";
 import TextElement from "@/components/TextElement";
+import LinkButton from "@/app/builder/components/LinkButton";
 import ImageElement from "./ImageElement";
 import VideoElement from "./VideoElement";
 
@@ -42,7 +43,9 @@ const Section: React.FC<SectionProps> = ({ sectionId }) => {
           case "image":
             return <ImageElement key={elementId} elementId={elementId} />;
           case "link":
-            return <></>;
+            return (
+              <LinkButton key={elementId} elementId={elementId}></LinkButton>
+            );
           case "video":
             return <VideoElement key={elementId} elementId={elementId} />;
           default:
