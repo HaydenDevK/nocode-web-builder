@@ -4,6 +4,8 @@ import React from "react";
 import { useBuilderStore } from "@/app/store/useBuilderStore";
 import { Divider, Stack, Typography } from "@mui/material";
 import TextEditor from "./TextEditor";
+import ImageEditor from "./ImageEditor";
+import VideoEditor from "./VideoEditor";
 
 const Editor: React.FC = () => {
   const selectedItemInfo = useBuilderStore((s) => s.selectedItemInfo);
@@ -36,10 +38,10 @@ const Editor: React.FC = () => {
       editorComponent = <></>;
       break;
     case "image":
-      editorComponent = <></>;
+      editorComponent = <ImageEditor elementId={itemId} />;
       break;
     case "video":
-      editorComponent = <></>;
+      editorComponent = <VideoEditor elementId={itemId} />;
       break;
   }
   return (
