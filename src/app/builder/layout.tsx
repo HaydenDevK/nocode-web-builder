@@ -7,12 +7,12 @@ import styles from "./styles/Layout.module.scss";
 
 export default function BuilderLayout({ children }: { children: ReactNode }) {
   return (
-    <div className={styles.layout}>
+    <>
       <Toolbar />
       <div className={styles.main}>
         <div className={styles.canvasWrapper}>{children}</div>
         <Sidebar />
       </div>
-    </div>
+    </>
   );
 }
