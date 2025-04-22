@@ -13,17 +13,24 @@ import {
   Button,
 } from "@mui/material";
 import { useRef } from "react";
-import { useSelectedElementStore } from "@/app/store/selectedElement.store";
+import { useBuilderStore } from "@/app/store/useBuilderStore";
+import type { TVideoProps } from "@/app/model/types";
 
 const VideoEditor = ({ elementId }: { elementId: string }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const { elementProps, updateElementProp } = useSelectedElementStore();
 
-  const {
-    videoSrcType = "youtube",
-    videoURL = "",
-    width = "100",
-  } = elementProps;
+  const element = useBuilderStore((s) => s.elements.byId[elementId]);
+  const updateElementProps = useBuilderStore((s) => s.updateElementProps);
+  const removeElement = useBuilderStore((s) => s.removeElement);
+
+  if (!element || element.type !== "video") return null;
+  const props = element.props as TVideoProps;
+
+  const { videoSrcType = "youtube", videoURL = "", width = 100 } = props;
+
+  const handleChange = (key: keyof TVideoProps, value: any) => {
+    updateElementProps(elementId, { [key]: value });
+  };
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -32,8 +39,8 @@ const VideoEditor = ({ elementId }: { elementId: string }) => {
     const reader = new FileReader();
     reader.onload = () => {
       if (typeof reader.result === "string") {
-        updateElementProp("videoURL", reader.result);
-        updateElementProp("videoSrcType", "upload");
+        handleChange("videoURL", reader.result);
+        handleChange("videoSrcType", "upload");
       }
     };
     reader.readAsDataURL(file);
@@ -41,44 +48,33 @@ const VideoEditor = ({ elementId }: { elementId: string }) => {
 
   return (
     <Stack spacing={3}>
-      <Typography variant="h4" color="mono">
-        비디오 편집
-      </Typography>
-      <Divider />
-
-      {/* 비디오 소스 타입 */}
       <Typography variant="h6" color="mono">
-        비디오 소스
+        Video Source
       </Typography>
       <FormControl fullWidth>
         <RadioGroup
           row
           value={videoSrcType}
-          onChange={(e) => updateElementProp("videoSrcType", e.target.value)}
+          onChange={(e) => handleChange("videoSrcType", e.target.value)}
         >
           <FormControlLabel
             value="youtube"
             control={<Radio />}
             label="YouTube"
           />
-          <FormControlLabel
-            value="upload"
-            control={<Radio />}
-            label="직접 삽입"
-          />
+          <FormControlLabel value="upload" control={<Radio />} label="Upload" />
         </RadioGroup>
       </FormControl>
 
-      {/* 비디오 링크 or 업로드 */}
       <Typography variant="h6" color="mono">
-        {videoSrcType === "youtube" ? "비디오 링크" : "비디오 파일"}
+        {videoSrcType === "youtube" ? "Video URL" : "Video File"}
       </Typography>
       {videoSrcType === "youtube" ? (
         <TextField
           fullWidth
           placeholder="https://www.youtube.com/watch?v=..."
           value={videoURL}
-          onChange={(e) => updateElementProp("videoURL", e.target.value)}
+          onChange={(e) => handleChange("videoURL", e.target.value)}
         />
       ) : (
         <>
@@ -86,7 +82,7 @@ const VideoEditor = ({ elementId }: { elementId: string }) => {
             variant="outlined"
             onClick={() => fileInputRef.current?.click()}
           >
-            파일 업로드
+            Upload File
           </Button>
           <input
             ref={fileInputRef}
@@ -98,22 +94,31 @@ const VideoEditor = ({ elementId }: { elementId: string }) => {
         </>
       )}
 
-      {/* 넓이 */}
       <Typography variant="h6" color="mono">
-        넓이 (%)
+        Width (%)
       </Typography>
       <FormControl fullWidth>
         <Slider
-          value={Number.parseInt(width)}
+          value={width}
           onChange={(_, newValue) => {
-            if (newValue !== null) updateElementProp("width", String(newValue));
+            if (typeof newValue === "number") handleChange("width", newValue);
           }}
           valueLabelDisplay="auto"
-          min={1}
+          min={10}
           max={100}
         />
-        <Typography variant="body2">현재: {width}%</Typography>
+        <Typography variant="body2">Current: {width}%</Typography>
       </FormControl>
+
+      <Divider />
+
+      <Button
+        variant="contained"
+        color="warning"
+        onClick={() => removeElement(elementId)}
+      >
+        Delete
+      </Button>
     </Stack>
   );
 };

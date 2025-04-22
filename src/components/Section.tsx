@@ -4,6 +4,7 @@ import React from "react";
 import { useBuilderStore } from "@/app/store/useBuilderStore";
 import TextElement from "@/components/TextElement";
 import ImageElement from "./ImageElement";
+import VideoElement from "./VideoElement";
 
 interface SectionProps {
   sectionId: string;
@@ -43,7 +44,7 @@ const Section: React.FC<SectionProps> = ({ sectionId }) => {
           case "link":
             return <></>;
           case "video":
-            return <></>;
+            return <VideoElement key={elementId} elementId={elementId} />;
           default:
             return null;
         }

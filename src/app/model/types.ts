@@ -20,7 +20,7 @@ export type TElement = {
   props: TElementProps;
 };
 
-export type TElementProps = TTextProps | any;
+export type TElementProps = TTextProps | TImageProps | TVideoProps;
 
 export type TTextProps = {
   text: string;
@@ -48,4 +48,10 @@ export type TImageProps = {
   align: "left" | "center" | "right";
   link: string;
   radius: number;
+};
+
+export type TVideoProps = {
+  videoSrcType: "youtube" | "upload";
+  videoURL: string;
+  width: number;
 };

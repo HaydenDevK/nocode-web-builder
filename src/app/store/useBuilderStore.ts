@@ -6,6 +6,7 @@ import {
   TElement,
   TTextProps,
   TImageProps,
+  TVideoProps,
   TSelectedItemInfo,
   TElementProps,
 } from "../model/types";
@@ -20,6 +21,7 @@ const INITIAL_SECTION_ID = "section-1";
 
 const sampleTextId = "element-1";
 const sampleImageId = "element-2";
+const sampleVideoId = "element-3";
 
 const sampleText: TTextProps = {
   text: "Sample Text",
@@ -40,6 +42,12 @@ const sampleImage: TImageProps = {
   align: "center",
   link: "",
   radius: 12,
+};
+
+const sampleVideo: TVideoProps = {
+  videoSrcType: "youtube",
+  videoURL: "https://www.youtube.com/watch?v=ieZi8Q-eVSQ",
+  width: 100,
 };
 
 interface BuilderState {
@@ -73,7 +81,7 @@ export const useBuilderStore = create<BuilderState>()(
         [INITIAL_SECTION_ID]: {
           id: INITIAL_SECTION_ID,
           props: INITIAL_SECTION_PROPS,
-          elementIds: [sampleTextId, sampleImageId],
+          elementIds: [sampleTextId, sampleImageId, sampleVideoId],
         },
       },
       allIds: [INITIAL_SECTION_ID],
@@ -92,8 +100,14 @@ export const useBuilderStore = create<BuilderState>()(
           type: "image",
           props: sampleImage,
         },
+        [sampleVideoId]: {
+          id: sampleVideoId,
+          sectionId: INITIAL_SECTION_ID,
+          type: "video",
+          props: sampleVideo,
+        },
       },
-      allIds: [sampleTextId, sampleImageId],
+      allIds: [sampleTextId, sampleImageId, sampleVideoId],
     },
 
     selectedItemInfo: { type: "text", itemId: sampleTextId },
