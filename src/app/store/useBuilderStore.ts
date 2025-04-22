@@ -5,6 +5,7 @@ import {
   TSectionProps,
   TElement,
   TTextProps,
+  TImageProps,
   TSelectedItemInfo,
   TElementProps,
 } from "../model/types";
@@ -17,6 +18,9 @@ const INITIAL_SECTION_PROPS: TSectionProps = {
 
 const INITIAL_SECTION_ID = "section-1";
 
+const sampleTextId = "element-1";
+const sampleImageId = "element-2";
+
 const sampleText: TTextProps = {
   text: "Sample Text",
   size: "h1",
@@ -28,7 +32,15 @@ const sampleText: TTextProps = {
   radius: 0,
 };
 
-const sampleTextId = "element-1";
+const sampleImage: TImageProps = {
+  srcType: "url",
+  imageURL:
+    "https://cdn.pixabay.com/photo/2024/12/28/20/12/trees-9296828_1280.jpg",
+  width: 100,
+  align: "center",
+  link: "",
+  radius: 12,
+};
 
 interface BuilderState {
   sections: {
@@ -40,17 +52,14 @@ interface BuilderState {
     allIds: string[];
   };
 
-  /* 현재 선택된 항목 */
   selectedItemInfo: TSelectedItemInfo;
   setSelectedItemInfo(info: TSelectedItemInfo): void;
 
-  /* Section Action */
   addSection(): void;
   updateSectionProps(sectionId: string, patch: Partial<TSectionProps>): void;
   moveSection(): void;
   removeSection(sectionId: string): void;
 
-  /* Element Action */
   addElement(): void;
   updateElementProps(elementId: string, patch: Partial<TElementProps>): void;
   moveElement(): void;
@@ -59,13 +68,12 @@ interface BuilderState {
 
 export const useBuilderStore = create<BuilderState>()(
   immer((set) => ({
-    /* 초기 값 */
     sections: {
       byId: {
         [INITIAL_SECTION_ID]: {
           id: INITIAL_SECTION_ID,
           props: INITIAL_SECTION_PROPS,
-          elementIds: [sampleTextId],
+          elementIds: [sampleTextId, sampleImageId],
         },
       },
       allIds: [INITIAL_SECTION_ID],
@@ -78,8 +86,14 @@ export const useBuilderStore = create<BuilderState>()(
           type: "text",
           props: sampleText,
         },
+        [sampleImageId]: {
+          id: sampleImageId,
+          sectionId: INITIAL_SECTION_ID,
+          type: "image",
+          props: sampleImage,
+        },
       },
-      allIds: [sampleTextId],
+      allIds: [sampleTextId, sampleImageId],
     },
 
     selectedItemInfo: { type: "text", itemId: sampleTextId },
@@ -88,28 +102,20 @@ export const useBuilderStore = create<BuilderState>()(
         state.selectedItemInfo = info;
       }),
 
-    /* Section Actions */
     addSection: () => {},
-
     updateSectionProps: (sectionId, patch) =>
       set((state) => {
         Object.assign(state.sections.byId[sectionId].props, patch);
       }),
-
     moveSection: () => {},
-
     removeSection: () => {},
 
-    /* Element Actions */
     addElement: () => {},
-
     updateElementProps: (elementId, patch) =>
       set((state) => {
         Object.assign(state.elements.byId[elementId].props, patch);
       }),
-
     moveElement: () => {},
-
     removeElement: (elementId) =>
       set((state) => {
         const element = state.elements.byId[elementId];
