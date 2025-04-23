@@ -85,7 +85,6 @@ const VideoElement: React.FC<VideoElementProps> = ({ elementId }) => {
         </video>
       )}
 
-      {/* 선택을 위한 오버레이 */}
       <div
         onClick={handleClick}
         style={{

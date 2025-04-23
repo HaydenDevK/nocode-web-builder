@@ -80,7 +80,7 @@ const ImageEditor = ({ elementId }: { elementId: string }) => {
         <TextField
           fullWidth
           placeholder="https://example.com/image.jpg"
-          value={imageURL}
+          value={imageURL ?? ""}
           onChange={(e) => handleChange("imageURL", e.target.value)}
         />
       ) : (
@@ -115,7 +115,9 @@ const ImageEditor = ({ elementId }: { elementId: string }) => {
           min={1}
           max={100}
         />
-        <Typography variant="body2">Current: {width}%</Typography>
+        <Typography variant="body2" sx={{ color: "mono.dark" }}>
+          Current: {width}%
+        </Typography>
       </FormControl>
 
       {/* Radius */}
