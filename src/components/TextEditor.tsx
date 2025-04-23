@@ -79,7 +79,7 @@ const TextEditor: React.FC<TextEditorProps> = ({ elementId }) => {
         >
           <MenuItem value="normal">Normal</MenuItem>
           <MenuItem value="bold">Bold</MenuItem>
-          <MenuItem value="lighter">Lighter</MenuItem>
+          <MenuItem value="lighter">Thin</MenuItem>
         </Select>
       </FormControl>
 
