@@ -105,9 +105,9 @@ const ImageEditor = ({ elementId }: { elementId: string }) => {
       </Typography>
       <FormControl fullWidth>
         <Slider
-          value={Number.parseInt(width)}
+          value={width}
           onChange={(_, newValue) => {
-            if (newValue !== null) handleChange("width", String(newValue));
+            if (newValue !== null) handleChange("width", newValue);
           }}
           valueLabelDisplay="auto"
           min={1}
@@ -160,7 +160,9 @@ const ImageEditor = ({ elementId }: { elementId: string }) => {
         type="number"
         inputProps={{ min: 0 }}
         value={radius}
-        onChange={(e) => handleChange("radius", e.target.value)}
+        onChange={(e) =>
+          handleChange("radius", Number.parseInt(e.target.value, 10) || 0)
+        }
       />
 
       <Divider />

@@ -41,7 +41,7 @@ const sampleImage: TImageProps = {
   width: 100,
   align: "center",
   link: "",
-  radius: 12,
+  radius: 0,
 };
 
 const sampleVideo: TVideoProps = {

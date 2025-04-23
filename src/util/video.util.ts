@@ -1,7 +1,7 @@
-// src/app/util/video.util.ts
 export function convertToEmbedURL(url: string): string {
-  // 유튜브 링크를 임베드 형식으로 변환하는 예시
-  const videoIdMatch = url.match(/(?:v=|youtu\.be\/)([\w-]+)/);
-  const videoId = videoIdMatch?.[1];
-  return videoId ? `https://www.youtube.com/embed/${videoId}` : "";
+  const youtubeRegex =
+    /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/watch\?v=|youtu.be\/)([\w-]+)/;
+  const match = url.match(youtubeRegex);
+  const videoId = match?.[1];
+  return videoId ? `https://www.youtube.com/embed/${videoId}` : url;
 }
