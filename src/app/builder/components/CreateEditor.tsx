@@ -38,6 +38,34 @@ export default function CreateEditor() {
           },
         });
         break;
+
+      case "image":
+        addElement({
+          id,
+          sectionId: "section-1", // 임시로 여기에 넣겠습니다.
+          type: "image",
+          props: {
+            imageURL:
+              "https://media.istockphoto.com/id/1147544807/vector/thumbnail-image-vector-graphic.jpg?s=612x612&w=0&k=20&c=rnCKVbdxqkjlcs3xH87-9gocETqpspHFXu5dIGB4wuM=",
+            srcType: "url",
+            width: 100,
+            radius: 0,
+          },
+        });
+        break;
+
+      case "video":
+        addElement({
+          id,
+          sectionId: "section-1", // 임시로 여기에 넣겠습니다.
+          type: "video",
+          props: {
+            videoURL: null,
+            videoSrcType: "youtube",
+            width: 100,
+          },
+        });
+        break;
     }
   };
 

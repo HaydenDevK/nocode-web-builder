@@ -20,47 +20,39 @@ const VideoElement: React.FC<VideoElementProps> = ({ elementId }) => {
   const isSelected =
     selectedItemInfo?.type === "video" && selectedItemInfo.itemId === elementId;
 
+  const handleClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setSelectedItemInfo({ type: "video", itemId: elementId });
+  };
+
+  const placeholderImage =
+    "https://d2uolguxr56s4e.cloudfront.net/img/kartrapages/video_player_placeholder.gif";
+
+  const isValidURL = !!props.videoURL;
+
   return (
     <div
-      onClick={(e) => {
-        e.stopPropagation();
-        setSelectedItemInfo({ type: "video", itemId: elementId });
-      }}
       style={{
-        width: "100%",
-        display: "flex",
-        justifyContent: "center",
         position: "relative",
-        cursor: "pointer",
+        width: `${props.width}%`,
+        maxWidth: "100%",
         outline: isSelected ? "2px dashed #2684FF" : undefined,
       }}
     >
-      <div
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          width: "100%",
-          height: "100%",
-          zIndex: 10,
-          background: "transparent",
-          cursor: "pointer",
-        }}
-        onClick={(e) => {
-          e.stopPropagation();
-          setSelectedItemInfo({ type: "video", itemId: elementId });
-        }}
-      />
-
-      {props.videoSrcType === "youtube" ? (
-        <div
+      {!isValidURL ? (
+        <img
+          src={placeholderImage}
+          alt="video placeholder"
           style={{
-            position: "relative",
-            paddingBottom: "56.25%",
-            height: 0,
-            width: `${props.width}%`,
-            maxWidth: "100%",
+            width: "100%",
+            height: "auto",
+            display: "block",
+            objectFit: "cover",
           }}
+        />
+      ) : props.videoSrcType === "youtube" ? (
+        <div
+          style={{ position: "relative", paddingBottom: "56.25%", height: 0 }}
         >
           <iframe
             src={convertToEmbedURL(props.videoURL)}
@@ -74,7 +66,7 @@ const VideoElement: React.FC<VideoElementProps> = ({ elementId }) => {
               width: "100%",
               height: "100%",
               border: 0,
-              pointerEvents: isSelected ? "none" : "auto",
+              pointerEvents: "auto",
             }}
           />
         </div>
@@ -83,15 +75,30 @@ const VideoElement: React.FC<VideoElementProps> = ({ elementId }) => {
           src={props.videoURL}
           controls={!isSelected}
           style={{
-            width: `${props.width}%`,
+            width: "100%",
             maxWidth: "100%",
             display: "block",
-            pointerEvents: isSelected ? "none" : "auto",
+            pointerEvents: "auto",
           }}
         >
           <track kind="captions" label="default" />
         </video>
       )}
+
+      {/* 선택을 위한 오버레이 */}
+      <div
+        onClick={handleClick}
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          zIndex: 10,
+          background: "transparent",
+          cursor: "pointer",
+        }}
+      />
     </div>
   );
 };

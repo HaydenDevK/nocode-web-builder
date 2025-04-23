@@ -79,7 +79,7 @@ const VideoEditor = ({ elementId }: { elementId: string }) => {
         <TextField
           fullWidth
           placeholder="https://www.youtube.com/watch?v=..."
-          value={videoURL}
+          value={videoURL ?? ""}
           onChange={(e) => handleChange("videoURL", e.target.value)}
         />
       ) : (
