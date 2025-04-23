@@ -19,20 +19,8 @@ const INITIAL_SECTION_PROPS: TSectionProps = {
 
 const INITIAL_SECTION_ID = "section-1";
 
-const sampleTextId = "element-1";
 const sampleImageId = "element-2";
 const sampleVideoId = "element-3";
-
-const sampleText: TTextProps = {
-  text: "Sample Text",
-  size: "h1",
-  fontFamily: "sans-serif",
-  fontWeight: "normal",
-  color: "#000000",
-  backgroundColor: "transparent",
-  padding: 0,
-  radius: 0,
-};
 
 const sampleImage: TImageProps = {
   srcType: "url",
@@ -59,7 +47,7 @@ interface BuilderState {
     allIds: string[];
   };
 
-  selectedItemInfo: TSelectedItemInfo;
+  selectedItemInfo: TSelectedItemInfo | null;
   setSelectedItemInfo(info: TSelectedItemInfo): void;
 
   addSection(): void;
@@ -81,19 +69,13 @@ export const useBuilderStore = create<BuilderState>()(
         [INITIAL_SECTION_ID]: {
           id: INITIAL_SECTION_ID,
           props: INITIAL_SECTION_PROPS,
-          elementIds: [sampleTextId, sampleImageId, sampleVideoId],
+          elementIds: [],
         },
       },
       allIds: [INITIAL_SECTION_ID],
     },
     elements: {
       byId: {
-        [sampleTextId]: {
-          id: sampleTextId,
-          sectionId: INITIAL_SECTION_ID,
-          type: "text",
-          props: sampleText,
-        },
         [sampleImageId]: {
           id: sampleImageId,
           sectionId: INITIAL_SECTION_ID,
@@ -107,10 +89,10 @@ export const useBuilderStore = create<BuilderState>()(
           props: sampleVideo,
         },
       },
-      allIds: [sampleTextId, sampleImageId, sampleVideoId],
+      allIds: [sampleImageId, sampleVideoId],
     },
 
-    selectedItemInfo: { type: "text", itemId: sampleTextId },
+    selectedItemInfo: null,
     setSelectedItemInfo: (info) =>
       set((state) => {
         state.selectedItemInfo = info;

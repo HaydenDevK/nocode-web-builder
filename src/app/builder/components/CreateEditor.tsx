@@ -11,6 +11,7 @@ import {
 import { Stack, Divider, Typography, Button } from "@mui/material";
 import { useBuilderStore } from "@/app/store/useBuilderStore";
 import { nanoid } from "nanoid";
+import { DEFAULT_TEXT_PROPS } from "@/constant/defaultElementProps";
 
 export default function CreateEditor() {
   const { addElement } = useBuilderStore();
@@ -19,7 +20,14 @@ export default function CreateEditor() {
     const id = nanoid();
 
     switch (label) {
-      // text, image, video 추가 필요
+      case "text":
+        addElement({
+          id: "text1",
+          sectionId: "section-1",
+          type: "text",
+          props: DEFAULT_TEXT_PROPS,
+        });
+        break;
       case "link":
         addElement({
           id,
