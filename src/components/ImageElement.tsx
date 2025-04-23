@@ -31,6 +31,8 @@ const ImageElement: React.FC<ImageElementProps> = ({ elementId }) => {
 
   const isDev = process.env.NODE_ENV === "development";
 
+  console.log(props);
+
   return (
     <div
       onClick={(e) => {
