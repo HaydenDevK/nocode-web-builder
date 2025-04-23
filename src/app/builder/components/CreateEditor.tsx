@@ -1,7 +1,13 @@
 // CreateEditor.tsx
 "use client";
 
-import { Text, ImageIcon, SquareMousePointer, Video } from "lucide-react";
+import {
+  Text,
+  ImageIcon,
+  SquareMousePointer,
+  Video,
+  LayoutTemplate,
+} from "lucide-react";
 import { Stack, Divider, Typography, Button } from "@mui/material";
 import { useBuilderStore } from "@/app/store/useBuilderStore";
 import { nanoid } from "nanoid";
@@ -20,9 +26,10 @@ export default function CreateEditor() {
           sectionId: "section-1",
           type: "link",
           props: {
-            text: "버튼 이름",
+            text: "codeit:)",
             href: "",
             color: "#ffffff",
+            backgroundColor: "#A64EFF",
             fontSize: 16,
             fontWeight: 500,
             width: 100,
@@ -35,6 +42,7 @@ export default function CreateEditor() {
   };
 
   const icons = [
+    { label: "section", icon: <LayoutTemplate size={16} /> },
     { label: "text", icon: <Text size={16} /> },
     { label: "link", icon: <SquareMousePointer size={16} /> },
     { label: "image", icon: <ImageIcon size={16} /> },

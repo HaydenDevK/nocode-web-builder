@@ -34,6 +34,18 @@ export default function ButtonEditor({ elementId }: { elementId: string }) {
       />
       <TextField
         fullWidth
+        label="텍스트 색상"
+        value={props.color || ""}
+        onChange={(e) => handlePropChange("color", e.target.value)}
+      />
+      <TextField
+        fullWidth
+        label="텍스트 크기 (fontSize)"
+        value={props.fontSize || ""}
+        onChange={(e) => handlePropChange("fontSize", e.target.value)}
+      />
+      <TextField
+        fullWidth
         label="텍스트 굵기 (fontWeight)"
         value={props.fontWeight || ""}
         onChange={(e) => handlePropChange("fontWeight", e.target.value)}
@@ -46,9 +58,9 @@ export default function ButtonEditor({ elementId }: { elementId: string }) {
       />
       <TextField
         fullWidth
-        label="배경 색상 (color)"
-        value={props.color || ""}
-        onChange={(e) => handlePropChange("color", e.target.value)}
+        label="배경 색상 (backgroundColor)"
+        value={props.backgroundColor || ""}
+        onChange={(e) => handlePropChange("backgroundColor", e.target.value)}
       />
       <TextField
         fullWidth

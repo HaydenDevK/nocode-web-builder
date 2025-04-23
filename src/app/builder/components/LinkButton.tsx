@@ -22,6 +22,7 @@ export default function LinkButton({ elementId }: LinkProps) {
       width,
       height,
       borderRadius,
+      backgroundColor,
     },
   } = element;
   const { selectedItemInfo, setSelectedItemInfo } = useBuilderStore();
@@ -42,8 +43,9 @@ export default function LinkButton({ elementId }: LinkProps) {
         handleClick(e);
       }}
       sx={{
-        backgroundColor: color,
-        fontSize,
+        backgroundColor: backgroundColor,
+        fontSize: `${fontSize}px`,
+        color: color,
         fontWeight: fontWeight,
         width: width || "auto",
         height: height || "auto",
@@ -51,7 +53,8 @@ export default function LinkButton({ elementId }: LinkProps) {
         border: isSelected ? "2px solid purple" : "1px solid",
         boxShadow: isSelected ? "0 0 4px purple" : "none",
         "&:hover": {
-          backgroundColor: color,
+          backgroundColor: "#ffffff",
+          color: "#A64EFF",
         },
       }}
     >
