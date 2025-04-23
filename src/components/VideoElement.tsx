@@ -33,7 +33,6 @@ const VideoElement: React.FC<VideoElementProps> = ({ elementId }) => {
         position: "relative",
         cursor: "pointer",
         outline: isSelected ? "2px dashed #2684FF" : undefined,
-        padding: 8,
       }}
     >
       <div
