@@ -39,8 +39,7 @@ const sampleImage: TImageProps = {
   imageURL:
     "https://cdn.pixabay.com/photo/2024/12/28/20/12/trees-9296828_1280.jpg",
   width: 100,
-  align: "center",
-  link: "",
+
   radius: 0,
 };
 
