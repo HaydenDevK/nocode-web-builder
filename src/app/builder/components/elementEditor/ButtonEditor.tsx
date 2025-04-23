@@ -39,15 +39,16 @@ export default function ButtonEditor({ elementId }: { elementId: string }) {
   return (
     <Stack spacing={2}>
       <Typography variant="h6" color="mono">
-        텍스트
+        Text
       </Typography>
       <TextField
         fullWidth
         value={props.text || ""}
         onChange={(e) => handlePropChange("text", e.target.value)}
       />
+
       <Typography variant="h6" color="mono">
-        폰트 패밀리
+        Font Family
       </Typography>
       <FormControl fullWidth>
         <Select
@@ -59,48 +60,56 @@ export default function ButtonEditor({ elementId }: { elementId: string }) {
           <MenuItem value="monospace">Monospace</MenuItem>
         </Select>
       </FormControl>
+
       <Typography variant="h6" color="mono">
-        텍스트 색상
+        Text Color
       </Typography>
       <TextField
         fullWidth
-        value={props.color || ""}
-        onChange={(e) => handlePropChange("color", e.target.value)}
+        type="color"
+        value={props.color}
+        onChange={(e) => handleChange("color", e.target.value)}
       />
+
       <Typography variant="h6" color="mono">
-        텍스트 크기
+        Text Size
       </Typography>
       <TextField
         fullWidth
         value={props.fontSize || ""}
         onChange={(e) => handlePropChange("fontSize", e.target.value)}
       />
+
       <Typography variant="h6" color="mono">
-        텍스트 굵기
+        Font Weight
       </Typography>
       <TextField
         fullWidth
         value={props.fontWeight || ""}
         onChange={(e) => handlePropChange("fontWeight", e.target.value)}
       />
+
       <Typography variant="h6" color="mono">
-        링크
+        Link
       </Typography>
       <TextField
         fullWidth
         value={props.href || ""}
         onChange={(e) => handlePropChange("href", e.target.value)}
       />
+
       <Typography variant="h6" color="mono">
-        버튼 색상
+        Button Color
       </Typography>
       <TextField
         fullWidth
-        value={props.backgroundColor || ""}
-        onChange={(e) => handlePropChange("backgroundColor", e.target.value)}
+        type="color"
+        value={props.backgroundColor}
+        onChange={(e) => handleChange("backgroundColor", e.target.value)}
       />
+
       <Typography variant="h6" color="mono">
-        버튼 둥글기
+        Rounded Coners
       </Typography>
       <TextField
         fullWidth
@@ -108,8 +117,9 @@ export default function ButtonEditor({ elementId }: { elementId: string }) {
         value={props.borderRadius || ""}
         onChange={(e) => handleNumberChange("borderRadius", e.target.value)}
       />
+
       <Typography variant="h6" color="mono">
-        버튼 너비
+        Button Width
       </Typography>
       <TextField
         fullWidth
@@ -117,8 +127,9 @@ export default function ButtonEditor({ elementId }: { elementId: string }) {
         value={props.width || ""}
         onChange={(e) => handleNumberChange("width", e.target.value)}
       />
+
       <Typography variant="h6" color="mono">
-        버튼 높이
+        Button Height
       </Typography>
       <TextField
         fullWidth
