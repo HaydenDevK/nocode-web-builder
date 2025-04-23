@@ -59,10 +59,16 @@ const VideoEditor = ({ elementId }: { elementId: string }) => {
         >
           <FormControlLabel
             value="youtube"
+            sx={{ color: "mono.dark" }}
             control={<Radio />}
             label="YouTube"
           />
-          <FormControlLabel value="upload" control={<Radio />} label="Upload" />
+          <FormControlLabel
+            sx={{ color: "mono.dark" }}
+            value="upload"
+            control={<Radio />}
+            label="Upload"
+          />
         </RadioGroup>
       </FormControl>
 

@@ -61,12 +61,14 @@ const ImageEditor = ({ elementId }: { elementId: string }) => {
           <FormControlLabel
             color="mono"
             value="url"
+            sx={{ color: "mono.dark" }}
             control={<Radio />}
             label="URL"
           />
           <FormControlLabel
             color="mono"
             value="upload"
+            sx={{ color: "mono.dark" }}
             control={<Radio />}
             label="Upload"
           />
