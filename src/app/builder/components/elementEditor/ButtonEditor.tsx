@@ -1,7 +1,15 @@
 "use client";
 
-import { TextField, Stack, Typography } from "@mui/material";
+import {
+  TextField,
+  Stack,
+  Typography,
+  FormControl,
+  Select,
+  MenuItem,
+} from "@mui/material";
 import { useBuilderStore } from "@/app/store/useBuilderStore";
+import { TTextProps } from "@/app/model/types";
 
 export default function ButtonEditor({ elementId }: { elementId: string }) {
   const element = useBuilderStore((state) => state.elements.byId[elementId]);
@@ -24,6 +32,10 @@ export default function ButtonEditor({ elementId }: { elementId: string }) {
     }
   };
 
+  const handleChange = (key: keyof TTextProps, value: any) => {
+    updateElementProps(elementId, { [key]: value });
+  };
+
   return (
     <Stack spacing={2}>
       <Typography variant="h6" color="mono">
@@ -34,6 +46,19 @@ export default function ButtonEditor({ elementId }: { elementId: string }) {
         value={props.text || ""}
         onChange={(e) => handlePropChange("text", e.target.value)}
       />
+      <Typography variant="h6" color="mono">
+        폰트 패밀리
+      </Typography>
+      <FormControl fullWidth>
+        <Select
+          value={props.fontFamily}
+          onChange={(e) => handleChange("fontFamily", e.target.value)}
+        >
+          <MenuItem value="sans-serif">Sans-serif</MenuItem>
+          <MenuItem value="serif">Serif</MenuItem>
+          <MenuItem value="monospace">Monospace</MenuItem>
+        </Select>
+      </FormControl>
       <Typography variant="h6" color="mono">
         텍스트 색상
       </Typography>
