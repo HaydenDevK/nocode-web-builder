@@ -39,6 +39,33 @@ export default function CreateEditor() {
           },
         });
         break;
+
+      case "image":
+        addElement({
+          id,
+          sectionId: "section-1", // 임시로 여기에 넣겠습니다.
+          type: "image",
+          props: {
+            imageURL: null,
+            srcType: "url",
+            width: 100,
+            radius: 0,
+          },
+        });
+        break;
+
+      case "video":
+        addElement({
+          id,
+          sectionId: "section-1", // 임시로 여기에 넣겠습니다.
+          type: "video",
+          props: {
+            videoURL: null,
+            videoSrcType: "youtube",
+            width: 100,
+          },
+        });
+        break;
     }
   };
 

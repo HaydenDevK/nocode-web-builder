@@ -61,8 +61,6 @@ export type TImageProps = {
   srcType: "url" | "upload";
   imageURL: string;
   width: number;
-  align: "left" | "center" | "right";
-  link: string;
   radius: number;
 };
 

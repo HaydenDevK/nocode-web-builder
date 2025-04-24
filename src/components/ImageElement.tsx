@@ -3,6 +3,7 @@
 import React from "react";
 import { useBuilderStore } from "@/app/store/useBuilderStore";
 import type { TImageProps } from "@/app/model/types";
+import styles from "./ImageElement.module.scss";
 
 interface ImageElementProps {
   elementId: string;
@@ -16,64 +17,26 @@ const ImageElement: React.FC<ImageElementProps> = ({ elementId }) => {
   if (!element || element.type !== "image") return null;
 
   const props = element.props as TImageProps;
-
   const isSelected =
     selectedItemInfo?.type === "image" && selectedItemInfo.itemId === elementId;
-
-  const alignmentStyle: Record<
-    TImageProps["align"],
-    React.CSSProperties["alignItems"]
-  > = {
-    left: "flex-start",
-    center: "center",
-    right: "flex-end",
-  };
-
-  const isDev = process.env.NODE_ENV === "development";
-
-  console.log(props);
+  // 임시로 사용한 이미지입니다
+  const placeholderImage =
+    "https://media.istockphoto.com/id/1147544807/vector/thumbnail-image-vector-graphic.jpg?s=612x612&w=0&k=20&c=rnCKVbdxqkjlcs3xH87-9gocETqpspHFXu5dIGB4wuM=";
 
   return (
-    <div
+    <img
       onClick={(e) => {
         e.stopPropagation();
         setSelectedItemInfo({ type: "image", itemId: elementId });
       }}
+      src={props.imageURL || placeholderImage}
+      alt="image element"
+      className={`${styles.image} ${isSelected ? styles.selected : ""}`}
       style={{
-        display: "flex",
-        flexDirection: "column", // ✅ 수직 정렬
-        alignItems: alignmentStyle[props.align],
-        width: "100%",
-        cursor: "pointer",
-        outline: isSelected ? "2px dashed #2684FF" : undefined,
-        padding: 8,
+        width: `${props.width}%`,
+        borderRadius: props.radius,
       }}
-    >
-      {isDev ? (
-        <img
-          src={props.imageURL}
-          alt="img link"
-          style={{
-            width: `${props.width}%`,
-            borderRadius: props.radius,
-            display: "block",
-          }}
-        />
-      ) : (
-        // 실제 배포 환경에서만 링크 활성화하도록 임시로 해놓겠습니다
-        <a href={props.link} target="_blank" rel="noopener noreferrer">
-          <img
-            src={props.imageURL}
-            alt="img link"
-            style={{
-              width: `${props.width}%`,
-              borderRadius: props.radius,
-              display: "block",
-            }}
-          />
-        </a>
-      )}
-    </div>
+    />
   );
 };
 

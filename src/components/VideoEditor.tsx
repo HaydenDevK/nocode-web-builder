@@ -59,10 +59,16 @@ const VideoEditor = ({ elementId }: { elementId: string }) => {
         >
           <FormControlLabel
             value="youtube"
+            sx={{ color: "mono.dark" }}
             control={<Radio />}
             label="YouTube"
           />
-          <FormControlLabel value="upload" control={<Radio />} label="Upload" />
+          <FormControlLabel
+            sx={{ color: "mono.dark" }}
+            value="upload"
+            control={<Radio />}
+            label="Upload"
+          />
         </RadioGroup>
       </FormControl>
 
@@ -73,7 +79,7 @@ const VideoEditor = ({ elementId }: { elementId: string }) => {
         <TextField
           fullWidth
           placeholder="https://www.youtube.com/watch?v=..."
-          value={videoURL}
+          value={videoURL ?? ""}
           onChange={(e) => handleChange("videoURL", e.target.value)}
         />
       ) : (
@@ -107,7 +113,9 @@ const VideoEditor = ({ elementId }: { elementId: string }) => {
           min={10}
           max={100}
         />
-        <Typography variant="body2">Current: {width}%</Typography>
+        <Typography variant="body2" sx={{ color: "mono.dark" }}>
+          Current: {width}%
+        </Typography>
       </FormControl>
 
       <Divider />

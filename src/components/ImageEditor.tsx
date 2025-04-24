@@ -10,12 +10,9 @@ import {
   RadioGroup,
   FormControlLabel,
   Typography,
-  ToggleButtonGroup,
-  ToggleButton,
   Slider,
   Stack,
 } from "@mui/material";
-import { AlignCenter, AlignLeft, AlignRight } from "lucide-react";
 import { useBuilderStore } from "@/app/store/useBuilderStore";
 import type { TImageProps } from "@/app/model/types";
 
@@ -29,14 +26,7 @@ const ImageEditor = ({ elementId }: { elementId: string }) => {
   if (!element || element.type !== "image") return null;
   const props = element.props as TImageProps;
 
-  const {
-    srcType = "url",
-    imageURL = "",
-    width = 0,
-    align = "center",
-    link = "",
-    radius = 0,
-  } = props;
+  const { srcType = "url", imageURL = "", width = 0, radius = 0 } = props;
 
   const handleChange = (key: keyof TImageProps, value: any) => {
     updateElementProps(elementId, { [key]: value });
@@ -68,8 +58,20 @@ const ImageEditor = ({ elementId }: { elementId: string }) => {
           value={srcType}
           onChange={(e) => handleChange("srcType", e.target.value)}
         >
-          <FormControlLabel value="url" control={<Radio />} label="URL" />
-          <FormControlLabel value="upload" control={<Radio />} label="Upload" />
+          <FormControlLabel
+            color="mono"
+            value="url"
+            sx={{ color: "mono.dark" }}
+            control={<Radio />}
+            label="URL"
+          />
+          <FormControlLabel
+            color="mono"
+            value="upload"
+            sx={{ color: "mono.dark" }}
+            control={<Radio />}
+            label="Upload"
+          />
         </RadioGroup>
       </FormControl>
 
@@ -78,7 +80,7 @@ const ImageEditor = ({ elementId }: { elementId: string }) => {
         <TextField
           fullWidth
           placeholder="https://example.com/image.jpg"
-          value={imageURL}
+          value={imageURL ?? ""}
           onChange={(e) => handleChange("imageURL", e.target.value)}
         />
       ) : (
@@ -113,44 +115,10 @@ const ImageEditor = ({ elementId }: { elementId: string }) => {
           min={1}
           max={100}
         />
-        <Typography variant="body2">Current: {width}%</Typography>
+        <Typography variant="body2" sx={{ color: "mono.dark" }}>
+          Current: {width}%
+        </Typography>
       </FormControl>
-
-      {/* Alignment */}
-      <Typography variant="h6" color="mono">
-        Alignment
-      </Typography>
-      <FormControl>
-        <ToggleButtonGroup
-          value={align}
-          exclusive
-          onChange={(_, newAlign) => {
-            if (newAlign !== null) handleChange("align", newAlign);
-          }}
-          size="small"
-        >
-          <ToggleButton value="left">
-            <AlignLeft size={20} />
-          </ToggleButton>
-          <ToggleButton value="center">
-            <AlignCenter size={20} />
-          </ToggleButton>
-          <ToggleButton value="right">
-            <AlignRight size={20} />
-          </ToggleButton>
-        </ToggleButtonGroup>
-      </FormControl>
-
-      {/* Link */}
-      <Typography variant="h6" color="mono">
-        Link
-      </Typography>
-      <TextField
-        fullWidth
-        placeholder="https://example.com"
-        value={link}
-        onChange={(e) => handleChange("link", e.target.value)}
-      />
 
       {/* Radius */}
       <Typography variant="h6" color="mono">
