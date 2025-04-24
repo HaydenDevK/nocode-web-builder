@@ -13,13 +13,17 @@ import { useBuilderStore } from "@/app/store/useBuilderStore";
 import { nanoid } from "nanoid";
 
 export default function CreateEditor() {
-  const { addElement } = useBuilderStore();
+  const { addElement, addSection } = useBuilderStore();
 
   const handleAdd = (label: string) => {
     const id = nanoid();
 
     switch (label) {
       // text, image, video 추가 필요
+      case "section":
+        addSection();
+        break;
+
       case "link":
         addElement({
           id,
