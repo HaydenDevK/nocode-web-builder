@@ -35,6 +35,7 @@ export default function CreateEditor() {
             width: 100,
             height: 50,
             borderRadius: 4,
+            fontFamily: "sans-serif",
           },
         });
         break;
