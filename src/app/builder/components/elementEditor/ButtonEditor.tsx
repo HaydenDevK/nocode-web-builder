@@ -1,7 +1,15 @@
 "use client";
 
-import { TextField, Stack } from "@mui/material";
+import {
+  TextField,
+  Stack,
+  Typography,
+  FormControl,
+  Select,
+  MenuItem,
+} from "@mui/material";
 import { useBuilderStore } from "@/app/store/useBuilderStore";
+import { TTextProps } from "@/app/model/types";
 
 export default function ButtonEditor({ elementId }: { elementId: string }) {
   const element = useBuilderStore((state) => state.elements.byId[elementId]);
@@ -24,62 +32,108 @@ export default function ButtonEditor({ elementId }: { elementId: string }) {
     }
   };
 
+  const handleChange = (key: keyof TTextProps, value: any) => {
+    updateElementProps(elementId, { [key]: value });
+  };
+
   return (
     <Stack spacing={2}>
+      <Typography variant="h6" color="mono">
+        Text
+      </Typography>
       <TextField
         fullWidth
-        label="텍스트"
         value={props.text || ""}
         onChange={(e) => handlePropChange("text", e.target.value)}
       />
+
+      <Typography variant="h6" color="mono">
+        Font Family
+      </Typography>
+      <FormControl fullWidth>
+        <Select
+          value={props.fontFamily}
+          onChange={(e) => handleChange("fontFamily", e.target.value)}
+        >
+          <MenuItem value="sans-serif">Sans-serif</MenuItem>
+          <MenuItem value="serif">Serif</MenuItem>
+          <MenuItem value="monospace">Monospace</MenuItem>
+        </Select>
+      </FormControl>
+
+      <Typography variant="h6" color="mono">
+        Text Color
+      </Typography>
       <TextField
         fullWidth
-        label="텍스트 색상"
-        value={props.color || ""}
-        onChange={(e) => handlePropChange("color", e.target.value)}
+        type="color"
+        value={props.color}
+        onChange={(e) => handleChange("color", e.target.value)}
       />
+
+      <Typography variant="h6" color="mono">
+        Text Size
+      </Typography>
       <TextField
         fullWidth
-        label="텍스트 크기 (fontSize)"
         value={props.fontSize || ""}
         onChange={(e) => handlePropChange("fontSize", e.target.value)}
       />
+
+      <Typography variant="h6" color="mono">
+        Font Weight
+      </Typography>
       <TextField
         fullWidth
-        label="텍스트 굵기 (fontWeight)"
         value={props.fontWeight || ""}
         onChange={(e) => handlePropChange("fontWeight", e.target.value)}
       />
+
+      <Typography variant="h6" color="mono">
+        Link
+      </Typography>
       <TextField
         fullWidth
-        label="링크 주소 (href)"
         value={props.href || ""}
         onChange={(e) => handlePropChange("href", e.target.value)}
       />
+
+      <Typography variant="h6" color="mono">
+        Button Color
+      </Typography>
       <TextField
         fullWidth
-        label="배경 색상 (backgroundColor)"
-        value={props.backgroundColor || ""}
-        onChange={(e) => handlePropChange("backgroundColor", e.target.value)}
+        type="color"
+        value={props.backgroundColor}
+        onChange={(e) => handleChange("backgroundColor", e.target.value)}
       />
+
+      <Typography variant="h6" color="mono">
+        Rounded Coners
+      </Typography>
       <TextField
         fullWidth
         type="number"
-        label="버튼 둥글기 (borderRadius)"
         value={props.borderRadius || ""}
         onChange={(e) => handleNumberChange("borderRadius", e.target.value)}
       />
+
+      <Typography variant="h6" color="mono">
+        Button Width
+      </Typography>
       <TextField
         fullWidth
         type="number"
-        label="버튼 너비 (px)"
         value={props.width || ""}
         onChange={(e) => handleNumberChange("width", e.target.value)}
       />
+
+      <Typography variant="h6" color="mono">
+        Button Height
+      </Typography>
       <TextField
         fullWidth
         type="number"
-        label="버튼 높이 (px)"
         value={props.height || ""}
         onChange={(e) => handleNumberChange("height", e.target.value)}
       />

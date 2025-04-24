@@ -4,12 +4,10 @@ import {
   TSection,
   TSectionProps,
   TElement,
-  TTextProps,
-  TImageProps,
-  TVideoProps,
   TSelectedItemInfo,
   TElementProps,
 } from "../model/types";
+import { nanoid } from "nanoid";
 
 const INITIAL_SECTION_PROPS: TSectionProps = {
   backgroundColor: "transparent",
@@ -18,37 +16,6 @@ const INITIAL_SECTION_PROPS: TSectionProps = {
 };
 
 const INITIAL_SECTION_ID = "section-1";
-
-const sampleTextId = "element-1";
-const sampleImageId = "element-2";
-const sampleVideoId = "element-3";
-
-const sampleText: TTextProps = {
-  text: "Sample Text",
-  size: "h1",
-  fontFamily: "sans-serif",
-  fontWeight: "normal",
-  color: "#000000",
-  backgroundColor: "transparent",
-  padding: 0,
-  radius: 0,
-};
-
-const sampleImage: TImageProps = {
-  srcType: "url",
-  imageURL:
-    "https://cdn.pixabay.com/photo/2024/12/28/20/12/trees-9296828_1280.jpg",
-  width: 100,
-  align: "center",
-  link: "",
-  radius: 0,
-};
-
-const sampleVideo: TVideoProps = {
-  videoSrcType: "youtube",
-  videoURL: "https://www.youtube.com/watch?v=ieZi8Q-eVSQ",
-  width: 100,
-};
 
 interface BuilderState {
   sections: {
@@ -60,7 +27,7 @@ interface BuilderState {
     allIds: string[];
   };
 
-  selectedItemInfo: TSelectedItemInfo;
+  selectedItemInfo: TSelectedItemInfo | null;
   setSelectedItemInfo(info: TSelectedItemInfo): void;
 
   addSection(): void;
@@ -69,7 +36,7 @@ interface BuilderState {
   removeSection(sectionId: string): void;
 
   /* Element Action */
-  addElement(element: TElement): void;
+  addElement(element: Omit<TElement, "id">): void;
   updateElementProps(elementId: string, patch: Partial<TElementProps>): void;
   moveElement(): void;
   removeElement(elementId: string): void;
@@ -82,36 +49,17 @@ export const useBuilderStore = create<BuilderState>()(
         [INITIAL_SECTION_ID]: {
           id: INITIAL_SECTION_ID,
           props: INITIAL_SECTION_PROPS,
-          elementIds: [sampleTextId, sampleImageId, sampleVideoId],
+          elementIds: [],
         },
       },
       allIds: [INITIAL_SECTION_ID],
     },
     elements: {
-      byId: {
-        [sampleTextId]: {
-          id: sampleTextId,
-          sectionId: INITIAL_SECTION_ID,
-          type: "text",
-          props: sampleText,
-        },
-        [sampleImageId]: {
-          id: sampleImageId,
-          sectionId: INITIAL_SECTION_ID,
-          type: "image",
-          props: sampleImage,
-        },
-        [sampleVideoId]: {
-          id: sampleVideoId,
-          sectionId: INITIAL_SECTION_ID,
-          type: "video",
-          props: sampleVideo,
-        },
-      },
-      allIds: [sampleTextId, sampleImageId, sampleVideoId],
+      byId: {},
+      allIds: [],
     },
 
-    selectedItemInfo: { type: "text", itemId: sampleTextId },
+    selectedItemInfo: null,
     setSelectedItemInfo: (info) =>
       set((state) => {
         state.selectedItemInfo = info;
@@ -126,10 +74,13 @@ export const useBuilderStore = create<BuilderState>()(
     removeSection: () => {},
 
     /* Element Actions */
-    addElement: (element: TElement) =>
+    addElement: (element: Omit<TElement, "id">) =>
       set((state) => {
-        const { id, sectionId } = element;
-        state.elements.byId[id] = element;
+        if (state.selectedItemInfo?.type !== "section") return;
+
+        const { sectionId } = element;
+        const id = nanoid();
+        state.elements.byId[id] = { ...element, id };
         state.elements.allIds.push(id);
         state.sections.byId[sectionId].elementIds.push(id);
       }),
