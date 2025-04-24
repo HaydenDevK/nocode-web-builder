@@ -22,7 +22,7 @@ const Section: React.FC<SectionProps> = ({ sectionId }) => {
     selectedItemInfo.itemId === sectionId;
 
   return (
-    <div
+    <section
       onClick={() =>
         setSelectedItemInfo({ type: "section", itemId: sectionId })
       }
@@ -32,7 +32,9 @@ const Section: React.FC<SectionProps> = ({ sectionId }) => {
         borderRadius: section.props.radius,
         // marginBottom: "1rem",
         cursor: "pointer",
-        outline: isSectionSelected ? "2px solid #2684FF" : undefined,
+        outline: isSectionSelected ? "3px dashed #2684FF" : undefined,
+        width: "100%",
+        minHeight: "100px",
       }}
     >
       {section.elementIds.map((elementId) => {
@@ -52,7 +54,7 @@ const Section: React.FC<SectionProps> = ({ sectionId }) => {
             return null;
         }
       })}
-    </div>
+    </section>
   );
 };
 
