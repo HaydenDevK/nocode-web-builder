@@ -1,0 +1,10 @@
+.image {
+  display: block;
+  object-fit: contain;
+  cursor: pointer;
+  max-width: 100%;
+}
+
+.selected {
+  outline: 2px dashed #2684ff;
+}

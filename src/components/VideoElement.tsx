@@ -1,9 +1,8 @@
-"use client";
-
 import React from "react";
 import { useBuilderStore } from "@/app/store/useBuilderStore";
 import type { TVideoProps } from "@/app/model/types";
 import { convertToEmbedURL } from "@/util/video.util";
+import styles from "./VideoElement.module.scss";
 
 interface VideoElementProps {
   elementId: string;
@@ -24,7 +23,7 @@ const VideoElement: React.FC<VideoElementProps> = ({ elementId }) => {
     e.stopPropagation();
     setSelectedItemInfo({ type: "video", itemId: elementId });
   };
-
+  // 임시로 사용한 이미지 입니다.
   const placeholderImage =
     "https://d2uolguxr56s4e.cloudfront.net/img/kartrapages/video_player_placeholder.gif";
 
@@ -32,72 +31,39 @@ const VideoElement: React.FC<VideoElementProps> = ({ elementId }) => {
 
   return (
     <div
+      className={`${styles.container}`}
       style={{
-        position: "relative",
         width: `${props.width}%`,
-        maxWidth: "100%",
-        outline: isSelected ? "2px dashed #2684FF" : undefined,
+        ...(isSelected && { outline: "2px dashed #2684FF" }),
       }}
     >
       {!isValidURL ? (
         <img
           src={placeholderImage}
           alt="video placeholder"
-          style={{
-            width: "100%",
-            height: "auto",
-            display: "block",
-            objectFit: "cover",
-          }}
+          className={styles.placeholder}
         />
       ) : props.videoSrcType === "youtube" ? (
-        <div
-          style={{ position: "relative", paddingBottom: "56.25%", height: 0 }}
-        >
+        <div className={styles.youtubeWrapper}>
           <iframe
             src={convertToEmbedURL(props.videoURL)}
             title="YouTube Video"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
-            style={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-              width: "100%",
-              height: "100%",
-              border: 0,
-              pointerEvents: "auto",
-            }}
+            className={styles.iframe}
           />
         </div>
       ) : (
         <video
           src={props.videoURL}
           controls={!isSelected}
-          style={{
-            width: "100%",
-            maxWidth: "100%",
-            display: "block",
-            pointerEvents: "auto",
-          }}
+          className={styles.video}
         >
           <track kind="captions" label="default" />
         </video>
       )}
 
-      <div
-        onClick={handleClick}
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          width: "100%",
-          height: "100%",
-          zIndex: 10,
-          background: "transparent",
-          cursor: "pointer",
-        }}
-      />
+      <div className={styles.overlay} onClick={handleClick} />
     </div>
   );
 };

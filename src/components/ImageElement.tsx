@@ -3,6 +3,7 @@
 import React from "react";
 import { useBuilderStore } from "@/app/store/useBuilderStore";
 import type { TImageProps } from "@/app/model/types";
+import styles from "./ImageElement.module.scss";
 
 interface ImageElementProps {
   elementId: string;
@@ -18,7 +19,7 @@ const ImageElement: React.FC<ImageElementProps> = ({ elementId }) => {
   const props = element.props as TImageProps;
   const isSelected =
     selectedItemInfo?.type === "image" && selectedItemInfo.itemId === elementId;
-
+  // 임시로 사용한 이미지입니다
   const placeholderImage =
     "https://media.istockphoto.com/id/1147544807/vector/thumbnail-image-vector-graphic.jpg?s=612x612&w=0&k=20&c=rnCKVbdxqkjlcs3xH87-9gocETqpspHFXu5dIGB4wuM=";
 
@@ -30,13 +31,10 @@ const ImageElement: React.FC<ImageElementProps> = ({ elementId }) => {
       }}
       src={props.imageURL || placeholderImage}
       alt="image element"
+      className={`${styles.image} ${isSelected ? styles.selected : ""}`}
       style={{
-        cursor: "pointer",
-        outline: isSelected ? "2px dashed #2684FF" : undefined,
         width: `${props.width}%`,
         borderRadius: props.radius,
-        display: "block",
-        objectFit: "contain",
       }}
     />
   );
