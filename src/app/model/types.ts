@@ -25,6 +25,7 @@ export type TElementProps =
   | TLinkProps
   | TImageProps
   | TVideoProps
+  | TSection
   | any;
 
 export type TTextProps = {

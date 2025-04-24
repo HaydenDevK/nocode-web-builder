@@ -7,6 +7,7 @@ import TextEditor from "./TextEditor";
 import ButtonEditor from "@/app/builder/components/elementEditor/ButtonEditor";
 import ImageEditor from "./ImageEditor";
 import VideoEditor from "./VideoEditor";
+import SectionEditor from "@/app/builder/components/elementEditor/SectionEditor";
 
 const Editor: React.FC = () => {
   const selectedItemInfo = useBuilderStore((s) => s.selectedItemInfo);
@@ -30,7 +31,7 @@ const Editor: React.FC = () => {
 
   switch (type) {
     case "section":
-      editorComponent = <></>;
+      editorComponent = <SectionEditor sectionId={itemId} />;
       break;
     case "text":
       editorComponent = <TextEditor elementId={itemId} />;
