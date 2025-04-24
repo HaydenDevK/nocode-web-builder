@@ -30,7 +30,7 @@ const Section: React.FC<SectionProps> = ({ sectionId }) => {
         backgroundColor: section.props.backgroundColor,
         padding: section.props.padding,
         borderRadius: section.props.radius,
-        marginBottom: "1rem",
+        // marginBottom: "1rem",
         cursor: "pointer",
         outline: isSectionSelected ? "2px solid #2684FF" : undefined,
       }}

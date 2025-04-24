@@ -11,7 +11,7 @@ import {
 import { Stack, Divider, Typography, Button } from "@mui/material";
 import { useBuilderStore } from "@/app/store/useBuilderStore";
 import { nanoid } from "nanoid";
-import { DEFAULT_TEXT_PROPS } from "@/constant/defaultElementProps";
+import { DEFAULT_TEXT_PROPS } from "@/constants/defaultElementProps";
 
 export default function CreateEditor() {
   const { addElement } = useBuilderStore();
