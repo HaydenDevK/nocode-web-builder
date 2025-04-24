@@ -1,3 +1,11 @@
+.container {
+  padding: 24px;
+}
+
+.sectionWrap {
+  position: relative;
+}
+
 .section {
   all: unset;
   position: relative;
@@ -8,13 +16,29 @@
   background-color: #f9fafb;
   border-radius: 6px;
   cursor: pointer;
-  position: relative;
   border: 2px solid transparent;
   transition: border-color 0.2s ease-in-out;
   min-height: 150px;
   &:focus-visible {
     outline: none;
   }
+}
+
+.sectionContent {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 16px;
+  min-height: 100px;
+  height: 100%;
+  border-radius: 10px;
+}
+
+.elementWrap {
+  display: flex;
+  margin-top: 10px;
+  gap: 10px;
 }
 
 .element {
@@ -24,8 +48,13 @@
   gap: 4px;
   border-radius: 6px;
   cursor: pointer;
-  border: 2px solid blue;
+  border: 2px solid #9933fe;
   transition: border-color 0.2s ease-in-out;
+  z-index: 1;
+}
+
+.elementContent {
+  padding: 12px;
 }
 
 .element .actions {
@@ -55,25 +84,8 @@
   opacity: 1;
 }
 
-.elementWrap {
-  display: flex;
-  width: 50%;
-  flex-direction: column;
-  margin-top: 10px;
-  gap: 10px;
-}
-
 .active {
   border-color: #3b82f6;
-}
-
-.sectionContent {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: flex-start;
-  padding: 16px;
-  height: 100%;
 }
 
 .contentArea {
@@ -120,10 +132,6 @@
     width: 18px;
     height: 18px;
   }
-}
-
-.container {
-  padding: 24px;
 }
 
 .addButton {

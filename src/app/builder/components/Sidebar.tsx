@@ -2,6 +2,7 @@
 
 import Editor from "@/components/Editor";
 import styles from "../styles/Sidebar.module.scss";
+import { List, ListItem, ListItemText, Divider, ListItemButton } from "@mui/material";
 
 export default function Sidebar() {
   return (
@@ -30,7 +31,9 @@ export default function Sidebar() {
         <ListItemText className={styles.text}>배경색</ListItemText>
         <ListItemText className={styles.text}>그리드</ListItemText>
         <div className={styles.deletePosition}>
-          <button className={styles.deleteButton}>삭제</button>
+          <button type="button" className={styles.deleteButton}>
+            삭제
+          </button>
         </div>
       </List>
 

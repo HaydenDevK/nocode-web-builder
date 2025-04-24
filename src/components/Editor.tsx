@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import { useBuilderStore } from "@/app/store/useBuilderStore";
 import { Divider, Stack, Typography } from "@mui/material";
 import TextEditor from "./TextEditor";

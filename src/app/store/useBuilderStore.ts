@@ -1,23 +1,16 @@
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
-import {
-  TSection,
-  TSectionProps,
-  TElement,
-  TTextProps,
-  TSelectedItemInfo,
-  TElementProps,
-} from "../model/types";
+import type { TSection, TSectionProps, TElement, TTextProps, TSelectedItemInfo, TElementProps } from "../model/types";
 
 const INITIAL_SECTION_PROPS: TSectionProps = {
-  backgroundColor: "transparent",
+  backgroundColor: "white",
   padding: 0,
   radius: 0,
 };
 
-const INITIAL_SECTION_ID = "section-1";
+const INITIAL_SECTION_ID = crypto.randomUUID();
 
-const sampleText: TTextProps = {
+export const sampleText: TTextProps = {
   text: "Sample Text",
   size: "h1",
   fontFamily: "sans-serif",
@@ -28,7 +21,7 @@ const sampleText: TTextProps = {
   radius: 0,
 };
 
-const sampleTextId = "element-1";
+const sampleTextId = crypto.randomUUID();
 
 interface BuilderState {
   sections: {
@@ -47,11 +40,11 @@ interface BuilderState {
   /* Section Action */
   addSection(): void;
   updateSectionProps(sectionId: string, patch: Partial<TSectionProps>): void;
-  moveSection(): void;
+  moveSection(sectionId: string, tag: string): void;
   removeSection(sectionId: string): void;
 
   /* Element Action */
-  addElement(): void;
+  addElement(sectionId: string, elementType: TElementProps, props: TTextProps): void;
   updateElementProps(elementId: string, patch: Partial<TElementProps>): void;
   moveElement(): void;
   removeElement(elementId: string): void;
@@ -85,23 +78,74 @@ export const useBuilderStore = create<BuilderState>()(
     selectedItemInfo: { type: "text", itemId: sampleTextId },
     setSelectedItemInfo: (info) =>
       set((state) => {
-        state.selectedItemInfo = info;
+        state.selectedItemInfo = info ?? null;
       }),
 
     /* Section Actions */
-    addSection: () => {},
+    addSection: () =>
+      set((state) => {
+        const sectionId = crypto.randomUUID();
+
+        state.sections.byId[sectionId] = {
+          id: sectionId,
+          props: { backgroundColor: "white" },
+          elementIds: [],
+        };
+
+        state.sections.allIds.push(sectionId);
+      }),
 
     updateSectionProps: (sectionId, patch) =>
       set((state) => {
         Object.assign(state.sections.byId[sectionId].props, patch);
       }),
 
-    moveSection: () => {},
+    moveSection: (sectionId, tag) =>
+      set((state) => {
+        const idx = state.sections.allIds.indexOf(sectionId);
+        if (idx === -1) return;
 
-    removeSection: () => {},
+        const targetIdx = tag === "up" ? idx - 1 : idx + 1;
+        if (targetIdx < 0 || targetIdx >= state.sections.allIds.length) return;
+
+        const arr = state.sections.allIds;
+        [arr[idx], arr[targetIdx]] = [arr[targetIdx], arr[idx]];
+      }),
+
+    removeSection: (sectionId) =>
+      set((state) => {
+        delete state.sections.byId[sectionId];
+        state.sections.allIds = state.sections.allIds.filter((id) => id !== sectionId);
+
+        for (const el in state.elements.byId) {
+          if (state.elements.byId[el].sectionId === sectionId) {
+            delete state.elements.byId[el];
+          }
+        }
+        state.elements.allIds = state.elements.allIds.filter((id) => state.elements.byId[id] !== undefined);
+      }),
 
     /* Element Actions */
-    addElement: () => {},
+    addElement: (sectionId: string, elementType: TElementProps, props: TTextProps) =>
+      set((state) => {
+        if (!state.sections.byId[sectionId]) return;
+
+        const elementId = crypto.randomUUID();
+
+        // 요소 생성
+        state.elements.byId[elementId] = {
+          id: elementId,
+          sectionId,
+          type: elementType,
+          props: props,
+        };
+
+        // allIds 배열에 새 요소 ID 추가
+        state.elements.allIds.push(elementId);
+
+        // 해당 섹션의 elementIds 배열에 새 요소 ID 추가
+        state.sections.byId[sectionId].elementIds.push(elementId);
+      }),
 
     updateElementProps: (elementId, patch) =>
       set((state) => {
@@ -117,9 +161,7 @@ export const useBuilderStore = create<BuilderState>()(
 
         sec.elementIds = sec.elementIds.filter((id) => id !== elementId);
         delete state.elements.byId[elementId];
-        state.elements.allIds = state.elements.allIds.filter(
-          (id) => id !== elementId
-        );
+        state.elements.allIds = state.elements.allIds.filter((id) => id !== elementId);
         state.selectedItemInfo = null;
       }),
   }))
