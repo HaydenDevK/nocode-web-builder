@@ -13,18 +13,17 @@ import {
 } from "@mui/material";
 import { useBuilderStore } from "@/app/store/useBuilderStore";
 import type { TTextProps } from "@/app/model/types";
+import { FONT_FAMILIES } from "@/constants/font";
 
 interface TextEditorProps {
   elementId: string;
 }
 
 const TextEditor: React.FC<TextEditorProps> = ({ elementId }) => {
-  // 스토어에서 해당 엘리먼트와 액션들 불러오기
   const element = useBuilderStore((s) => s.elements.byId[elementId]);
   const updateElementProps = useBuilderStore((s) => s.updateElementProps);
   const removeElement = useBuilderStore((s) => s.removeElement);
 
-  // 타입 확인: text 타입이 아니면 편집 UI 렌더링하지 않음
   if (!element || element.type !== "text") {
     return null;
   }
@@ -45,9 +44,11 @@ const TextEditor: React.FC<TextEditorProps> = ({ elementId }) => {
           value={props.fontFamily}
           onChange={(e) => handleChange("fontFamily", e.target.value)}
         >
-          <MenuItem value="sans-serif">Sans-serif</MenuItem>
-          <MenuItem value="serif">Serif</MenuItem>
-          <MenuItem value="monospace">Monospace</MenuItem>
+          {FONT_FAMILIES.map((font) => (
+            <MenuItem key={font.value} value={font.value}>
+              <span style={{ fontFamily: font.value }}>{font.label}</span>
+            </MenuItem>
+          ))}
         </Select>
       </FormControl>
 
