@@ -1,43 +1,47 @@
 "use client";
 
+import CreateEditor from "./CreateEditor";
 import Editor from "@/components/Editor";
 import styles from "../styles/Sidebar.module.scss";
-import { List, ListItem, ListItemText, Divider, ListItemButton } from "@mui/material";
+import { Button, Stack, Box } from "@mui/material";
+import { useBuilderStore } from "@/app/store/useBuilderStore";
 
 export default function Sidebar() {
+  const { selectedItemInfo, removeElement } = useBuilderStore();
+
+  const handleDelete = () => {
+    if (selectedItemInfo?.type === "section") {
+      // TODO section 삭제 구현
+    } else if (selectedItemInfo?.type) {
+      removeElement(selectedItemInfo.itemId);
+    }
+  };
+
   return (
     <div className={styles.sidebar}>
-      <h3 className={styles.title}>생성</h3>
-      <List>
-        <ListItem disablePadding>
-          <ListItemButton>
-            <ListItemText primary="SECTION" className={styles.text} />
-          </ListItemButton>
-        </ListItem>
-        <ListItem disablePadding>
-          <ListItemButton>
-            <ListItemText primary="TEXT" className={styles.text} />
-          </ListItemButton>
-        </ListItem>
-        <ListItem disablePadding>
-          <ListItemButton>
-            <ListItemText primary="IMAGE" className={styles.text} />
-          </ListItemButton>
-        </ListItem>
-      </List>
-      <Divider />
-      <h3 className={styles.title}>편집</h3>
-      <List>
-        <ListItemText className={styles.text}>배경색</ListItemText>
-        <ListItemText className={styles.text}>그리드</ListItemText>
-        <div className={styles.deletePosition}>
-          <button type="button" className={styles.deleteButton}>
+      <Stack spacing={2} sx={{ pb: 12 }}>
+        <CreateEditor />
+        <Editor />
+      </Stack>
+      {selectedItemInfo && (
+        <Box
+          sx={{
+            position: "fixed",
+            bottom: 0,
+            right: 0,
+            width: "inherit",
+            maxWidth: "inherit",
+            p: 2,
+            backgroundColor: "background.paper",
+            borderTop: "1px solid",
+            borderColor: "divider",
+          }}
+        >
+          <Button variant="contained" color="warning" size="large" onClick={handleDelete} fullWidth>
             삭제
-          </button>
-        </div>
-      </List>
-
-      <Editor />
+          </Button>
+        </Box>
+      )}
     </div>
   );
 }

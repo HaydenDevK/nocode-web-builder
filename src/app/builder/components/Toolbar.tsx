@@ -1,5 +1,6 @@
 "use client";
 
+// Toolbar
 import Image from "next/image";
 import styles from "../styles/Toolbar.module.scss";
 import { AppBar, Toolbar as MUIToolbar, Button } from "@mui/material";

@@ -1,30 +1,19 @@
 "use client";
 
 import React from "react";
-import {
-  Button,
-  Divider,
-  FormControl,
-  MenuItem,
-  Select,
-  Stack,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { FormControl, InputLabel, MenuItem, Select, Stack, TextField, Typography } from "@mui/material";
 import { useBuilderStore } from "@/app/store/useBuilderStore";
 import type { TTextProps } from "@/app/model/types";
+import { FONT_FAMILIES } from "@/constants/font";
 
 interface TextEditorProps {
   elementId: string;
 }
 
 const TextEditor: React.FC<TextEditorProps> = ({ elementId }) => {
-  // 스토어에서 해당 엘리먼트와 액션들 불러오기
   const element = useBuilderStore((s) => s.elements.byId[elementId]);
   const updateElementProps = useBuilderStore((s) => s.updateElementProps);
-  const removeElement = useBuilderStore((s) => s.removeElement);
 
-  // 타입 확인: text 타입이 아니면 편집 UI 렌더링하지 않음
   if (!element || element.type !== "text") {
     return null;
   }
@@ -41,13 +30,12 @@ const TextEditor: React.FC<TextEditorProps> = ({ elementId }) => {
         Font Family
       </Typography>
       <FormControl fullWidth>
-        <Select
-          value={props.fontFamily}
-          onChange={(e) => handleChange("fontFamily", e.target.value)}
-        >
-          <MenuItem value="sans-serif">Sans-serif</MenuItem>
-          <MenuItem value="serif">Serif</MenuItem>
-          <MenuItem value="monospace">Monospace</MenuItem>
+        <Select value={props.fontFamily} onChange={(e) => handleChange("fontFamily", e.target.value)}>
+          {FONT_FAMILIES.map((font) => (
+            <MenuItem key={font.value} value={font.value}>
+              <span style={{ fontFamily: font.value }}>{font.label}</span>
+            </MenuItem>
+          ))}
         </Select>
       </FormControl>
 
@@ -55,12 +43,7 @@ const TextEditor: React.FC<TextEditorProps> = ({ elementId }) => {
         Text Size
       </Typography>
       <FormControl fullWidth>
-        <Select
-          value={props.size}
-          onChange={(e) =>
-            handleChange("size", e.target.value as TTextProps["size"])
-          }
-        >
+        <Select value={props.size} onChange={(e) => handleChange("size", e.target.value as TTextProps["size"])}>
           {["h1", "h2", "h3", "h4", "h5", "h6", "body1", "body2"].map((val) => (
             <MenuItem key={val} value={val}>
               {val.toUpperCase()}
@@ -73,25 +56,17 @@ const TextEditor: React.FC<TextEditorProps> = ({ elementId }) => {
         Font Weight
       </Typography>
       <FormControl fullWidth>
-        <Select
-          value={props.fontWeight}
-          onChange={(e) => handleChange("fontWeight", e.target.value)}
-        >
+        <Select value={props.fontWeight} onChange={(e) => handleChange("fontWeight", e.target.value)}>
           <MenuItem value="normal">Normal</MenuItem>
           <MenuItem value="bold">Bold</MenuItem>
-          <MenuItem value="lighter">Lighter</MenuItem>
+          <MenuItem value="lighter">Thin</MenuItem>
         </Select>
       </FormControl>
 
       <Typography variant="h6" color="mono">
         Text Color
       </Typography>
-      <TextField
-        fullWidth
-        type="color"
-        value={props.color}
-        onChange={(e) => handleChange("color", e.target.value)}
-      />
+      <TextField fullWidth type="color" value={props.color} onChange={(e) => handleChange("color", e.target.value)} />
 
       <Typography variant="h6" color="mono">
         Background Color
@@ -110,9 +85,7 @@ const TextEditor: React.FC<TextEditorProps> = ({ elementId }) => {
         fullWidth
         type="number"
         value={props.padding}
-        onChange={(e) =>
-          handleChange("padding", parseInt(e.target.value, 10) || 0)
-        }
+        onChange={(e) => handleChange("padding", parseInt(e.target.value, 10) || 0)}
       />
 
       <Typography variant="h6" color="mono">
@@ -122,9 +95,7 @@ const TextEditor: React.FC<TextEditorProps> = ({ elementId }) => {
         fullWidth
         type="number"
         value={props.radius}
-        onChange={(e) =>
-          handleChange("radius", parseInt(e.target.value, 10) || 0)
-        }
+        onChange={(e) => handleChange("radius", parseInt(e.target.value, 10) || 0)}
       />
 
       <Typography variant="h6" color="mono">
@@ -137,17 +108,6 @@ const TextEditor: React.FC<TextEditorProps> = ({ elementId }) => {
         value={props.text}
         onChange={(e) => handleChange("text", e.target.value)}
       />
-
-      <Divider />
-
-      <Button
-        variant="contained"
-        color="warning"
-        size="large"
-        onClick={() => removeElement(elementId)}
-      >
-        삭제
-      </Button>
     </Stack>
   );
 };

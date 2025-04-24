@@ -1,0 +1,61 @@
+"use client";
+
+import React from "react";
+import { useBuilderStore } from "@/app/store/useBuilderStore";
+import TextElement from "@/components/TextElement";
+import LinkButton from "@/app/builder/components/LinkButton";
+import ImageElement from "./ImageElement";
+import VideoElement from "./VideoElement";
+
+interface SectionProps {
+  sectionId: string;
+}
+
+const Section: React.FC<SectionProps> = ({ sectionId }) => {
+  const section = useBuilderStore((s) => s.sections.byId[sectionId]);
+  const elementsById = useBuilderStore((s) => s.elements.byId);
+  const selectedItemInfo = useBuilderStore((s) => s.selectedItemInfo);
+  const setSelectedItemInfo = useBuilderStore((s) => s.setSelectedItemInfo);
+
+  const isSectionSelected =
+    selectedItemInfo?.type === "section" &&
+    selectedItemInfo.itemId === sectionId;
+
+  return (
+    <section
+      onClick={() =>
+        setSelectedItemInfo({ type: "section", itemId: sectionId })
+      }
+      style={{
+        backgroundColor: section.props.backgroundColor,
+        padding: section.props.padding,
+        borderRadius: section.props.radius,
+        // marginBottom: "1rem",
+        cursor: "pointer",
+        outline: isSectionSelected ? "3px dashed #2684FF" : undefined,
+        width: "100%",
+        minHeight: "100px",
+      }}
+    >
+      {section.elementIds.map((elementId) => {
+        const element = elementsById[elementId];
+        switch (element.type) {
+          case "text":
+            return <TextElement key={elementId} elementId={elementId} />;
+          case "image":
+            return <ImageElement key={elementId} elementId={elementId} />;
+          case "link":
+            return (
+              <LinkButton key={elementId} elementId={elementId}></LinkButton>
+            );
+          case "video":
+            return <VideoElement key={elementId} elementId={elementId} />;
+          default:
+            return null;
+        }
+      })}
+    </section>
+  );
+};
+
+export default Section;

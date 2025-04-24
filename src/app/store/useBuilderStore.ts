@@ -1,27 +1,15 @@
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
-import type { TSection, TSectionProps, TElement, TTextProps, TSelectedItemInfo, TElementProps } from "../model/types";
+import { TSection, TSectionProps, TElement, TSelectedItemInfo, TElementProps } from "../model/types";
+import { nanoid } from "nanoid";
 
 const INITIAL_SECTION_PROPS: TSectionProps = {
-  backgroundColor: "white",
-  padding: 0,
-  radius: 0,
-};
-
-const INITIAL_SECTION_ID = crypto.randomUUID();
-
-export const sampleText: TTextProps = {
-  text: "Sample Text",
-  size: "h1",
-  fontFamily: "sans-serif",
-  fontWeight: "normal",
-  color: "#000000",
   backgroundColor: "transparent",
   padding: 0,
   radius: 0,
 };
 
-const sampleTextId = crypto.randomUUID();
+const INITIAL_SECTION_ID = "section-1";
 
 interface BuilderState {
   sections: {
@@ -33,18 +21,16 @@ interface BuilderState {
     allIds: string[];
   };
 
-  /* 현재 선택된 항목 */
-  selectedItemInfo: TSelectedItemInfo;
+  selectedItemInfo: TSelectedItemInfo | null;
   setSelectedItemInfo(info: TSelectedItemInfo): void;
 
-  /* Section Action */
   addSection(): void;
   updateSectionProps(sectionId: string, patch: Partial<TSectionProps>): void;
-  moveSection(sectionId: string, tag: string): void;
+  moveSection(): void;
   removeSection(sectionId: string): void;
 
   /* Element Action */
-  addElement(sectionId: string, elementType: TElementProps, props: TTextProps): void;
+  addElement(element: Omit<TElement, "id">): void;
   updateElementProps(elementId: string, patch: Partial<TElementProps>): void;
   moveElement(): void;
   removeElement(elementId: string): void;
@@ -52,108 +38,52 @@ interface BuilderState {
 
 export const useBuilderStore = create<BuilderState>()(
   immer((set) => ({
-    /* 초기 값 */
     sections: {
       byId: {
         [INITIAL_SECTION_ID]: {
           id: INITIAL_SECTION_ID,
           props: INITIAL_SECTION_PROPS,
-          elementIds: [sampleTextId],
+          elementIds: [],
         },
       },
       allIds: [INITIAL_SECTION_ID],
     },
     elements: {
-      byId: {
-        [sampleTextId]: {
-          id: sampleTextId,
-          sectionId: INITIAL_SECTION_ID,
-          type: "text",
-          props: sampleText,
-        },
-      },
-      allIds: [sampleTextId],
+      byId: {},
+      allIds: [],
     },
 
-    selectedItemInfo: { type: "text", itemId: sampleTextId },
+    selectedItemInfo: null,
     setSelectedItemInfo: (info) =>
       set((state) => {
-        state.selectedItemInfo = info ?? null;
+        state.selectedItemInfo = info;
       }),
 
-    /* Section Actions */
-    addSection: () =>
-      set((state) => {
-        const sectionId = crypto.randomUUID();
-
-        state.sections.byId[sectionId] = {
-          id: sectionId,
-          props: { backgroundColor: "white" },
-          elementIds: [],
-        };
-
-        state.sections.allIds.push(sectionId);
-      }),
-
+    addSection: () => {},
     updateSectionProps: (sectionId, patch) =>
       set((state) => {
         Object.assign(state.sections.byId[sectionId].props, patch);
       }),
-
-    moveSection: (sectionId, tag) =>
-      set((state) => {
-        const idx = state.sections.allIds.indexOf(sectionId);
-        if (idx === -1) return;
-
-        const targetIdx = tag === "up" ? idx - 1 : idx + 1;
-        if (targetIdx < 0 || targetIdx >= state.sections.allIds.length) return;
-
-        const arr = state.sections.allIds;
-        [arr[idx], arr[targetIdx]] = [arr[targetIdx], arr[idx]];
-      }),
-
-    removeSection: (sectionId) =>
-      set((state) => {
-        delete state.sections.byId[sectionId];
-        state.sections.allIds = state.sections.allIds.filter((id) => id !== sectionId);
-
-        for (const el in state.elements.byId) {
-          if (state.elements.byId[el].sectionId === sectionId) {
-            delete state.elements.byId[el];
-          }
-        }
-        state.elements.allIds = state.elements.allIds.filter((id) => state.elements.byId[id] !== undefined);
-      }),
+    moveSection: () => {},
+    removeSection: () => {},
 
     /* Element Actions */
-    addElement: (sectionId: string, elementType: TElementProps, props: TTextProps) =>
+    addElement: (element: Omit<TElement, "id">) =>
       set((state) => {
-        if (!state.sections.byId[sectionId]) return;
+        if (state.selectedItemInfo?.type !== "section") return;
 
-        const elementId = crypto.randomUUID();
-
-        // 요소 생성
-        state.elements.byId[elementId] = {
-          id: elementId,
-          sectionId,
-          type: elementType,
-          props: props,
-        };
-
-        // allIds 배열에 새 요소 ID 추가
-        state.elements.allIds.push(elementId);
-
-        // 해당 섹션의 elementIds 배열에 새 요소 ID 추가
-        state.sections.byId[sectionId].elementIds.push(elementId);
+        const { sectionId } = element;
+        const id = nanoid();
+        state.elements.byId[id] = { ...element, id };
+        state.elements.allIds.push(id);
+        state.sections.byId[sectionId].elementIds.push(id);
       }),
 
     updateElementProps: (elementId, patch) =>
       set((state) => {
         Object.assign(state.elements.byId[elementId].props, patch);
       }),
-
     moveElement: () => {},
-
     removeElement: (elementId) =>
       set((state) => {
         const element = state.elements.byId[elementId];
