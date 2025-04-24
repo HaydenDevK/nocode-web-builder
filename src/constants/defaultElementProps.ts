@@ -1,0 +1,10 @@
+export const DEFAULT_TEXT_PROPS = {
+  text: "텍스트를 입력해주세요.",
+  size: "h1",
+  fontFamily: "Spoqa Han Sans Neo",
+  fontWeight: "normal",
+  color: "#000000",
+  backgroundColor: "transparent",
+  padding: 0,
+  radius: 0,
+};

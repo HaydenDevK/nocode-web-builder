@@ -3,12 +3,51 @@
 import CreateEditor from "./CreateEditor";
 import Editor from "@/components/Editor";
 import styles from "../styles/Sidebar.module.scss";
+import { Button, Stack, Box } from "@mui/material";
+import { useBuilderStore } from "@/app/store/useBuilderStore";
 
 export default function Sidebar() {
+  const { selectedItemInfo, removeElement } = useBuilderStore();
+
+  const handleDelete = () => {
+    if (selectedItemInfo?.type === "section") {
+      // TODO section 삭제 구현
+    } else if (selectedItemInfo?.type) {
+      removeElement(selectedItemInfo.itemId);
+    }
+  };
+
   return (
     <div className={styles.sidebar}>
-      <CreateEditor />
-      <Editor />
+      <Stack spacing={2} sx={{ pb: 12 }}>
+        <CreateEditor />
+        <Editor />
+      </Stack>
+      {selectedItemInfo && (
+        <Box
+          sx={{
+            position: "fixed",
+            bottom: 0,
+            right: 0,
+            width: "inherit",
+            maxWidth: "inherit",
+            p: 2,
+            backgroundColor: "background.paper",
+            borderTop: "1px solid",
+            borderColor: "divider",
+          }}
+        >
+          <Button
+            variant="contained"
+            color="warning"
+            size="large"
+            onClick={handleDelete}
+            fullWidth
+          >
+            삭제
+          </Button>
+        </Box>
+      )}
     </div>
   );
 }

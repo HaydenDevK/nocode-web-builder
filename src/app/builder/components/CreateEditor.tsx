@@ -10,20 +10,25 @@ import {
 } from "lucide-react";
 import { Stack, Divider, Typography, Button } from "@mui/material";
 import { useBuilderStore } from "@/app/store/useBuilderStore";
-import { nanoid } from "nanoid";
+import { DEFAULT_TEXT_PROPS } from "@/constants/defaultElementProps";
 
 export default function CreateEditor() {
-  const { addElement } = useBuilderStore();
+  const { addElement, selectedItemInfo } = useBuilderStore();
 
   const handleAdd = (label: string) => {
-    const id = nanoid();
+    if (selectedItemInfo?.type !== "section") return;
 
     switch (label) {
-      // text, image, video 추가 필요
+      case "text":
+        addElement({
+          sectionId: selectedItemInfo.itemId,
+          type: "text",
+          props: DEFAULT_TEXT_PROPS,
+        });
+        break;
       case "link":
         addElement({
-          id,
-          sectionId: "section-1",
+          sectionId: selectedItemInfo.itemId,
           type: "link",
           props: {
             text: "codeit:)",
@@ -35,33 +40,28 @@ export default function CreateEditor() {
             width: 100,
             height: 50,
             borderRadius: 4,
-            fontFamily: "sans-serif",
           },
         });
         break;
-
       case "image":
         addElement({
-          id,
-          sectionId: "section-1", // 임시로 여기에 넣겠습니다.
+          sectionId: selectedItemInfo.itemId,
           type: "image",
           props: {
-            imageURL: null,
             srcType: "url",
+            imageURL: "",
             width: 100,
             radius: 0,
           },
         });
         break;
-
       case "video":
         addElement({
-          id,
-          sectionId: "section-1", // 임시로 여기에 넣겠습니다.
+          sectionId: selectedItemInfo.itemId,
           type: "video",
           props: {
-            videoURL: null,
             videoSrcType: "youtube",
+            videoURL: "",
             width: 100,
           },
         });
@@ -83,33 +83,71 @@ export default function CreateEditor() {
         생성
       </Typography>
       <Divider />
-      {icons.map(({ label, icon }) => (
-        <Button
-          key={label}
-          fullWidth
-          variant="outlined"
-          color="inherit"
-          startIcon={icon}
-          onClick={() => handleAdd(label)}
-          sx={{
-            justifyContent: "flex-start",
-            textTransform: "none",
-            fontSize: 14,
-            fontWeight: 500,
-            px: 2,
-            py: 1.5,
-            borderRadius: 2,
-            color: "#333",
-            borderColor: "#ddd",
-            "&:hover": {
-              backgroundColor: "#f5f5f5",
-              borderColor: "#aaa",
-            },
-          }}
-        >
-          {label}
-        </Button>
-      ))}
+      {icons.map(({ label, icon }) => {
+        // section 버튼은 항상 렌더링
+        if (label === "section") {
+          return (
+            <Button
+              key={label}
+              fullWidth
+              variant="outlined"
+              color="inherit"
+              startIcon={icon}
+              onClick={() => handleAdd(label)}
+              sx={{
+                justifyContent: "flex-start",
+                textTransform: "none",
+                fontSize: 14,
+                fontWeight: 500,
+                px: 2,
+                py: 1.5,
+                borderRadius: 2,
+                color: "#333",
+                borderColor: "#ddd",
+                "&:hover": {
+                  backgroundColor: "#f5f5f5",
+                  borderColor: "#aaa",
+                },
+              }}
+            >
+              {label}
+            </Button>
+          );
+        }
+
+        // 나머지 버튼들은 selectedItemInfo가 section일 때만 렌더링
+        if (selectedItemInfo?.type === "section") {
+          return (
+            <Button
+              key={label}
+              fullWidth
+              variant="outlined"
+              color="inherit"
+              startIcon={icon}
+              onClick={() => handleAdd(label)}
+              sx={{
+                justifyContent: "flex-start",
+                textTransform: "none",
+                fontSize: 14,
+                fontWeight: 500,
+                px: 2,
+                py: 1.5,
+                borderRadius: 2,
+                color: "#333",
+                borderColor: "#ddd",
+                "&:hover": {
+                  backgroundColor: "#f5f5f5",
+                  borderColor: "#aaa",
+                },
+              }}
+            >
+              {label}
+            </Button>
+          );
+        }
+
+        return null;
+      })}
     </Stack>
   );
 }

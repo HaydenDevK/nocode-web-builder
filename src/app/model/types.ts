@@ -31,7 +31,7 @@ export type TTextProps = {
   text: string;
   size: "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "body1" | "body2";
   fontFamily: "sans-serif" | "serif" | "monospace";
-  fontWeight: string;
+  fontWeight: "normal" | "bold" | "lighter";
   color: string;
   backgroundColor: string;
   padding: number;
