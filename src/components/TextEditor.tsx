@@ -2,9 +2,8 @@
 
 import React from "react";
 import {
-  Button,
-  Divider,
   FormControl,
+  InputLabel,
   MenuItem,
   Select,
   Stack,
@@ -22,7 +21,6 @@ interface TextEditorProps {
 const TextEditor: React.FC<TextEditorProps> = ({ elementId }) => {
   const element = useBuilderStore((s) => s.elements.byId[elementId]);
   const updateElementProps = useBuilderStore((s) => s.updateElementProps);
-  const removeElement = useBuilderStore((s) => s.removeElement);
 
   if (!element || element.type !== "text") {
     return null;
@@ -138,17 +136,6 @@ const TextEditor: React.FC<TextEditorProps> = ({ elementId }) => {
         value={props.text}
         onChange={(e) => handleChange("text", e.target.value)}
       />
-
-      <Divider />
-
-      <Button
-        variant="contained"
-        color="warning"
-        size="large"
-        onClick={() => removeElement(elementId)}
-      >
-        삭제
-      </Button>
     </Stack>
   );
 };
