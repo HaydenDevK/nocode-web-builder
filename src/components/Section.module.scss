@@ -1,0 +1,16 @@
+.section {
+  width: 100%;
+  min-height: 100px;
+  margin: 0 auto;
+  transition: max-width 0.2s ease;
+}
+
+.desktop {
+  max-width: 1024px;
+  margin: 0 auto;
+  padding-top: 4px;
+}
+
+.mobile {
+  max-width: 375px;
+}
