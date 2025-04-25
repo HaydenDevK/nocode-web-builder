@@ -11,24 +11,36 @@ import {
 import { Stack, Divider, Typography, Button } from "@mui/material";
 import { useBuilderStore } from "@/app/store/useBuilderStore";
 import { DEFAULT_TEXT_PROPS } from "@/constants/defaultElementProps";
+import { TElementTypes } from "@/app/model/types";
 
 export default function CreateEditor() {
-  const { addElement, selectedItemInfo } = useBuilderStore();
+  const { addElement, addSection, selectedItemInfo, setSelectedItemInfo } =
+    useBuilderStore();
 
   const handleAdd = (label: string) => {
     if (selectedItemInfo?.type !== "section") return;
 
+    const sectionId = selectedItemInfo.itemId;
+    let newId: string | undefined;
+
     switch (label) {
+      // case "section":
+      //   newId = addSection({
+      //     backgroundColor: "transparent",
+      //     padding: 0,
+
+      //   })
+      //   break
       case "text":
-        addElement({
-          sectionId: selectedItemInfo.itemId,
+        newId = addElement({
+          sectionId,
           type: "text",
           props: DEFAULT_TEXT_PROPS,
         });
         break;
       case "link":
-        addElement({
-          sectionId: selectedItemInfo.itemId,
+        newId = addElement({
+          sectionId,
           type: "link",
           props: {
             text: "codeit:)",
@@ -44,8 +56,8 @@ export default function CreateEditor() {
         });
         break;
       case "image":
-        addElement({
-          sectionId: selectedItemInfo.itemId,
+        newId = addElement({
+          sectionId,
           type: "image",
           props: {
             srcType: "url",
@@ -56,8 +68,8 @@ export default function CreateEditor() {
         });
         break;
       case "video":
-        addElement({
-          sectionId: selectedItemInfo.itemId,
+        newId = addElement({
+          sectionId,
           type: "video",
           props: {
             videoSrcType: "youtube",
@@ -66,9 +78,14 @@ export default function CreateEditor() {
           },
         });
         break;
+      default:
+        return;
+    }
+
+    if (newId) {
+      setSelectedItemInfo({ type: label as TElementTypes, itemId: newId });
     }
   };
-
   const icons = [
     { label: "section", icon: <LayoutTemplate size={16} /> },
     { label: "text", icon: <Text size={16} /> },

@@ -1,5 +1,5 @@
 // 선택된 elementtype
-export type TElementTypes = "text" | "link" | "image" | "video";
+export type TElementTypes = "section" | "text" | "link" | "image" | "video";
 
 export type TSection = {
   id: string;
