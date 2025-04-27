@@ -9,9 +9,13 @@ import {
 } from "../model/types";
 import { nanoid } from "nanoid";
 
-const INITIAL_SECTION_PROPS: TSectionProps = {
+export const INITIAL_SECTION_PROPS: TSectionProps = {
   backgroundColor: "transparent",
-  padding: 0,
+  paddingDesktopTopBottom: 15,
+  paddingDesktopLeftRight: 15,
+  paddingMobileTopBottom: 10,
+  paddingMobileLeftRight: 10,
+  columns: "1",
   radius: 0,
 };
 
