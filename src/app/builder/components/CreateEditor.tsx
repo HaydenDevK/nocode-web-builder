@@ -35,10 +35,10 @@ export default function CreateEditor() {
             href: "",
             color: "#ffffff",
             backgroundColor: "#A64EFF",
-            fontSize: 16,
+            fontSize: 25,
             fontWeight: 500,
-            width: 100,
-            height: 50,
+            width: 150,
+            height: "100%",
             borderRadius: 4,
           },
         });

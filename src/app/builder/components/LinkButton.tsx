@@ -37,30 +37,42 @@ export default function LinkButton({ elementId }: LinkProps) {
   };
 
   return (
-    <Button
-      href={href || undefined}
-      onClick={(e) => {
-        e.preventDefault();
-        handleClick(e);
-      }}
-      sx={{
-        backgroundColor: backgroundColor,
-        fontSize: `${fontSize}px`,
-        color: color,
-        fontWeight: fontWeight,
-        fontFamily: fontFamily,
-        width: width || "auto",
-        height: height || "auto",
-        borderRadius: borderRadius || "auto",
-        border: isSelected ? "2px solid purple" : "1px solid",
-        boxShadow: isSelected ? "0 0 4px purple" : "none",
-        "&:hover": {
-          backgroundColor: "#ffffff",
-          color: "#A64EFF",
-        },
+    <div
+      style={{
+        width: "100%",
+        height: "100%",
+        textAlign: "center",
       }}
     >
-      {text}
-    </Button>
+      <Button
+        href={href || undefined}
+        onClick={(e) => {
+          e.preventDefault();
+          handleClick(e);
+        }}
+        sx={{
+          backgroundColor: backgroundColor,
+          fontSize: `${fontSize}px`,
+          color: color,
+          fontWeight: fontWeight,
+          fontFamily: fontFamily,
+          width: width || "auto",
+          height: height || "auto",
+          borderRadius: borderRadius || "auto",
+          border: isSelected ? "2px solid purple" : "1px solid",
+          boxShadow: isSelected ? "0 0 4px purple" : "none",
+          overflowWrap: "break-word",
+          whiteSpace: "normal",
+          wordBreak: "break-word",
+          textAlign: "center",
+          "&:hover": {
+            backgroundColor: "#ffffff",
+            color: "#A64EFF",
+          },
+        }}
+      >
+        {text}
+      </Button>
+    </div>
   );
 }
