@@ -1,8 +1,9 @@
-import { sampleText, useBuilderStore } from "@/app/store/useBuilderStore";
+import { useBuilderStore } from "@/app/store/useBuilderStore";
 import styles from "../playground.module.scss";
 import { ArrowUp, ArrowDown, Trash2, Plus } from "lucide-react";
+import { DEFAULT_TEXT_PROPS } from "@/constants/defaultElementProps";
 
-const SectionToolButton = ({ sectionId, isActive }: { sectionId: string; isActive: boolean }) => {
+const SectionTool = ({ sectionId, isActive }: { sectionId: string; isActive: boolean }) => {
   const { addElement, moveSection, removeSection } = useBuilderStore();
 
   return (
@@ -13,7 +14,17 @@ const SectionToolButton = ({ sectionId, isActive }: { sectionId: string; isActiv
       <button type="button" onClick={() => moveSection(sectionId, "down")} className={styles.iconButton}>
         <ArrowDown />
       </button>
-      <button type="button" onClick={() => addElement(sectionId, "text", sampleText)} className={styles.iconButton}>
+      <button
+        type="button"
+        onClick={() =>
+          addElement({
+            sectionId: sectionId,
+            type: "text",
+            props: DEFAULT_TEXT_PROPS,
+          })
+        }
+        className={styles.iconButton}
+      >
         <Plus />
       </button>
       <button type="button" onClick={() => removeSection(sectionId)} className={styles.iconButton}>
@@ -23,4 +34,4 @@ const SectionToolButton = ({ sectionId, isActive }: { sectionId: string; isActiv
   );
 };
 
-export default SectionToolButton;
+export default SectionTool;

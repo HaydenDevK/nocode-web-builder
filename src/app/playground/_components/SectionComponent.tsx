@@ -2,7 +2,7 @@ import type { TSection } from "@/app/model/types";
 import styles from "../playground.module.scss";
 import { useBuilderStore } from "@/app/store/useBuilderStore";
 import { horizontalListSortingStrategy, SortableContext } from "@dnd-kit/sortable";
-import SectionToolButton from "./SectionToolButton";
+import SectionTool from "./SectionTool";
 import ElementItem from "./ElementComponent";
 
 const SectionComponent = ({ section }: { section: TSection }) => {
@@ -22,14 +22,13 @@ const SectionComponent = ({ section }: { section: TSection }) => {
             <div className={styles.elementWrap}>
               {section.elementIds.map((elementId) => {
                 const element = elements.byId[elementId];
-
                 return <ElementItem key={elementId} element={element} />;
               })}
             </div>
           </SortableContext>
         </div>
       </button>
-      {isActive && <SectionToolButton sectionId={section.id} isActive={isActive} />}
+      {isActive && <SectionTool sectionId={section.id} isActive={isActive} />}
     </div>
   );
 };
