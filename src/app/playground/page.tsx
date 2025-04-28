@@ -1,45 +1,108 @@
 "use client";
 
-import React, { useState } from "react";
 import styles from "./playground.module.scss";
-import { ArrowUp, ArrowDown, Trash2 } from "lucide-react";
-
-interface ISection {
-  id: string;
-  content: string;
-}
+import {
+  DndContext,
+  closestCenter,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  type DragEndEvent,
+  type DragOverEvent,
+} from "@dnd-kit/core";
+import { useBuilderStore } from "../store/useBuilderStore";
+import { arrayMove } from "@dnd-kit/sortable";
+import SectionComponent from "./_components/SectionComponent";
 
 export default function Page() {
-  const [sections, setSections] = useState<ISection[]>([]);
-  const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const sensors = useSensors(useSensor(PointerSensor));
+  const { sections, addSection } = useBuilderStore();
 
-  const addSection = () => {
-    const newSection = {
-      id: crypto.randomUUID(),
-      content: `섹션 ${sections.length + 1}`,
-    };
-    setSections([...sections, newSection]);
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+
+    if (!over) return;
+
+    const activeId = active.id.toString();
+    const overId = over.id.toString();
+    const state = useBuilderStore.getState();
+
+    const activeElement = state.elements.byId[activeId];
+    const overElement = state.elements.byId[overId];
+    const activeSectionId = activeElement.sectionId;
+    const overSectionId = overElement.sectionId;
+
+    if (!activeElement || !overElement) return;
+
+    useBuilderStore.setState((state) => {
+      // 같은 섹션 이동
+      if (activeSectionId === overSectionId) {
+        const activeElementSection = state.sections.byId[activeSectionId].elementIds;
+        const oldIndex = activeElementSection.indexOf(activeId);
+        const newIndex = activeElementSection.indexOf(overId);
+
+        if (oldIndex !== -1) {
+          state.sections.byId[activeSectionId].elementIds = arrayMove(activeElementSection, oldIndex, newIndex);
+        }
+      }
+      // 다른 섹션 이동
+      else {
+        if (activeSectionId !== overSectionId) {
+          const activeElementSection = state.sections.byId[activeSectionId].elementIds;
+          const newElementSection = state.sections.byId[overSectionId].elementIds;
+
+          const oldIndex = activeElementSection.indexOf(activeId);
+          if (oldIndex !== -1) {
+            activeElementSection.splice(oldIndex, 1);
+          }
+
+          const insertIndex = newElementSection.indexOf(overId);
+          const newIndex = insertIndex === -1 ? newElementSection.length : insertIndex;
+          newElementSection.splice(newIndex, 0, activeId);
+
+          state.elements.byId[activeId].sectionId = overSectionId;
+        }
+      }
+    });
   };
 
-  const removeSection = (index: number) => {
-    const updated = [...sections];
-    updated.splice(index, 1);
-    setSections(updated);
-    if (activeIndex === index) setActiveIndex(null);
-  };
+  const handleDragOver = (event: DragOverEvent) => {
+    const { active, over } = event;
 
-  const moveSection = (index: number, direction: "up" | "down") => {
-    const updated = [...sections];
-    const targetIndex = direction === "up" ? index - 1 : index + 1;
-    if (targetIndex < 0 || targetIndex >= sections.length) return;
+    if (!over || active.id === over.id) return;
 
-    const temp = updated[index];
-    updated[index] = updated[targetIndex];
-    updated[targetIndex] = temp;
+    const activeId = active.id.toString();
+    const overId = over.id.toString();
 
-    setSections(updated);
-    if (activeIndex === index) setActiveIndex(targetIndex);
-    else if (activeIndex === targetIndex) setActiveIndex(index);
+    const state = useBuilderStore.getState();
+    const activeElement = state.elements.byId[activeId];
+    const overElement = state.elements.byId[overId];
+
+    if (!activeElement || !overElement) return;
+
+    const activeSectionId = activeElement.sectionId;
+    const overSectionId = overElement.sectionId;
+
+    // 다른 섹션일 경우
+    if (activeSectionId !== overSectionId) {
+      const overElementSection = state.sections.byId[overSectionId].elementIds;
+
+      if (overElementSection.includes(activeId)) return;
+
+      useBuilderStore.setState((state) => {
+        const activeElementSection = state.sections.byId[activeSectionId].elementIds;
+        const overElementSection = state.sections.byId[overSectionId].elementIds;
+
+        const oldIndex = activeElementSection.indexOf(activeId);
+        if (oldIndex !== -1) activeElementSection.splice(oldIndex, 1);
+
+        const insertIndex = overElementSection.indexOf(overId);
+        const newIndex = insertIndex === -1 ? overElementSection.length : insertIndex;
+        overElementSection.splice(newIndex, 0, activeId);
+
+        state.elements.byId[activeId].sectionId = overSectionId;
+      });
+    }
   };
 
   return (
@@ -47,59 +110,17 @@ export default function Page() {
       <button type="button" onClick={addSection} className={styles.addButton}>
         + 섹션 추가
       </button>
-
-      {sections.map((section, index) => (
-        <button
-          key={section.id}
-          type="button"
-          className={`${styles.section} ${
-            activeIndex === index ? styles.active : ""
-          }`}
-          onClick={() => setActiveIndex(index)}
-        >
-          <div className={styles.sectionContent}>
-            <div className={styles.contentArea}>{section.content}</div>
-
-            {activeIndex === index && (
-              <div
-                className={styles.actions}
-                data-active={activeIndex === index}
-              >
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    moveSection(index, "up");
-                  }}
-                  className={styles.iconButton}
-                >
-                  <ArrowUp />
-                </button>
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    moveSection(index, "down");
-                  }}
-                  className={styles.iconButton}
-                >
-                  <ArrowDown />
-                </button>
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    removeSection(index);
-                  }}
-                  className={styles.iconButton}
-                >
-                  <Trash2 />
-                </button>
-              </div>
-            )}
-          </div>
-        </button>
-      ))}
+      <DndContext
+        sensors={sensors}
+        collisionDetection={closestCenter}
+        onDragEnd={handleDragEnd}
+        onDragOver={handleDragOver}
+      >
+        {sections.allIds.map((id) => {
+          const section = sections.byId[id];
+          return <SectionComponent key={id} section={section} />;
+        })}
+      </DndContext>
     </div>
   );
 }

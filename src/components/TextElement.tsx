@@ -25,8 +25,7 @@ const TextElement: React.FC<TextElementProps> = ({ elementId }) => {
   if (element.type !== "text") return null;
 
   const props = element.props as TTextProps;
-  const isSelected =
-    selectedItemInfo?.type === "text" && selectedItemInfo.itemId === elementId;
+  const isSelected = selectedItemInfo?.type === "text" && selectedItemInfo.itemId === elementId;
 
   return (
     <div
@@ -48,14 +47,12 @@ const TextElement: React.FC<TextElementProps> = ({ elementId }) => {
         whiteSpace: "pre-wrap",
       }}
     >
-      {props.text
-        .split("\n")
-        .map((line: string, idx: number, arr: string[]) => (
-          <React.Fragment key={idx}>
-            {line}
-            {idx < arr.length - 1 && <br />}
-          </React.Fragment>
-        ))}
+      {props.text.split("\n").map((line: string, idx: number, arr: string[]) => (
+        <React.Fragment key={idx}>
+          {line}
+          {idx < arr.length - 1 && <br />}
+        </React.Fragment>
+      ))}
     </div>
   );
 };

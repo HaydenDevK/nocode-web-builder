@@ -1,15 +1,7 @@
 "use client";
 
 import React from "react";
-import {
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  Stack,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { FormControl, InputLabel, MenuItem, Select, Stack, TextField, Typography } from "@mui/material";
 import { useBuilderStore } from "@/app/store/useBuilderStore";
 import type { TTextProps } from "@/app/model/types";
 import { FONT_FAMILIES } from "@/constants/font";
@@ -38,10 +30,7 @@ const TextEditor: React.FC<TextEditorProps> = ({ elementId }) => {
         Font Family
       </Typography>
       <FormControl fullWidth>
-        <Select
-          value={props.fontFamily}
-          onChange={(e) => handleChange("fontFamily", e.target.value)}
-        >
+        <Select value={props.fontFamily} onChange={(e) => handleChange("fontFamily", e.target.value)}>
           {FONT_FAMILIES.map((font) => (
             <MenuItem key={font.value} value={font.value}>
               <span style={{ fontFamily: font.value }}>{font.label}</span>
@@ -54,12 +43,7 @@ const TextEditor: React.FC<TextEditorProps> = ({ elementId }) => {
         Text Size
       </Typography>
       <FormControl fullWidth>
-        <Select
-          value={props.size}
-          onChange={(e) =>
-            handleChange("size", e.target.value as TTextProps["size"])
-          }
-        >
+        <Select value={props.size} onChange={(e) => handleChange("size", e.target.value as TTextProps["size"])}>
           {["h1", "h2", "h3", "h4", "h5", "h6", "body1", "body2"].map((val) => (
             <MenuItem key={val} value={val}>
               {val.toUpperCase()}
@@ -72,10 +56,7 @@ const TextEditor: React.FC<TextEditorProps> = ({ elementId }) => {
         Font Weight
       </Typography>
       <FormControl fullWidth>
-        <Select
-          value={props.fontWeight}
-          onChange={(e) => handleChange("fontWeight", e.target.value)}
-        >
+        <Select value={props.fontWeight} onChange={(e) => handleChange("fontWeight", e.target.value)}>
           <MenuItem value="normal">Normal</MenuItem>
           <MenuItem value="bold">Bold</MenuItem>
           <MenuItem value="lighter">Thin</MenuItem>
@@ -85,12 +66,7 @@ const TextEditor: React.FC<TextEditorProps> = ({ elementId }) => {
       <Typography variant="h6" color="mono">
         Text Color
       </Typography>
-      <TextField
-        fullWidth
-        type="color"
-        value={props.color}
-        onChange={(e) => handleChange("color", e.target.value)}
-      />
+      <TextField fullWidth type="color" value={props.color} onChange={(e) => handleChange("color", e.target.value)} />
 
       <Typography variant="h6" color="mono">
         Background Color
@@ -109,9 +85,7 @@ const TextEditor: React.FC<TextEditorProps> = ({ elementId }) => {
         fullWidth
         type="number"
         value={props.padding}
-        onChange={(e) =>
-          handleChange("padding", parseInt(e.target.value, 10) || 0)
-        }
+        onChange={(e) => handleChange("padding", parseInt(e.target.value, 10) || 0)}
       />
 
       <Typography variant="h6" color="mono">
@@ -121,9 +95,7 @@ const TextEditor: React.FC<TextEditorProps> = ({ elementId }) => {
         fullWidth
         type="number"
         value={props.radius}
-        onChange={(e) =>
-          handleChange("radius", parseInt(e.target.value, 10) || 0)
-        }
+        onChange={(e) => handleChange("radius", parseInt(e.target.value, 10) || 0)}
       />
 
       <Typography variant="h6" color="mono">

@@ -20,13 +20,7 @@ export type TElement = {
   props: TElementProps;
 };
 
-export type TElementProps =
-  | TTextProps
-  | TLinkProps
-  | TImageProps
-  | TVideoProps
-  | TSection
-  | any;
+export type TElementProps = TTextProps | TLinkProps | TImageProps | TVideoProps | TSection | any;
 
 export type TTextProps = {
   text: string;
