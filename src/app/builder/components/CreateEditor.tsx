@@ -37,8 +37,8 @@ export default function CreateEditor() {
             backgroundColor: "#A64EFF",
             fontSize: 25,
             fontWeight: 500,
-            width: 150,
-            height: "100%",
+            minWidth: 150,
+            minHeight: 50,
             borderRadius: 4,
           },
         });
