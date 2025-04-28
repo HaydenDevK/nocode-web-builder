@@ -1,12 +1,14 @@
 "use client";
 
-import React from "react";
 import { useBuilderStore } from "@/app/store/useBuilderStore";
+import {
+  horizontalListSortingStrategy,
+  SortableContext,
+} from "@dnd-kit/sortable";
+import SortableElement from "@/app/builder/components/SortableElement";
+import SectionToolButton from "./SectionToolButton";
+import { BuilderElement } from "./BuilderElement";
 import { useViewportStore } from "@/app/store/useViewportStore";
-import TextElement from "@/components/TextElement";
-import LinkButton from "@/app/builder/components/LinkButton";
-import ImageElement from "./ImageElement";
-import VideoElement from "./VideoElement";
 import styles from "./Section.module.scss";
 
 interface SectionProps {
@@ -41,52 +43,68 @@ const Section: React.FC<SectionProps> = ({ sectionId }) => {
   const hasElements = section.elementIds.length > 0;
 
   return (
-    <section
-      onClick={() =>
-        setSelectedItemInfo({ type: "section", itemId: sectionId })
-      }
-      className={`${styles.section} ${mode === "mobile" ? styles.mobile : ""}`}
-      style={{
-        backgroundColor: section.props.backgroundColor,
-        padding: `${paddingTopBottom}px ${paddingLeftRight}px`,
-        borderRadius: section.props.radius,
-        cursor: "pointer",
-        outline: isSectionSelected ? "3px dashed #2684FF" : undefined,
-        minHeight: hasElements ? "10px" : "100px",
-      }}
-    >
-      <div
-        className={mode === "desktop" ? styles.desktop : undefined}
+    <div className={styles.sectionWrap}>
+      <section
+        onClick={() =>
+          setSelectedItemInfo({ type: "section", itemId: sectionId })
+        }
+        className={`${styles.section} ${
+          mode === "mobile" ? styles.mobile : ""
+        }`}
         style={{
-          display: "grid",
-          gridTemplateColumns: getGridTemplateColumns(columns),
-          alignItems: "stretch",
-          gap: "16px",
+          backgroundColor: section.props.backgroundColor,
+          padding: `${paddingTopBottom}px ${paddingLeftRight}px`,
+          borderRadius: section.props.radius,
+          cursor: "pointer",
+          outline: isSectionSelected ? "3px dashed #2684FF" : undefined,
+          minHeight: hasElements ? "10px" : "100px",
         }}
       >
-        {Array.from({ length: columnCount }).map((_, idx) => {
-          const elementId = section.elementIds[idx];
-          const element = elementId ? elementsById[elementId] : null;
-
-          return (
-            <div
-              key={idx}
-              style={{
-                border: "1px dashed #ccc",
-                minHeight: shouldApplyMinHeight(section.elementIds)
-                  ? "150px"
-                  : undefined,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              {element ? renderElement(element) : null}
-            </div>
-          );
-        })}
-      </div>
-    </section>
+        <div
+          className={mode === "desktop" ? styles.desktop : undefined}
+          style={{
+            display: "grid",
+            gridTemplateColumns: getGridTemplateColumns(columns),
+            alignItems: "stretch",
+            gap: "16px",
+          }}
+        >
+          <SortableContext
+            items={section.elementIds}
+            strategy={horizontalListSortingStrategy}
+          >
+            {Array.from({ length: columnCount }).map((_, idx) => {
+              const elementId = section.elementIds[idx];
+              const element = elementId ? elementsById[elementId] : null;
+              return (
+                <div
+                  key={idx}
+                  style={{
+                    border: "1px dashed #ccc",
+                    minHeight: shouldApplyMinHeight(section.elementIds)
+                      ? "150px"
+                      : undefined,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <SortableElement key={elementId} elementId={elementId}>
+                    {element ? BuilderElement(element) : null}
+                  </SortableElement>
+                </div>
+              );
+            })}
+          </SortableContext>
+        </div>
+      </section>
+      {isSectionSelected && (
+        <SectionToolButton
+          sectionId={section.id}
+          isActive={isSectionSelected}
+        />
+      )}
+    </div>
   );
 };
 
@@ -126,21 +144,6 @@ function getColumnCount(columns: string) {
       return 2;
     default:
       return 1;
-  }
-}
-
-function renderElement(element: any) {
-  switch (element.type) {
-    case "text":
-      return <TextElement elementId={element.id} />;
-    case "image":
-      return <ImageElement elementId={element.id} />;
-    case "link":
-      return <LinkButton elementId={element.id} />;
-    case "video":
-      return <VideoElement elementId={element.id} />;
-    default:
-      return null;
   }
 }
 

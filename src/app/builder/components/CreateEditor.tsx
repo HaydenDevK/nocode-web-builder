@@ -24,13 +24,9 @@ export default function CreateEditor() {
     let newId: string | undefined;
 
     switch (label) {
-      // case "section":
-      //   newId = addSection({
-      //     backgroundColor: "transparent",
-      //     padding: 0,
-
-      //   })
-      //   break
+      case "section":
+        addSection();
+        break;
       case "text":
         newId = addElement({
           sectionId,
@@ -47,10 +43,10 @@ export default function CreateEditor() {
             href: "",
             color: "#ffffff",
             backgroundColor: "#A64EFF",
-            fontSize: 16,
+            fontSize: 25,
             fontWeight: 500,
-            width: 100,
-            height: 50,
+            minWidth: 150,
+            minHeight: 50,
             borderRadius: 4,
           },
         });

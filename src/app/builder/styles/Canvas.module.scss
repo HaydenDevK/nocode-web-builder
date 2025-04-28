@@ -1,4 +1,7 @@
 .canvas {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
   background-color: #fff;
   border: 1px solid #e0e0e0;
   height: 100%;
@@ -7,12 +10,8 @@
   padding: 4px;
 }
 
-.section {
-  border: 1px dashed #ccc;
-  padding: 16px;
-  margin-bottom: 16px;
-  border-radius: 8px;
-  background-color: #fafafa;
+.sectionWrap {
+  position: relative;
 }
 
 .image {
@@ -20,4 +19,36 @@
   height: auto;
   border-radius: 4px;
   margin-top: 8px;
+}
+
+.elementDragHandle {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.iconButton {
+  all: unset;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 30px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+
+  &:hover {
+    background-color: #e5e7eb;
+  }
+
+  svg {
+    stroke: #374151;
+    width: 18px;
+    height: 18px;
+  }
+}
+
+.activeOver {
+  background-color: blue;
 }
