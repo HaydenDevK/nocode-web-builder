@@ -15,7 +15,7 @@ import {
 } from "@dnd-kit/core";
 import { useState } from "react";
 import { horizontalListSortingStrategy, SortableContext } from "@dnd-kit/sortable";
-import { builderElement } from "@/util/builderElement";
+import { BuilderElement } from "@/components/BuilderElement";
 
 const Canvas: React.FC = () => {
   const sensors = useSensors(useSensor(PointerSensor));
@@ -52,7 +52,7 @@ const Canvas: React.FC = () => {
           ))}
         </div>
       </SortableContext>
-      <DragOverlay>{activeId && builderElement(elementsById[activeId])}</DragOverlay>
+      <DragOverlay>{activeId && BuilderElement(elementsById[activeId])}</DragOverlay>
     </DndContext>
   );
 };

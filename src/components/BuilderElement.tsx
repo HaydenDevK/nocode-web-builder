@@ -4,7 +4,9 @@ import LinkButton from "@/app/builder/components/LinkButton";
 import ImageElement from "@/components/ImageElement";
 import VideoElement from "@/components/VideoElement";
 
-export const builderElement = (element: TElement) => {
+export const BuilderElement = (element: TElement) => {
+  if (!element) return null;
+
   switch (element.type) {
     case "text":
       return <TextElement key={element.id} elementId={element.id} />;

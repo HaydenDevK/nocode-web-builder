@@ -5,7 +5,7 @@ import { horizontalListSortingStrategy, SortableContext } from "@dnd-kit/sortabl
 import SortableElement from "@/app/builder/components/SortableElement";
 import styles from "../app/builder/styles/Canvas.module.scss";
 import SectionToolButton from "./SectionToolButton";
-import { builderElement } from "@/util/builderElement";
+import { BuilderElement } from "./BuilderElement";
 
 interface SectionProps {
   sectionId: string;
@@ -39,7 +39,7 @@ const Section: React.FC<SectionProps> = ({ sectionId }) => {
             const element = elementsById[elementId];
             return (
               <SortableElement key={elementId} elementId={elementId}>
-                {builderElement(element)}
+                {BuilderElement(element)}
               </SortableElement>
             );
           })}
