@@ -1,24 +1,21 @@
 // CreateEditor.tsx
 "use client";
 
-import {
-  Text,
-  ImageIcon,
-  SquareMousePointer,
-  Video,
-  LayoutTemplate,
-} from "lucide-react";
+import { Text, ImageIcon, SquareMousePointer, Video, LayoutTemplate } from "lucide-react";
 import { Stack, Divider, Typography, Button } from "@mui/material";
 import { useBuilderStore } from "@/app/store/useBuilderStore";
 import { DEFAULT_TEXT_PROPS } from "@/constants/defaultElementProps";
 
 export default function CreateEditor() {
-  const { addElement, selectedItemInfo } = useBuilderStore();
+  const { addSection, addElement, selectedItemInfo } = useBuilderStore();
 
   const handleAdd = (label: string) => {
     if (selectedItemInfo?.type !== "section") return;
 
     switch (label) {
+      case "section":
+        addSection();
+        break;
       case "text":
         addElement({
           sectionId: selectedItemInfo.itemId,
