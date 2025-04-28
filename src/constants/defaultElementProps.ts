@@ -1,7 +1,7 @@
 export const DEFAULT_TEXT_PROPS = {
   text: "텍스트를 입력해주세요.",
   size: "h1",
-  fontFamily: "sans-serif",
+  fontFamily: "Spoqa Han Sans Neo",
   fontWeight: "normal",
   textAlign: "center",
   color: "#000000",
