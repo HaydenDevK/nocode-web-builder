@@ -7,11 +7,11 @@ import { Button, Stack, Box } from "@mui/material";
 import { useBuilderStore } from "@/app/store/useBuilderStore";
 
 export default function Sidebar() {
-  const { selectedItemInfo, removeElement } = useBuilderStore();
+  const { selectedItemInfo, removeSection, removeElement } = useBuilderStore();
 
   const handleDelete = () => {
     if (selectedItemInfo?.type === "section") {
-      // TODO section 삭제 구현
+      removeSection(selectedItemInfo.itemId);
     } else if (selectedItemInfo?.type) {
       removeElement(selectedItemInfo.itemId);
     }
