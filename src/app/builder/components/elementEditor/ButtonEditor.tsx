@@ -124,7 +124,7 @@ export default function ButtonEditor({ elementId }: { elementId: string }) {
       <TextField
         fullWidth
         type="number"
-        value={props.width || ""}
+        value={props.minWidth || ""}
         onChange={(e) => handleNumberChange("width", e.target.value)}
       />
 
@@ -134,7 +134,7 @@ export default function ButtonEditor({ elementId }: { elementId: string }) {
       <TextField
         fullWidth
         type="number"
-        value={props.height || ""}
+        value={props.minHeight || ""}
         onChange={(e) => handleNumberChange("height", e.target.value)}
       />
     </Stack>
