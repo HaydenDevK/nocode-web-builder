@@ -41,6 +41,7 @@ const TextElement: React.FC<TextElementProps> = ({ elementId }) => {
         borderRadius: props.radius,
         fontFamily: props.fontFamily,
         fontWeight: props.fontWeight,
+        textAlign: props.textAlign,
         margin: 0,
         cursor: "pointer",
         outline: isSelected ? "2px dashed #2684FF" : undefined,

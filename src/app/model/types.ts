@@ -27,6 +27,7 @@ export type TTextProps = {
   size: "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "body1" | "body2";
   fontFamily: "sans-serif" | "serif" | "monospace";
   fontWeight: "normal" | "bold" | "lighter";
+  textAlign: "left" | "center" | "right";
   color: string;
   backgroundColor: string;
   padding: number;

@@ -64,6 +64,20 @@ const TextEditor: React.FC<TextEditorProps> = ({ elementId }) => {
       </FormControl>
 
       <Typography variant="h6" color="mono">
+        Text Align
+      </Typography>
+      <FormControl fullWidth>
+        <Select
+          value={props.textAlign}
+          onChange={(e) => handleChange("textAlign", e.target.value)}
+        >
+          <MenuItem value="left">left</MenuItem>
+          <MenuItem value="center">center</MenuItem>
+          <MenuItem value="right">right</MenuItem>
+        </Select>
+      </FormControl>
+
+      <Typography variant="h6" color="mono">
         Text Color
       </Typography>
       <TextField fullWidth type="color" value={props.color} onChange={(e) => handleChange("color", e.target.value)} />
