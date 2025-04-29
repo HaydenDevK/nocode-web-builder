@@ -4,9 +4,13 @@ import type { TSection, TSectionProps, TElement, TSelectedItemInfo, TElementProp
 import { nanoid } from "nanoid";
 import { arrayMove } from "@dnd-kit/sortable";
 
-const INITIAL_SECTION_PROPS: TSectionProps = {
+export const INITIAL_SECTION_PROPS: TSectionProps = {
   backgroundColor: "transparent",
-  padding: 0,
+  paddingDesktopTopBottom: 15,
+  paddingDesktopLeftRight: 15,
+  paddingMobileTopBottom: 10,
+  paddingMobileLeftRight: 10,
+  columns: "1",
   radius: 0,
 };
 
@@ -31,7 +35,7 @@ interface BuilderState {
   removeSection(sectionId: string): void;
 
   /* Element Action */
-  addElement(element: Omit<TElement, "id">): void;
+  addElement(element: Omit<TElement, "id">): string;
   updateElementProps(elementId: string, patch: Partial<TElementProps>): void;
   moveElement(activeId: string, overId: string): void;
   removeElement(elementId: string): void;
@@ -104,16 +108,18 @@ export const useBuilderStore = create<BuilderState>()(
       }),
 
     /* Element Actions */
-    addElement: (element: Omit<TElement, "id">) =>
+    addElement: (element: Omit<TElement, "id">) => {
+      let newId = "";
       set((state) => {
-        if (state.selectedItemInfo?.type !== "section") return;
-
-        const { sectionId } = element;
         const id = nanoid();
+        const { sectionId } = element;
         state.elements.byId[id] = { ...element, id };
         state.elements.allIds.push(id);
         state.sections.byId[sectionId].elementIds.push(id);
-      }),
+        newId = id;
+      });
+      return newId;
+    },
 
     updateElementProps: (elementId, patch) =>
       set((state) => {

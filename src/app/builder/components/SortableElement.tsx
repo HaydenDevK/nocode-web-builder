@@ -4,10 +4,23 @@ import { GripVertical } from "lucide-react";
 import styles from "../../builder/styles/Canvas.module.scss";
 import { useBuilderStore } from "@/app/store/useBuilderStore";
 
-const SortableElement = ({ children, elementId }: { children: React.ReactNode; elementId: string }) => {
+const SortableElement = ({
+  children,
+  elementId,
+}: {
+  children: React.ReactNode;
+  elementId: string;
+}) => {
   const selectedItemInfo = useBuilderStore((s) => s.selectedItemInfo);
   const isSelected = selectedItemInfo?.itemId === elementId;
-  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({
     id: elementId,
   });
 
@@ -22,7 +35,12 @@ const SortableElement = ({ children, elementId }: { children: React.ReactNode; e
       <div className={styles.elementDragHandle}>
         {children}
         {isSelected && (
-          <button type="button" className={styles.iconButton} {...attributes} {...listeners}>
+          <button
+            type="button"
+            className={styles.iconButton}
+            {...attributes}
+            {...listeners}
+          >
             <GripVertical />
           </button>
         )}

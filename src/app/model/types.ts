@@ -1,5 +1,5 @@
 // 선택된 elementtype
-export type TElementTypes = "text" | "link" | "image" | "video";
+export type TElementTypes = "section" | "text" | "link" | "image" | "video";
 
 export type TSection = {
   id: string;
@@ -9,7 +9,11 @@ export type TSection = {
 
 export type TSectionProps = {
   backgroundColor: string;
-  padding?: number;
+  paddingDesktopTopBottom: number;
+  paddingDesktopLeftRight: number;
+  paddingMobileTopBottom: number;
+  paddingMobileLeftRight: number;
+  columns?: string;
   radius?: number;
 };
 
