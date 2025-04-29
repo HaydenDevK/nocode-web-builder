@@ -1,5 +1,5 @@
 // 선택된 elementtype
-export type TElementTypes = "text" | "link" | "image" | "video";
+export type TElementTypes = "section" | "text" | "link" | "image" | "video";
 
 export type TSection = {
   id: string;
@@ -9,7 +9,11 @@ export type TSection = {
 
 export type TSectionProps = {
   backgroundColor: string;
-  padding?: number;
+  paddingDesktopTopBottom: number;
+  paddingDesktopLeftRight: number;
+  paddingMobileTopBottom: number;
+  paddingMobileLeftRight: number;
+  columns?: string;
   radius?: number;
 };
 
@@ -20,19 +24,14 @@ export type TElement = {
   props: TElementProps;
 };
 
-export type TElementProps =
-  | TTextProps
-  | TLinkProps
-  | TImageProps
-  | TVideoProps
-  | TSection
-  | any;
+export type TElementProps = TTextProps | TLinkProps | TImageProps | TVideoProps | TSection | any;
 
 export type TTextProps = {
   text: string;
   size: "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "body1" | "body2";
   fontFamily: "sans-serif" | "serif" | "monospace";
   fontWeight: "normal" | "bold" | "lighter";
+  textAlign: "left" | "center" | "right";
   color: string;
   backgroundColor: string;
   padding: number;

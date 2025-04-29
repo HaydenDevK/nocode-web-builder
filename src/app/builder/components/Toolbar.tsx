@@ -1,12 +1,14 @@
 "use client";
 
-// Toolbar
 import Image from "next/image";
 import styles from "../styles/Toolbar.module.scss";
 import { AppBar, Toolbar as MUIToolbar, Button } from "@mui/material";
+import { useViewportStore } from "@/app/store/useViewportStore";
 import { useBuilderStore } from "@/app/store/useBuilderStore";
 
 export default function Toolbar() {
+  const mode = useViewportStore((s) => s.mode);
+  const setMode = useViewportStore((s) => s.setMode);
   const { saveToLocalStorage } = useBuilderStore();
   return (
     <AppBar position="static" color="default" className={styles.toolbar}>
@@ -22,7 +24,13 @@ export default function Toolbar() {
           </Button>
         </div>
         <div>
-          <Button aria-label="Desktop View">
+          <Button
+            aria-label="Desktop View"
+            variant={mode === "desktop" ? "contained" : "outlined"}
+            onClick={() => setMode("desktop")}
+            size="small"
+            sx={{ minWidth: 40, padding: 1, mr: 1 }}
+          >
             <Image
               src="/desktop.svg"
               alt="Desktop icon"
@@ -30,7 +38,13 @@ export default function Toolbar() {
               height={24}
             />
           </Button>
-          <Button aria-label="Mobile View" size="small">
+          <Button
+            aria-label="Mobile View"
+            variant={mode === "mobile" ? "contained" : "outlined"}
+            onClick={() => setMode("mobile")}
+            size="small"
+            sx={{ minWidth: 40, padding: 1 }}
+          >
             <Image src="/mobile.svg" alt="Mobile icon" width={24} height={24} />
           </Button>
         </div>

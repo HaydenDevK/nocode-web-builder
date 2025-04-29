@@ -1,7 +1,5 @@
 "use client";
 
-// LinkButton
-import { Button } from "@mui/material";
 import { useBuilderStore } from "@/app/store/useBuilderStore";
 
 interface LinkProps {
@@ -20,8 +18,8 @@ export default function LinkButton({ elementId }: LinkProps) {
       fontSize,
       fontWeight,
       fontFamily,
-      width,
-      height,
+      minWidth,
+      minHeight,
       borderRadius,
       backgroundColor,
     },
@@ -31,36 +29,46 @@ export default function LinkButton({ elementId }: LinkProps) {
   const isSelected = selectedItemInfo?.itemId === id;
 
   const handleClick = (e: React.MouseEvent) => {
-    e.preventDefault();
     e.stopPropagation();
     setSelectedItemInfo({ type, itemId: id });
+
+    // href 가 있으면 새 창으로 이동
+    if (href) window.open(href, "_blank", "noopener,noreferrer");
   };
 
   return (
-    <Button
-      href={href || undefined}
-      onClick={(e) => {
-        e.preventDefault();
-        handleClick(e);
-      }}
-      sx={{
-        backgroundColor: backgroundColor,
-        fontSize: `${fontSize}px`,
-        color: color,
-        fontWeight: fontWeight,
-        fontFamily: fontFamily,
-        width: width || "auto",
-        height: height || "auto",
-        borderRadius: borderRadius || "auto",
-        border: isSelected ? "2px solid purple" : "1px solid",
-        boxShadow: isSelected ? "0 0 4px purple" : "none",
-        "&:hover": {
-          backgroundColor: "#ffffff",
-          color: "#A64EFF",
-        },
+    <div
+      style={{
+        width: "100%",
+        height: "100%",
+        textAlign: "center",
       }}
     >
-      {text}
-    </Button>
+      <button
+        onClick={(e) => {
+          e.preventDefault();
+          handleClick(e);
+        }}
+        style={{
+          backgroundColor: backgroundColor,
+          fontSize: `${fontSize}px`,
+          color: color,
+          fontWeight: fontWeight,
+          fontFamily: fontFamily,
+          minWidth: minWidth || "auto",
+          minHeight: minHeight || "auto",
+          borderRadius: borderRadius || "auto",
+          border: isSelected ? "2px solid purple" : "1px solid",
+          boxShadow: isSelected ? "0 0 4px purple" : "none",
+          overflowWrap: "break-word",
+          whiteSpace: "normal",
+          wordBreak: "break-word",
+          textAlign: "center",
+          textTransform: "none",
+        }}
+      >
+        {text}
+      </button>
+    </div>
   );
 }
