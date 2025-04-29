@@ -28,6 +28,13 @@ const DeployedList = [
 export default function Home() {
   const [drafts, setDrafts] = useState<TDraft[]>([]);
 
+  const loadDrafts = () => {
+    const saveDrafts = JSON.parse(
+      localStorage.getItem("builder-drafts") || "[]"
+    );
+    setDrafts(saveDrafts);
+  };
+
   useEffect(() => {
     const saveDrafts = JSON.parse(
       localStorage.getItem("builder-drafts") || "[]"
@@ -74,7 +81,11 @@ export default function Home() {
           </Typography>
           <Box className={styles.grid}>
             {drafts.map((item) => (
-              <Card key={item.id} item={{ ...item, type: "draft" }} />
+              <Card
+                key={item.id}
+                item={{ ...item, type: "draft" }}
+                loadDrafts={loadDrafts}
+              />
             ))}
           </Box>
         </Box>

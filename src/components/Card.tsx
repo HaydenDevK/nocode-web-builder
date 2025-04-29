@@ -4,6 +4,7 @@ import { Box, Button, Typography } from "@mui/material";
 import styles from "./card.module.scss";
 import { useRouter } from "next/navigation";
 import { useBuilderStore } from "@/app/store/useBuilderStore";
+import { useState } from "react";
 
 type CardProps = {
   item: {
@@ -12,16 +13,24 @@ type CardProps = {
     thumbnail?: string;
     type: "template" | "deployed" | "draft";
   };
+  loadDrafts?: () => void;
 };
 
-export default function Card({ item }: CardProps) {
+export default function Card({ item, loadDrafts }: CardProps) {
   const router = useRouter();
-  const { loadDraft } = useBuilderStore();
+  const { loadDraft, removeDraft } = useBuilderStore();
 
   const handleEdit = () => {
     if (item.type === "draft") {
       loadDraft(item.id.toString());
       router.push("/builder");
+    }
+  };
+
+  const handleDelete = () => {
+    if (item.type === "draft") {
+      removeDraft(item.id.toString());
+      loadDrafts?.();
     }
   };
 
@@ -35,7 +44,12 @@ export default function Card({ item }: CardProps) {
       >
         편집
       </Button>
-      <Button variant="outlined" color="warning" className={styles.actionBtn}>
+      <Button
+        variant="outlined"
+        color="warning"
+        className={styles.actionBtn}
+        onClick={handleDelete}
+      >
         삭제
       </Button>
     </>

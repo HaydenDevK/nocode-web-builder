@@ -46,9 +46,10 @@ interface BuilderState {
   moveElement(): void;
   removeElement(elementId: string): void;
 
-  // localStorage 저장
+  // localStorage 저장 및 삭제
   saveToLocalStorage(): void;
   loadDraft(draftId: string): void;
+  removeDraft(draftId: string): void;
 }
 
 export const useBuilderStore = create<BuilderState>()(
@@ -163,5 +164,13 @@ export const useBuilderStore = create<BuilderState>()(
       set((state) => {
         state.currentDraftId = id;
       }),
+
+    removeDraft: (draftId: string) => {
+      const drafts = JSON.parse(
+        localStorage.getItem("builder-drafts") || "[]"
+      ) as TDraft[];
+      const filtered = drafts.filter((draft) => draft.id !== draftId);
+      localStorage.setItem("builder-drafts", JSON.stringify(filtered));
+    },
   }))
 );
