@@ -3,6 +3,8 @@
 import styles from "./page.module.scss";
 import { Box, Button, Typography } from "@mui/material";
 import Card from "@/components/Card";
+import { useState, useEffect } from "react";
+import { TDraft } from "./model/types";
 
 const sampleThumbnail =
   "https://img-wixmp-09d1505942a280459f0fa212.wixmp.com/images/site-snapshotter-web/9942c07d-5870-4eaa-b813-23ec87f4eb28/v1/fit/w_370,h_370/file.jpg";
@@ -24,6 +26,15 @@ const DeployedList = [
 ];
 
 export default function Home() {
+  const [drafts, setDrafts] = useState<TDraft[]>([]);
+
+  useEffect(() => {
+    const saveDrafts = JSON.parse(
+      localStorage.getItem("builder-drafts") || "[]"
+    ) as TDraft[];
+    setDrafts(saveDrafts);
+  }, []);
+
   return (
     <Box className={styles.container}>
       <header className={styles.header}>
@@ -54,6 +65,16 @@ export default function Home() {
           <Box className={styles.grid}>
             {DeployedList.map((item) => (
               <Card key={item.id} item={{ ...item, type: "deployed" }} />
+            ))}
+          </Box>
+        </Box>
+        <Box className={styles.section}>
+          <Typography variant="h4" color="mono" gutterBottom>
+            임시 저장 목록
+          </Typography>
+          <Box className={styles.grid}>
+            {drafts.map((item) => (
+              <Card key={item.id} item={{ ...item, type: "draft" }} />
             ))}
           </Box>
         </Box>

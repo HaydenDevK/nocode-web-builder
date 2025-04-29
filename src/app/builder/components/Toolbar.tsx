@@ -4,12 +4,23 @@
 import Image from "next/image";
 import styles from "../styles/Toolbar.module.scss";
 import { AppBar, Toolbar as MUIToolbar, Button } from "@mui/material";
+import { useBuilderStore } from "@/app/store/useBuilderStore";
 
 export default function Toolbar() {
+  const { saveToLocalStorage } = useBuilderStore();
   return (
     <AppBar position="static" color="default" className={styles.toolbar}>
       <MUIToolbar className={styles.inner}>
-        <div className={styles.left}>{/* 로고나 비워두기 */}</div>
+        <div className={styles.left}>
+          <Button
+            variant="outlined"
+            color="secondary"
+            style={{ marginLeft: 8 }}
+            onClick={saveToLocalStorage}
+          >
+            임시 저장
+          </Button>
+        </div>
         <div>
           <Button aria-label="Desktop View">
             <Image

@@ -70,3 +70,17 @@ export type TVideoProps = {
   videoURL: string;
   width: number;
 };
+
+export type TDraft = {
+  id: string;
+  title: string;
+  savedAt: string;
+  sections: {
+    byId: Record<string, TSection>;
+    allIds: string[];
+  };
+  elements: {
+    byId: Record<string, TElement>;
+    allIds: string[];
+  };
+};

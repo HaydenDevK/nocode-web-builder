@@ -6,6 +6,7 @@ import {
   TElement,
   TSelectedItemInfo,
   TElementProps,
+  TDraft,
 } from "../model/types";
 import { nanoid } from "nanoid";
 
@@ -27,8 +28,12 @@ interface BuilderState {
     allIds: string[];
   };
 
+  // 로컬 임시 저장 덮어쓰기
+  currentDraftId: string | null;
+
   selectedItemInfo: TSelectedItemInfo | null;
   setSelectedItemInfo(info: TSelectedItemInfo): void;
+  setCurrentDraftId(id: string | null): void;
 
   addSection(): void;
   updateSectionProps(sectionId: string, patch: Partial<TSectionProps>): void;
@@ -40,10 +45,14 @@ interface BuilderState {
   updateElementProps(elementId: string, patch: Partial<TElementProps>): void;
   moveElement(): void;
   removeElement(elementId: string): void;
+
+  // localStorage 저장
+  saveToLocalStorage(): void;
+  loadDraft(draftId: string): void;
 }
 
 export const useBuilderStore = create<BuilderState>()(
-  immer((set) => ({
+  immer((set, get) => ({
     sections: {
       byId: {
         [INITIAL_SECTION_ID]: {
@@ -101,6 +110,58 @@ export const useBuilderStore = create<BuilderState>()(
           (id) => id !== elementId
         );
         state.selectedItemInfo = null;
+      }),
+
+    saveToLocalStorage: () => {
+      const state = get();
+      const { sections, elements, currentDraftId } = state;
+      const drafts = JSON.parse(
+        localStorage.getItem("builder-drafts") || "[]"
+      ) as TDraft[];
+
+      if (currentDraftId) {
+        const index = drafts.findIndex((draft) => draft.id === currentDraftId);
+        if (index !== -1) {
+          drafts[index] = {
+            ...drafts[index],
+            sections,
+            elements,
+            savedAt: new Date().toISOString(),
+          };
+        }
+      } else {
+        drafts.push({
+          id: nanoid(),
+          title: `작업 ${drafts.length + 1}`,
+          savedAt: new Date().toISOString(),
+          sections,
+          elements,
+        });
+      }
+
+      localStorage.setItem("builder-drafts", JSON.stringify(drafts));
+    },
+
+    loadDraft: (draftId) => {
+      const drafts = JSON.parse(
+        localStorage.getItem("builder-drafts") || "[]"
+      ) as TDraft[];
+
+      const draft = drafts.find((draft) => draft.id === draftId);
+      if (!draft) return;
+
+      set((state) => {
+        state.sections = draft.sections;
+        state.elements = draft.elements;
+        state.currentDraftId = draftId;
+      });
+    },
+
+    currentDraftId: null, // 초기값
+
+    setCurrentDraftId: (id) =>
+      set((state) => {
+        state.currentDraftId = id;
       }),
   }))
 );
