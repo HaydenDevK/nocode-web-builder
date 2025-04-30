@@ -20,6 +20,7 @@ import {
   Square,
 } from "lucide-react";
 import { useViewportStore } from "@/app/store/useViewportStore";
+import { useIsEditingStore } from "@/app/store/useIsEditingStore";
 
 const desktopColumnOptions = [
   { label: "1", value: "1", icon: Square },
@@ -43,6 +44,8 @@ export default function SectionEditor({ sectionId }: { sectionId: string }) {
   const addElement = useBuilderStore((state) => state.addElement);
   const elements = useBuilderStore((state) => state.elements.byId);
   const mode = useViewportStore((s) => s.mode);
+
+  const isEditing = useIsEditingStore((s) => s.isEditing);
 
   if (!section) return null;
 

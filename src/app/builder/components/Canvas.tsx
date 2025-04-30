@@ -14,7 +14,10 @@ import {
   type DragStartEvent,
 } from "@dnd-kit/core";
 import { useState } from "react";
-import { horizontalListSortingStrategy, SortableContext } from "@dnd-kit/sortable";
+import {
+  horizontalListSortingStrategy,
+  SortableContext,
+} from "@dnd-kit/sortable";
 import { BuilderElement } from "@/components/BuilderElement";
 
 const Canvas: React.FC = () => {
@@ -45,14 +48,19 @@ const Canvas: React.FC = () => {
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
     >
-      <SortableContext items={sectionIds} strategy={horizontalListSortingStrategy}>
-        <div className={styles.canvas}>
+      <SortableContext
+        items={sectionIds}
+        strategy={horizontalListSortingStrategy}
+      >
+        <div className={styles.canvas} id="canvas">
           {sectionIds.map((sectionId) => (
             <Section key={sectionId} sectionId={sectionId} />
           ))}
         </div>
       </SortableContext>
-      <DragOverlay>{activeId && BuilderElement(elementsById[activeId])}</DragOverlay>
+      <DragOverlay>
+        {activeId && BuilderElement(elementsById[activeId])}
+      </DragOverlay>
     </DndContext>
   );
 };
