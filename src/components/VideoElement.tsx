@@ -4,6 +4,7 @@ import type { TVideoProps } from "@/app/model/types";
 import { convertToEmbedURL } from "@/util/video.util";
 import styles from "./VideoElement.module.scss";
 import { PLACEHOLDER_VIDEO } from "@/constants/placeholders";
+import Image from "next/image";
 
 interface VideoElementProps {
   elementId: string;
@@ -36,10 +37,12 @@ const VideoElement: React.FC<VideoElementProps> = ({ elementId }) => {
       }}
     >
       {!isValidURL ? (
-        <img
+        <Image
           src={PLACEHOLDER_VIDEO}
           alt="video placeholder"
           className={styles.placeholder}
+          width={500}
+          height={300}
         />
       ) : props.videoSrcType === "youtube" ? (
         <div className={styles.youtubeWrapper}>

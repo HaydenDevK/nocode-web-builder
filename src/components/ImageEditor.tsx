@@ -3,7 +3,6 @@
 import React, { useRef } from "react";
 import {
   Button,
-  Divider,
   FormControl,
   TextField,
   Radio,
@@ -111,7 +110,7 @@ const ImageEditor = ({ elementId }: { elementId: string }) => {
             if (newValue !== null) handleChange("width", newValue);
           }}
           valueLabelDisplay="auto"
-          min={1}
+          min={10}
           max={100}
         />
         <Typography variant="body2" sx={{ color: "mono.dark" }}>
