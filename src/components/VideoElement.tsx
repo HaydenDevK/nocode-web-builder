@@ -3,6 +3,7 @@ import { useBuilderStore } from "@/app/store/useBuilderStore";
 import type { TVideoProps } from "@/app/model/types";
 import { convertToEmbedURL } from "@/util/video.util";
 import styles from "./VideoElement.module.scss";
+import { PLACEHOLDER_VIDEO } from "@/constants/placeholders";
 
 interface VideoElementProps {
   elementId: string;
@@ -23,9 +24,6 @@ const VideoElement: React.FC<VideoElementProps> = ({ elementId }) => {
     e.stopPropagation();
     setSelectedItemInfo({ type: "video", itemId: elementId });
   };
-  // 임시로 사용한 이미지 입니다.
-  const placeholderImage =
-    "https://d2uolguxr56s4e.cloudfront.net/img/kartrapages/video_player_placeholder.gif";
 
   const isValidURL = !!props.videoURL;
 
@@ -39,7 +37,7 @@ const VideoElement: React.FC<VideoElementProps> = ({ elementId }) => {
     >
       {!isValidURL ? (
         <img
-          src={placeholderImage}
+          src={PLACEHOLDER_VIDEO}
           alt="video placeholder"
           className={styles.placeholder}
         />
