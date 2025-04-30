@@ -12,22 +12,27 @@ import {
 import { useBuilderStore } from "@/app/store/useBuilderStore";
 import { nanoid } from "nanoid";
 import {
-  LayoutGrid,
   Columns2,
   Columns3,
   Columns4,
   PanelLeft,
   PanelRight,
+  Square,
 } from "lucide-react";
 import { useViewportStore } from "@/app/store/useViewportStore";
 
-const columnOptions = [
-  { label: "1", value: "1", icon: LayoutGrid },
+const desktopColumnOptions = [
+  { label: "1", value: "1", icon: Square },
   { label: "1:1", value: "1-1", icon: Columns2 },
   { label: "1:1:1", value: "1-1-1", icon: Columns3 },
   { label: "1:1:1:1", value: "1-1-1-1", icon: Columns4 },
   { label: "2:1", value: "2-1", icon: PanelLeft },
   { label: "1:2", value: "1-2", icon: PanelRight },
+];
+
+const mobileColumnOptions = [
+  { label: "1", value: "1", icon: Square },
+  { label: "1:1", value: "1-1", icon: Columns2 },
 ];
 
 export default function SectionEditor({ sectionId }: { sectionId: string }) {
@@ -76,37 +81,54 @@ export default function SectionEditor({ sectionId }: { sectionId: string }) {
     <Stack spacing={2}>
       {/* 컬럼 설정 */}
       <Typography variant="h6" color="mono">
-        Columns
+        {mode === "desktop" ? "Desktop Columns" : "Mobile Columns"}
       </Typography>
-      <Stack
-        direction="row"
-        flexWrap="wrap"
-        justifyContent="flex-start"
-        gap={1}
-        sx={{
-          width: "100%",
-        }}
-      >
-        {columnOptions.map(({ label, value, icon: Icon }) => (
-          <Tooltip key={value} title={label}>
-            <IconButton
-              onClick={() => handlePropsChange("columns", value)}
-              color={section.props.columns === value ? "primary" : "default"}
-              sx={{
-                border: "1px dashed #ccc",
-                width: "30%", // 3개씩 줄 세우기
-                aspectRatio: "1 / 1",
-                borderRadius: "8px",
-                transition: "all 0.2s",
-                "&:hover": {
-                  borderColor: "#999",
-                },
-              }}
-            >
-              <Icon size={28} />
-            </IconButton>
-          </Tooltip>
-        ))}
+
+      <Stack direction="row" flexWrap="wrap" gap={1}>
+        {(mode === "desktop" ? desktopColumnOptions : mobileColumnOptions).map(
+          ({ label, value, icon: Icon }) => (
+            <Tooltip key={value} title={label}>
+              <IconButton
+                onClick={() =>
+                  handlePropsChange(
+                    mode === "desktop" ? "desktopColumns" : "mobileColumns",
+                    value
+                  )
+                }
+                color={
+                  (mode === "desktop"
+                    ? section.props.desktopColumns
+                    : section.props.mobileColumns) === value
+                    ? "primary"
+                    : "default"
+                }
+                sx={{
+                  border: "1px dashed #ccc",
+                  width: "30%",
+                  aspectRatio: "1 / 1",
+                  borderRadius: "8px",
+                  transition: "all 0.2s",
+                  "&:hover": {
+                    borderColor: "#999",
+                  },
+                }}
+              >
+                {Icon ? (
+                  <Icon size={28} />
+                ) : (
+                  <div
+                    style={{
+                      width: "20px",
+                      height: "20px",
+                      backgroundColor: "#ccc",
+                      borderRadius: "4px",
+                    }}
+                  />
+                )}
+              </IconButton>
+            </Tooltip>
+          )
+        )}
       </Stack>
       <Typography variant="h6" color="mono">
         Section Settings

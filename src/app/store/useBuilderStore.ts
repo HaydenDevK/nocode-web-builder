@@ -1,11 +1,19 @@
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
-import type { TSection, TSectionProps, TElement, TSelectedItemInfo, TElementProps } from "../model/types";
+import type {
+  TSection,
+  TSectionProps,
+  TElement,
+  TSelectedItemInfo,
+  TElementProps,
+} from "../model/types";
 import { nanoid } from "nanoid";
 import { arrayMove } from "@dnd-kit/sortable";
 
 export const INITIAL_SECTION_PROPS: TSectionProps = {
   backgroundColor: "transparent",
+  desktopColumns: "1",
+  mobileColumns: "1",
   paddingDesktopTopBottom: 15,
   paddingDesktopLeftRight: 15,
   paddingMobileTopBottom: 10,
@@ -97,14 +105,18 @@ export const useBuilderStore = create<BuilderState>()(
     removeSection: (sectionId) =>
       set((state) => {
         delete state.sections.byId[sectionId];
-        state.sections.allIds = state.sections.allIds.filter((id) => id !== sectionId);
+        state.sections.allIds = state.sections.allIds.filter(
+          (id) => id !== sectionId
+        );
 
         for (const el in state.elements.byId) {
           if (state.elements.byId[el].sectionId === sectionId) {
             delete state.elements.byId[el];
           }
         }
-        state.elements.allIds = state.elements.allIds.filter((id) => state.elements.byId[id] !== undefined);
+        state.elements.allIds = state.elements.allIds.filter(
+          (id) => state.elements.byId[id] !== undefined
+        );
       }),
 
     /* Element Actions */
@@ -142,13 +154,19 @@ export const useBuilderStore = create<BuilderState>()(
           const newIndex = elementIds.indexOf(overId);
 
           if (oldIndex !== -1) {
-            state.sections.byId[activeSectionId].elementIds = arrayMove(elementIds, oldIndex, newIndex);
+            state.sections.byId[activeSectionId].elementIds = arrayMove(
+              elementIds,
+              oldIndex,
+              newIndex
+            );
           }
         }
         // 다른 섹션으로 이동
         else {
-          const sourceElementIds = state.sections.byId[activeSectionId].elementIds;
-          const targetElementIds = state.sections.byId[overSectionId].elementIds;
+          const sourceElementIds =
+            state.sections.byId[activeSectionId].elementIds;
+          const targetElementIds =
+            state.sections.byId[overSectionId].elementIds;
 
           const oldIndex = sourceElementIds.indexOf(activeId);
           if (oldIndex !== -1) {
@@ -156,7 +174,8 @@ export const useBuilderStore = create<BuilderState>()(
           }
 
           const insertIndex = targetElementIds.indexOf(overId);
-          const newIndex = insertIndex === -1 ? targetElementIds.length : insertIndex;
+          const newIndex =
+            insertIndex === -1 ? targetElementIds.length : insertIndex;
           targetElementIds.splice(newIndex, 0, activeId);
 
           state.elements.byId[activeId].sectionId = overSectionId;
@@ -171,7 +190,9 @@ export const useBuilderStore = create<BuilderState>()(
 
         sec.elementIds = sec.elementIds.filter((id) => id !== elementId);
         delete state.elements.byId[elementId];
-        state.elements.allIds = state.elements.allIds.filter((id) => id !== elementId);
+        state.elements.allIds = state.elements.allIds.filter(
+          (id) => id !== elementId
+        );
         state.selectedItemInfo = null;
       }),
   }))
