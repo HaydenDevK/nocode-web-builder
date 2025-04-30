@@ -21,7 +21,6 @@ const VideoEditor = ({ elementId }: { elementId: string }) => {
 
   const element = useBuilderStore((s) => s.elements.byId[elementId]);
   const updateElementProps = useBuilderStore((s) => s.updateElementProps);
-  const removeElement = useBuilderStore((s) => s.removeElement);
 
   if (!element || element.type !== "video") return null;
   const props = element.props as TVideoProps;
@@ -117,16 +116,6 @@ const VideoEditor = ({ elementId }: { elementId: string }) => {
           Current: {width}%
         </Typography>
       </FormControl>
-
-      <Divider />
-
-      <Button
-        variant="contained"
-        color="warning"
-        onClick={() => removeElement(elementId)}
-      >
-        Delete
-      </Button>
     </Stack>
   );
 };

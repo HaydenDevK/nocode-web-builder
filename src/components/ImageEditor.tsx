@@ -21,7 +21,6 @@ const ImageEditor = ({ elementId }: { elementId: string }) => {
 
   const element = useBuilderStore((s) => s.elements.byId[elementId]);
   const updateElementProps = useBuilderStore((s) => s.updateElementProps);
-  const removeElement = useBuilderStore((s) => s.removeElement);
 
   if (!element || element.type !== "image") return null;
   const props = element.props as TImageProps;
@@ -132,17 +131,6 @@ const ImageEditor = ({ elementId }: { elementId: string }) => {
           handleChange("radius", Number.parseInt(e.target.value, 10) || 0)
         }
       />
-
-      <Divider />
-
-      <Button
-        variant="contained"
-        color="warning"
-        size="large"
-        onClick={() => removeElement(elementId)}
-      >
-        Delete
-      </Button>
     </Stack>
   );
 };
