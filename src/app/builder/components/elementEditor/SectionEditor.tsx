@@ -20,6 +20,7 @@ import {
   PanelRight,
 } from "lucide-react";
 import { useViewportStore } from "@/app/store/useViewportStore";
+import { useIsEditingStore } from "@/app/store/useIsEditingStore";
 
 const columnOptions = [
   { label: "1", value: "1", icon: LayoutGrid },
@@ -38,6 +39,8 @@ export default function SectionEditor({ sectionId }: { sectionId: string }) {
   const addElement = useBuilderStore((state) => state.addElement);
   const elements = useBuilderStore((state) => state.elements.byId);
   const mode = useViewportStore((s) => s.mode);
+
+  const isEditing = useIsEditingStore((s) => s.isEditing);
 
   if (!section) return null;
 
@@ -93,7 +96,7 @@ export default function SectionEditor({ sectionId }: { sectionId: string }) {
               onClick={() => handlePropsChange("columns", value)}
               color={section.props.columns === value ? "primary" : "default"}
               sx={{
-                border: "1px dashed #ccc",
+                border: isEditing ? "1px dashed #cccccc" : "none",
                 width: "30%", // 3개씩 줄 세우기
                 aspectRatio: "1 / 1",
                 borderRadius: "8px",
