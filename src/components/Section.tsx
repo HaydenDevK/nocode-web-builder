@@ -93,8 +93,10 @@ const Section: React.FC<SectionProps> = ({ sectionId }) => {
                       ? "150px"
                       : undefined,
                     display: "flex",
-                    alignItems: "center",
+                    flexDirection: "column",
+                    alignItems: "stretch",
                     justifyContent: "center",
+                    width: "100%",
                   }}
                 >
                   <SortableElement key={elementId} elementId={elementId}>
