@@ -1,10 +1,9 @@
 "use client";
 
 import { Box, Button, Typography } from "@mui/material";
-import styles from "./card.module.scss";
+import styles from "./Card.module.scss";
 import { useRouter } from "next/navigation";
 import { useBuilderStore } from "@/app/store/useBuilderStore";
-import { useState } from "react";
 
 type CardProps = {
   item: {
