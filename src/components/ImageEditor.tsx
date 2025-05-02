@@ -12,6 +12,8 @@ import {
   Typography,
   Slider,
   Stack,
+  Select,
+  MenuItem,
 } from "@mui/material";
 import { useBuilderStore } from "@/app/store/useBuilderStore";
 import type { TImageProps } from "@/app/model/types";
@@ -118,6 +120,19 @@ const ImageEditor = ({ elementId }: { elementId: string }) => {
         <Typography variant="body2" sx={{ color: "mono.dark" }}>
           Current: {width}%
         </Typography>
+      </FormControl>
+      <Typography variant="h6" color="mono">
+        Image Align
+      </Typography>
+      <FormControl fullWidth>
+        <Select
+          value={props.imgAlign || "center"}
+          onChange={(e) => handleChange("imgAlign", e.target.value)}
+        >
+          <MenuItem value="left">Left</MenuItem>
+          <MenuItem value="center">Center</MenuItem>
+          <MenuItem value="right">Right</MenuItem>
+        </Select>
       </FormControl>
 
       {/* Radius */}

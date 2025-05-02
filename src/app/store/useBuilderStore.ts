@@ -13,6 +13,8 @@ import { arrayMove } from "@dnd-kit/sortable";
 
 export const INITIAL_SECTION_PROPS: TSectionProps = {
   backgroundColor: "transparent",
+  desktopColumns: "1",
+  mobileColumns: "1",
   paddingDesktopTopBottom: 15,
   paddingDesktopLeftRight: 15,
   paddingMobileTopBottom: 10,
@@ -116,12 +118,18 @@ export const useBuilderStore = create<BuilderState>()(
         state.sections.allIds = state.sections.allIds.filter(
           (id) => id !== sectionId
         );
+        state.sections.allIds = state.sections.allIds.filter(
+          (id) => id !== sectionId
+        );
 
         for (const el in state.elements.byId) {
           if (state.elements.byId[el].sectionId === sectionId) {
             delete state.elements.byId[el];
           }
         }
+        state.elements.allIds = state.elements.allIds.filter(
+          (id) => state.elements.byId[id] !== undefined
+        );
         state.elements.allIds = state.elements.allIds.filter(
           (id) => state.elements.byId[id] !== undefined
         );
@@ -167,6 +175,11 @@ export const useBuilderStore = create<BuilderState>()(
               oldIndex,
               newIndex
             );
+            state.sections.byId[activeSectionId].elementIds = arrayMove(
+              elementIds,
+              oldIndex,
+              newIndex
+            );
           }
         }
         // 다른 섹션으로 이동
@@ -198,6 +211,9 @@ export const useBuilderStore = create<BuilderState>()(
 
         sec.elementIds = sec.elementIds.filter((id) => id !== elementId);
         delete state.elements.byId[elementId];
+        state.elements.allIds = state.elements.allIds.filter(
+          (id) => id !== elementId
+        );
         state.elements.allIds = state.elements.allIds.filter(
           (id) => id !== elementId
         );
