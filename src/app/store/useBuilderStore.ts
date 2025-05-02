@@ -1,11 +1,12 @@
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
-import type {
+import {
   TSection,
   TSectionProps,
   TElement,
   TSelectedItemInfo,
   TElementProps,
+  TDraft,
 } from "../model/types";
 import { nanoid } from "nanoid";
 import { arrayMove } from "@dnd-kit/sortable";
@@ -34,8 +35,12 @@ interface BuilderState {
     allIds: string[];
   };
 
+  // 로컬 임시 저장 덮어쓰기
+  currentDraftId: string | null;
+
   selectedItemInfo: TSelectedItemInfo | null;
   setSelectedItemInfo(info: TSelectedItemInfo): void;
+  setCurrentDraftId(id: string | null): void;
 
   addSection(): void;
   updateSectionProps(sectionId: string, patch: Partial<TSectionProps>): void;
@@ -47,10 +52,15 @@ interface BuilderState {
   updateElementProps(elementId: string, patch: Partial<TElementProps>): void;
   moveElement(activeId: string, overId: string): void;
   removeElement(elementId: string): void;
+
+  // localStorage 저장 및 삭제
+  saveToLocalStorage(): void;
+  loadDraft(draftId: string): void;
+  removeDraft(draftId: string): void;
 }
 
 export const useBuilderStore = create<BuilderState>()(
-  immer((set) => ({
+  immer((set, get) => ({
     sections: {
       byId: {
         [INITIAL_SECTION_ID]: {
@@ -78,7 +88,7 @@ export const useBuilderStore = create<BuilderState>()(
 
         state.sections.byId[id] = {
           id,
-          props: { backgroundColor: "white" },
+          props: { ...INITIAL_SECTION_PROPS, backgroundColor: "white" },
           elementIds: [],
         };
 
@@ -108,12 +118,18 @@ export const useBuilderStore = create<BuilderState>()(
         state.sections.allIds = state.sections.allIds.filter(
           (id) => id !== sectionId
         );
+        state.sections.allIds = state.sections.allIds.filter(
+          (id) => id !== sectionId
+        );
 
         for (const el in state.elements.byId) {
           if (state.elements.byId[el].sectionId === sectionId) {
             delete state.elements.byId[el];
           }
         }
+        state.elements.allIds = state.elements.allIds.filter(
+          (id) => state.elements.byId[id] !== undefined
+        );
         state.elements.allIds = state.elements.allIds.filter(
           (id) => state.elements.byId[id] !== undefined
         );
@@ -159,6 +175,11 @@ export const useBuilderStore = create<BuilderState>()(
               oldIndex,
               newIndex
             );
+            state.sections.byId[activeSectionId].elementIds = arrayMove(
+              elementIds,
+              oldIndex,
+              newIndex
+            );
           }
         }
         // 다른 섹션으로 이동
@@ -193,7 +214,70 @@ export const useBuilderStore = create<BuilderState>()(
         state.elements.allIds = state.elements.allIds.filter(
           (id) => id !== elementId
         );
+        state.elements.allIds = state.elements.allIds.filter(
+          (id) => id !== elementId
+        );
         state.selectedItemInfo = null;
       }),
+
+    saveToLocalStorage: () => {
+      const state = get();
+      const { sections, elements, currentDraftId } = state;
+      const drafts = JSON.parse(
+        localStorage.getItem("builder-drafts") || "[]"
+      ) as TDraft[];
+
+      if (currentDraftId) {
+        const index = drafts.findIndex((draft) => draft.id === currentDraftId);
+        if (index !== -1) {
+          drafts[index] = {
+            ...drafts[index],
+            sections,
+            elements,
+            savedAt: new Date().toISOString(),
+          };
+        }
+      } else {
+        drafts.push({
+          id: nanoid(),
+          title: `작업 ${drafts.length + 1}`,
+          savedAt: new Date().toISOString(),
+          sections,
+          elements,
+        });
+      }
+
+      localStorage.setItem("builder-drafts", JSON.stringify(drafts));
+    },
+
+    loadDraft: (draftId) => {
+      const drafts = JSON.parse(
+        localStorage.getItem("builder-drafts") || "[]"
+      ) as TDraft[];
+
+      const draft = drafts.find((draft) => draft.id === draftId);
+      if (!draft) return;
+
+      set((state) => {
+        state.sections = draft.sections;
+        state.elements = draft.elements;
+        state.currentDraftId = draftId;
+      });
+    },
+
+    currentDraftId: null, // 초기값
+
+    setCurrentDraftId: (id) =>
+      set((state) => {
+        state.currentDraftId = id;
+      }),
+
+    removeDraft: (draftId: string) => {
+      const drafts = JSON.parse(
+        localStorage.getItem("builder-drafts") || "[]"
+      ) as TDraft[];
+      const filtered = drafts.filter((draft) => draft.id !== draftId);
+      localStorage.setItem("builder-drafts", JSON.stringify(filtered));
+    },
   }))
 );

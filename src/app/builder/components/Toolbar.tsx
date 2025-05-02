@@ -37,10 +37,20 @@ export default function Toolbar() {
 
   const mode = useViewportStore((s) => s.mode);
   const setMode = useViewportStore((s) => s.setMode);
+  const { saveToLocalStorage } = useBuilderStore();
   return (
     <AppBar position="static" color="default" className={styles.toolbar}>
       <MUIToolbar className={styles.inner}>
-        <div className={styles.left}>{/* 로고나 비워두기 */}</div>
+        <div className={styles.left}>
+          <Button
+            variant="outlined"
+            color="secondary"
+            style={{ marginLeft: 8 }}
+            onClick={saveToLocalStorage}
+          >
+            임시 저장
+          </Button>
+        </div>
         <div>
           <Button
             aria-label="Desktop View"
