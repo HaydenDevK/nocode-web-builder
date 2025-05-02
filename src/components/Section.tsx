@@ -63,7 +63,7 @@ const Section: React.FC<SectionProps> = ({ sectionId }) => {
             isSectionSelected && isEditing ? "3px dashed #2684FF" : undefined,
           minHeight: hasElements ? "10px" : "100px",
           width: "100%",
-          margin: "0 auto",
+          margin: isSectionSelected ? "3px auto" : "0 auto",
           transition: "max-width 0.2s ease",
           border: isEditing ? "1px dashed #cccccc" : "none",
           maxWidth: mode === "desktop" ? "1024px" : "375px",
