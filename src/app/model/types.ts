@@ -34,11 +34,16 @@ export type TElementProps =
   | TSection
   | any;
 
+type TFontSize = "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "body1" | "body2";
+type TFontWeight = "normal" | "bold" | "lighter";
+
 export type TTextProps = {
   text: string;
-  size: "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "body1" | "body2";
   fontFamily: "sans-serif" | "serif" | "monospace";
-  fontWeight: "normal" | "bold" | "lighter";
+  desktopFontSize: TFontSize;
+  mobileFontSize: TFontSize;
+  desktopFontWeight: TFontWeight;
+  mobileFontWeight: TFontWeight;
   textAlign: "left" | "center" | "right";
   color: string;
   backgroundColor: string;
