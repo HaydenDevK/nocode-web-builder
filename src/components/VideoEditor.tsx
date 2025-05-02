@@ -3,7 +3,6 @@
 import {
   Stack,
   Typography,
-  Divider,
   FormControl,
   Radio,
   RadioGroup,
@@ -23,7 +22,6 @@ const VideoEditor = ({ elementId }: { elementId: string }) => {
 
   const element = useBuilderStore((s) => s.elements.byId[elementId]);
   const updateElementProps = useBuilderStore((s) => s.updateElementProps);
-  const removeElement = useBuilderStore((s) => s.removeElement);
 
   if (!element || element.type !== "video") return null;
   const props = element.props as TVideoProps;
@@ -119,6 +117,7 @@ const VideoEditor = ({ elementId }: { elementId: string }) => {
           Current: {width}%
         </Typography>
       </FormControl>
+
       <Typography variant="h6" color="mono">
         Video Align
       </Typography>
@@ -132,15 +131,6 @@ const VideoEditor = ({ elementId }: { elementId: string }) => {
           <MenuItem value="right">Right</MenuItem>
         </Select>
       </FormControl>
-      <Divider />
-
-      <Button
-        variant="contained"
-        color="warning"
-        onClick={() => removeElement(elementId)}
-      >
-        Delete
-      </Button>
     </Stack>
   );
 };

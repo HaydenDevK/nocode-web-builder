@@ -5,6 +5,8 @@ import { useBuilderStore } from "@/app/store/useBuilderStore";
 import type { TVideoProps } from "@/app/model/types";
 import { convertToEmbedURL } from "@/util/video.util";
 import styles from "./VideoElement.module.scss";
+import { PLACEHOLDER_VIDEO } from "@/constants/placeholders";
+import Image from "next/image";
 
 interface VideoElementProps {
   elementId: string;
@@ -25,9 +27,6 @@ const VideoElement: React.FC<VideoElementProps> = ({ elementId }) => {
     e.stopPropagation();
     setSelectedItemInfo({ type: "video", itemId: elementId });
   };
-
-  const placeholderImage =
-    "https://d2uolguxr56s4e.cloudfront.net/img/kartrapages/video_player_placeholder.gif";
 
   const isValidURL = !!props.videoURL;
 
@@ -62,9 +61,11 @@ const VideoElement: React.FC<VideoElementProps> = ({ elementId }) => {
         }}
       >
         {!isValidURL ? (
-          <img
-            src={placeholderImage}
+          <Image
+            src={PLACEHOLDER_VIDEO}
             alt="video placeholder"
+            width={500}
+            height={300}
             className={styles.placeholder}
           />
         ) : props.videoSrcType === "youtube" ? (

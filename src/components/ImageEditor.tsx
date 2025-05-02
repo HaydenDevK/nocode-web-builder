@@ -3,7 +3,6 @@
 import React, { useRef } from "react";
 import {
   Button,
-  Divider,
   FormControl,
   TextField,
   Radio,
@@ -23,7 +22,6 @@ const ImageEditor = ({ elementId }: { elementId: string }) => {
 
   const element = useBuilderStore((s) => s.elements.byId[elementId]);
   const updateElementProps = useBuilderStore((s) => s.updateElementProps);
-  const removeElement = useBuilderStore((s) => s.removeElement);
 
   if (!element || element.type !== "image") return null;
   const props = element.props as TImageProps;
@@ -114,7 +112,7 @@ const ImageEditor = ({ elementId }: { elementId: string }) => {
             if (newValue !== null) handleChange("width", newValue);
           }}
           valueLabelDisplay="auto"
-          min={1}
+          min={10}
           max={100}
         />
         <Typography variant="body2" sx={{ color: "mono.dark" }}>
@@ -147,17 +145,6 @@ const ImageEditor = ({ elementId }: { elementId: string }) => {
           handleChange("radius", Number.parseInt(e.target.value, 10) || 0)
         }
       />
-
-      <Divider />
-
-      <Button
-        variant="contained"
-        color="warning"
-        size="large"
-        onClick={() => removeElement(elementId)}
-      >
-        Delete
-      </Button>
     </Stack>
   );
 };

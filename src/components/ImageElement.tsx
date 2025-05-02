@@ -4,6 +4,8 @@ import React from "react";
 import { useBuilderStore } from "@/app/store/useBuilderStore";
 import type { TImageProps } from "@/app/model/types";
 import styles from "./ImageElement.module.scss";
+import { PLACEHOLDER_IMAGE } from "@/constants/placeholders";
+import Image from "next/image";
 
 interface ImageElementProps {
   elementId: string;
@@ -19,10 +21,6 @@ const ImageElement: React.FC<ImageElementProps> = ({ elementId }) => {
   const props = element.props as TImageProps;
   const isSelected =
     selectedItemInfo?.type === "image" && selectedItemInfo.itemId === elementId;
-
-  // 임시로 사용한 이미지입니다
-  const placeholderImage =
-    "https://media.istockphoto.com/id/1147544807/vector/thumbnail-image-vector-graphic.jpg?s=612x612&w=0&k=20&c=rnCKVbdxqkjlcs3xH87-9gocETqpspHFXu5dIGB4wuM=";
 
   // align 처리
   const getAlignmentStyle = (align: string) => {
@@ -51,9 +49,11 @@ const ImageElement: React.FC<ImageElementProps> = ({ elementId }) => {
         setSelectedItemInfo({ type: "image", itemId: elementId });
       }}
     >
-      <img
-        src={props.imageURL || placeholderImage}
+      <Image
+        src={props.imageURL || PLACEHOLDER_IMAGE}
         alt="img"
+        width={500}
+        height={300}
         className={`${styles.image} ${isSelected ? styles.selected : ""}`}
         style={{
           width: `${props.width}%`,
