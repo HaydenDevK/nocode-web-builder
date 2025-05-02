@@ -9,6 +9,8 @@ export type TSection = {
 
 export type TSectionProps = {
   backgroundColor: string;
+  desktopColumns: string;
+  mobileColumns: string;
   paddingDesktopTopBottom: number;
   paddingDesktopLeftRight: number;
   paddingMobileTopBottom: number;
@@ -24,7 +26,13 @@ export type TElement = {
   props: TElementProps;
 };
 
-export type TElementProps = TTextProps | TLinkProps | TImageProps | TVideoProps | TSection | any;
+export type TElementProps =
+  | TTextProps
+  | TLinkProps
+  | TImageProps
+  | TVideoProps
+  | TSection
+  | any;
 
 export type TTextProps = {
   text: string;
@@ -60,6 +68,7 @@ export type TSelectedItemInfo =
 export type TImageProps = {
   srcType: "url" | "upload";
   imageURL: string;
+  imgAlign: "left" | "center" | "right";
   width: number;
   radius: number;
 };
@@ -67,5 +76,6 @@ export type TImageProps = {
 export type TVideoProps = {
   videoSrcType: "youtube" | "upload";
   videoURL: string;
+  videoAlign: "left" | "center" | "right";
   width: number;
 };

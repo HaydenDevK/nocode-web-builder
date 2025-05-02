@@ -22,22 +22,46 @@ const ImageElement: React.FC<ImageElementProps> = ({ elementId }) => {
   const isSelected =
     selectedItemInfo?.type === "image" && selectedItemInfo.itemId === elementId;
 
+  // align 처리
+  const getAlignmentStyle = (align: string) => {
+    switch (align) {
+      case "left":
+        return "flex-start";
+      case "center":
+        return "center";
+      case "right":
+        return "flex-end";
+      default:
+        return "center";
+    }
+  };
+
   return (
-    <Image
+    <div
+      className={`${styles.wrapper}`}
+      style={{
+        display: "flex",
+        justifyContent: getAlignmentStyle(props.imgAlign),
+        width: "100%",
+      }}
       onClick={(e) => {
         e.stopPropagation();
         setSelectedItemInfo({ type: "image", itemId: elementId });
       }}
-      src={props.imageURL || PLACEHOLDER_IMAGE}
-      alt="image element"
-      className={`${styles.image} ${isSelected ? styles.selected : ""}`}
-      width={500}
-      height={300}
-      style={{
-        width: `${props.width}%`,
-        borderRadius: props.radius,
-      }}
-    />
+    >
+      <Image
+        src={props.imageURL || PLACEHOLDER_IMAGE}
+        alt="img"
+        width={500}
+        height={300}
+        className={`${styles.image} ${isSelected ? styles.selected : ""}`}
+        style={{
+          width: `${props.width}%`,
+          borderRadius: props.radius,
+          cursor: "pointer",
+        }}
+      />
+    </div>
   );
 };
 

@@ -10,6 +10,8 @@ import {
   TextField,
   Slider,
   Button,
+  Select,
+  MenuItem,
 } from "@mui/material";
 import { useRef } from "react";
 import { useBuilderStore } from "@/app/store/useBuilderStore";
@@ -114,6 +116,20 @@ const VideoEditor = ({ elementId }: { elementId: string }) => {
         <Typography variant="body2" sx={{ color: "mono.dark" }}>
           Current: {width}%
         </Typography>
+      </FormControl>
+
+      <Typography variant="h6" color="mono">
+        Video Align
+      </Typography>
+      <FormControl fullWidth>
+        <Select
+          value={props.videoAlign || "center"}
+          onChange={(e) => handleChange("videoAlign", e.target.value)}
+        >
+          <MenuItem value="left">Left</MenuItem>
+          <MenuItem value="center">Center</MenuItem>
+          <MenuItem value="right">Right</MenuItem>
+        </Select>
       </FormControl>
     </Stack>
   );
