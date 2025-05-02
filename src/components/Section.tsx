@@ -38,7 +38,10 @@ const Section: React.FC<SectionProps> = ({ sectionId }) => {
     mode === "desktop"
       ? section.props.paddingDesktopLeftRight ?? 0
       : section.props.paddingMobileLeftRight ?? 0;
-  const columns = section.props.columns ?? "1";
+  const columns =
+    mode === "desktop"
+      ? section.props.desktopColumns ?? "1"
+      : section.props.mobileColumns ?? "1";
   const columnCount = getColumnCount(columns);
 
   const hasElements = section.elementIds.length > 0;

@@ -9,6 +9,8 @@ export type TSection = {
 
 export type TSectionProps = {
   backgroundColor: string;
+  desktopColumns: string;
+  mobileColumns: string;
   paddingDesktopTopBottom: number;
   paddingDesktopLeftRight: number;
   paddingMobileTopBottom: number;
