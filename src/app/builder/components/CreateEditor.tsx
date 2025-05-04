@@ -1,21 +1,14 @@
 // CreateEditor.tsx
 "use client";
 
-import {
-  Text,
-  ImageIcon,
-  SquareMousePointer,
-  Video,
-  LayoutTemplate,
-} from "lucide-react";
+import { Text, ImageIcon, SquareMousePointer, Video, LayoutTemplate } from "lucide-react";
 import { Stack, Divider, Typography, Button } from "@mui/material";
 import { useBuilderStore } from "@/app/store/useBuilderStore";
 import { DEFAULT_TEXT_PROPS } from "@/constants/defaultElementProps";
 import { TElementTypes } from "@/app/model/types";
 
 export default function CreateEditor() {
-  const { addElement, addSection, selectedItemInfo, setSelectedItemInfo } =
-    useBuilderStore();
+  const { addElement, addSection, selectedItemInfo, setSelectedItemInfo } = useBuilderStore();
 
   const handleAdd = (label: string) => {
     if (selectedItemInfo?.type !== "section") return;
@@ -80,6 +73,8 @@ export default function CreateEditor() {
 
     if (newId) {
       setSelectedItemInfo({ type: label as TElementTypes, itemId: newId });
+    } else if (label !== "section") {
+      alert("각 칸에 요소가 전부 채워져있어 더 이상 추가할 수 없습니다.");
     }
   };
   const icons = [
