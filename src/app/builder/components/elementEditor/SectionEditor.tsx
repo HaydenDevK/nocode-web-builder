@@ -39,7 +39,7 @@ export default function SectionEditor({ sectionId }: { sectionId: string }) {
     if (success) {
       updateSectionProps(sectionId, { [key]: value });
     } else {
-      alert("현재 요소 수가 설정하려는 칸 수보다 많아서 변경할 수 없습니다.");
+      alert("설정하려는 칸 수보다 현재 요소 수가 많아서 변경할 수 없습니다.");
       return;
     }
   };
