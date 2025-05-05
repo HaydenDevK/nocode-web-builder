@@ -3,6 +3,7 @@ export const DEFAULT_TEXT_PROPS = {
   size: "h1",
   fontFamily: "Spoqa Han Sans Neo",
   fontWeight: "normal",
+  textAlign: "center",
   color: "#000000",
   backgroundColor: "transparent",
   padding: 0,

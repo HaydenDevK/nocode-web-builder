@@ -41,6 +41,7 @@ export default function CreateEditor() {
             minWidth: 150,
             minHeight: 50,
             borderRadius: 4,
+            fontFamily: "sans-serif",
           },
         });
         break;

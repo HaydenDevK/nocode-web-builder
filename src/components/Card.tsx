@@ -1,24 +1,54 @@
 "use client";
 
 import { Box, Button, Typography } from "@mui/material";
-import styles from "./card.module.scss";
+import styles from "./Card.module.scss";
+import { useRouter } from "next/navigation";
+import { useBuilderStore } from "@/app/store/useBuilderStore";
 
 type CardProps = {
   item: {
-    id: number;
+    id: number | string;
     title: string;
-    thumbnail: string;
-    type: "template" | "deployed";
+    thumbnail?: string;
+    type: "template" | "deployed" | "draft";
   };
+  loadDrafts?: () => void;
 };
 
-export default function Card({ item }: CardProps) {
+export default function Card({ item, loadDrafts }: CardProps) {
+  const router = useRouter();
+  const { loadDraft, removeDraft } = useBuilderStore();
+
+  const handleEdit = () => {
+    if (item.type === "draft") {
+      loadDraft(item.id.toString());
+      router.push("/builder");
+    }
+  };
+
+  const handleDelete = () => {
+    if (item.type === "draft") {
+      removeDraft(item.id.toString());
+      loadDrafts?.();
+    }
+  };
+
   const baseButtons = (
     <>
-      <Button variant="outlined" color="info" className={styles.actionBtn}>
+      <Button
+        variant="outlined"
+        color="info"
+        className={styles.actionBtn}
+        onClick={handleEdit}
+      >
         편집
       </Button>
-      <Button variant="outlined" color="warning" className={styles.actionBtn}>
+      <Button
+        variant="outlined"
+        color="warning"
+        className={styles.actionBtn}
+        onClick={handleDelete}
+      >
         삭제
       </Button>
     </>
@@ -29,7 +59,9 @@ export default function Card({ item }: CardProps) {
       <Box className={styles.card}>
         <Box
           className={styles.thumbnail}
-          style={{ backgroundImage: `url(${item.thumbnail})` }}
+          style={{
+            backgroundImage: item.thumbnail ? `url(${item.thumbnail})` : "none",
+          }}
         >
           <Box className={styles.overlay}>
             <Box className={styles.buttonGroup}>

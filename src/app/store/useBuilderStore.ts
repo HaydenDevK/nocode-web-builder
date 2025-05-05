@@ -1,10 +1,12 @@
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
-import type { TSection, TSectionProps, TElement, TSelectedItemInfo, TElementProps } from "../model/types";
+import { TSection, TSectionProps, TElement, TSelectedItemInfo, TElementProps, TDraft } from "../model/types";
 import { nanoid } from "nanoid";
 
 export const INITIAL_SECTION_PROPS: TSectionProps = {
   backgroundColor: "transparent",
+  desktopColumns: "1",
+  mobileColumns: "1",
   paddingDesktopTopBottom: 15,
   paddingDesktopLeftRight: 30,
   paddingMobileTopBottom: 10,
@@ -25,8 +27,12 @@ interface BuilderState {
     allIds: string[];
   };
 
+  // 로컬 임시 저장 덮어쓰기
+  currentDraftId: string | null;
+
   selectedItemInfo: TSelectedItemInfo | null;
   setSelectedItemInfo(info: TSelectedItemInfo): void;
+  setCurrentDraftId(id: string | null): void;
 
   addSection(): void;
   updateSectionProps(sectionId: string, patch: Partial<TSectionProps>): void;
@@ -39,10 +45,15 @@ interface BuilderState {
   updateElementProps(elementId: string, patch: Partial<TElementProps>): void;
   moveElement: (activeId: string, overId: string) => void;
   removeElement(elementId: string): void;
+
+  // localStorage 저장 및 삭제
+  saveToLocalStorage(): void;
+  loadDraft(draftId: string): void;
+  removeDraft(draftId: string): void;
 }
 
 export const useBuilderStore = create<BuilderState>()(
-  immer((set) => ({
+  immer((set, get) => ({
     sections: {
       byId: {
         [INITIAL_SECTION_ID]: {
@@ -70,14 +81,7 @@ export const useBuilderStore = create<BuilderState>()(
 
         state.sections.byId[id] = {
           id,
-          props: {
-            backgroundColor: "white",
-            paddingDesktopTopBottom: 15,
-            paddingDesktopLeftRight: 30,
-            paddingMobileTopBottom: 10,
-            paddingMobileLeftRight: 10,
-            columns: "1",
-          },
+          props: { ...INITIAL_SECTION_PROPS, backgroundColor: "white" },
           elementIds: [],
         };
 
@@ -105,6 +109,7 @@ export const useBuilderStore = create<BuilderState>()(
       set((state) => {
         delete state.sections.byId[sectionId];
         state.sections.allIds = state.sections.allIds.filter((id) => id !== sectionId);
+        state.sections.allIds = state.sections.allIds.filter((id) => id !== sectionId);
 
         for (const el in state.elements.byId) {
           if (state.elements.byId[el].sectionId === sectionId) {
@@ -112,7 +117,50 @@ export const useBuilderStore = create<BuilderState>()(
           }
         }
         state.elements.allIds = state.elements.allIds.filter((id) => state.elements.byId[id] !== undefined);
+        state.elements.allIds = state.elements.allIds.filter((id) => state.elements.byId[id] !== undefined);
       }),
+
+    initializeSectionGrid: (sectionId: string, newColumns: string) => {
+      let success = false;
+      set((state) => {
+        const section = state.sections.byId[sectionId];
+        const columnCount = newColumns.split("-").length;
+        const checkElement = section.elementIds.filter((id) => !id.startsWith("empty"));
+        const emptyElement = section.elementIds.filter((id) => id.startsWith("empty"));
+
+        // 설정하려는 칸 수보다 요소 수가 많으면 설정 불가능
+        if (columnCount > 1 && checkElement.length > columnCount) return;
+
+        section.props.columns = newColumns;
+
+        const emptyCount = columnCount - checkElement.length;
+        const columnEmptyElement = emptyElement.slice(0, emptyCount);
+
+        for (const id of emptyElement.slice(emptyCount)) {
+          delete state.elements.byId[id];
+        }
+
+        section.elementIds = [...checkElement, ...columnEmptyElement];
+        const addEmptyCount = emptyCount - columnEmptyElement.length;
+        if (addEmptyCount > 0) {
+          const emptyIds = Array.from({ length: addEmptyCount }, () => `empty-${nanoid()}`);
+          for (const id of emptyIds) {
+            if (!state.elements.byId[id]) {
+              state.elements.byId[id] = {
+                id,
+                sectionId,
+                type: "empty",
+                props: { backgroundColor: "white" },
+              };
+            }
+          }
+          section.elementIds.push(...emptyIds);
+        }
+        success = true;
+      });
+
+      return success;
+    },
 
     initializeSectionGrid: (sectionId: string, newColumns: string) => {
       let success = false;
@@ -238,5 +286,59 @@ export const useBuilderStore = create<BuilderState>()(
         state.elements.allIds = [...state.elements.allIds, emptyId];
         state.selectedItemInfo = null;
       }),
+
+    saveToLocalStorage: () => {
+      const state = get();
+      const { sections, elements, currentDraftId } = state;
+      const drafts = JSON.parse(localStorage.getItem("builder-drafts") || "[]") as TDraft[];
+
+      if (currentDraftId) {
+        const index = drafts.findIndex((draft) => draft.id === currentDraftId);
+        if (index !== -1) {
+          drafts[index] = {
+            ...drafts[index],
+            sections,
+            elements,
+            savedAt: new Date().toISOString(),
+          };
+        }
+      } else {
+        drafts.push({
+          id: nanoid(),
+          title: `작업 ${drafts.length + 1}`,
+          savedAt: new Date().toISOString(),
+          sections,
+          elements,
+        });
+      }
+
+      localStorage.setItem("builder-drafts", JSON.stringify(drafts));
+    },
+
+    loadDraft: (draftId) => {
+      const drafts = JSON.parse(localStorage.getItem("builder-drafts") || "[]") as TDraft[];
+
+      const draft = drafts.find((draft) => draft.id === draftId);
+      if (!draft) return;
+
+      set((state) => {
+        state.sections = draft.sections;
+        state.elements = draft.elements;
+        state.currentDraftId = draftId;
+      });
+    },
+
+    currentDraftId: null, // 초기값
+
+    setCurrentDraftId: (id) =>
+      set((state) => {
+        state.currentDraftId = id;
+      }),
+
+    removeDraft: (draftId: string) => {
+      const drafts = JSON.parse(localStorage.getItem("builder-drafts") || "[]") as TDraft[];
+      const filtered = drafts.filter((draft) => draft.id !== draftId);
+      localStorage.setItem("builder-drafts", JSON.stringify(filtered));
+    },
   }))
 );

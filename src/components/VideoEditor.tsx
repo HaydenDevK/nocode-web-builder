@@ -3,7 +3,6 @@
 import {
   Stack,
   Typography,
-  Divider,
   FormControl,
   Radio,
   RadioGroup,
@@ -11,6 +10,8 @@ import {
   TextField,
   Slider,
   Button,
+  Select,
+  MenuItem,
 } from "@mui/material";
 import { useRef } from "react";
 import { useBuilderStore } from "@/app/store/useBuilderStore";
@@ -21,7 +22,6 @@ const VideoEditor = ({ elementId }: { elementId: string }) => {
 
   const element = useBuilderStore((s) => s.elements.byId[elementId]);
   const updateElementProps = useBuilderStore((s) => s.updateElementProps);
-  const removeElement = useBuilderStore((s) => s.removeElement);
 
   if (!element || element.type !== "video") return null;
   const props = element.props as TVideoProps;
@@ -118,15 +118,19 @@ const VideoEditor = ({ elementId }: { elementId: string }) => {
         </Typography>
       </FormControl>
 
-      <Divider />
-
-      <Button
-        variant="contained"
-        color="warning"
-        onClick={() => removeElement(elementId)}
-      >
-        Delete
-      </Button>
+      <Typography variant="h6" color="mono">
+        Video Align
+      </Typography>
+      <FormControl fullWidth>
+        <Select
+          value={props.videoAlign || "center"}
+          onChange={(e) => handleChange("videoAlign", e.target.value)}
+        >
+          <MenuItem value="left">Left</MenuItem>
+          <MenuItem value="center">Center</MenuItem>
+          <MenuItem value="right">Right</MenuItem>
+        </Select>
+      </FormControl>
     </Stack>
   );
 };

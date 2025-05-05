@@ -5,13 +5,6 @@ import Section from "@/components/Section";
 import styles from "../styles/Canvas.module.scss";
 import { closestCenter, DndContext, PointerSensor, useSensor, useSensors, type DragEndEvent } from "@dnd-kit/core";
 
-export interface IDragViewState {
-  activeId: string | null;
-  overId: string | null;
-  isDragging: boolean;
-  overSectionId: string | null;
-}
-
 const Canvas: React.FC = () => {
   const sensors = useSensors(useSensor(PointerSensor));
   const sectionIds = useBuilderStore((s) => s.sections.allIds);

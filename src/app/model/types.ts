@@ -9,6 +9,8 @@ export type TSection = {
 
 export type TSectionProps = {
   backgroundColor: string;
+  desktopColumns: string;
+  mobileColumns: string;
   paddingDesktopTopBottom: number;
   paddingDesktopLeftRight: number;
   paddingMobileTopBottom: number;
@@ -24,13 +26,25 @@ export type TElement = {
   props: TElementProps;
 };
 
-export type TElementProps = TTextProps | TLinkProps | TImageProps | TVideoProps | TSection | any;
+export type TElementProps =
+  | TTextProps
+  | TLinkProps
+  | TImageProps
+  | TVideoProps
+  | TSection
+  | any;
+
+type TFontSize = "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "body1" | "body2";
+type TFontWeight = "normal" | "bold" | "lighter";
 
 export type TTextProps = {
   text: string;
-  size: "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "body1" | "body2";
   fontFamily: "sans-serif" | "serif" | "monospace";
-  fontWeight: "normal" | "bold" | "lighter";
+  desktopFontSize: TFontSize;
+  mobileFontSize: TFontSize;
+  desktopFontWeight: TFontWeight;
+  mobileFontWeight: TFontWeight;
+  textAlign: "left" | "center" | "right";
   color: string;
   backgroundColor: string;
   padding: number;
@@ -60,6 +74,7 @@ export type TSelectedItemInfo =
 export type TImageProps = {
   srcType: "url" | "upload";
   imageURL: string;
+  imgAlign: "left" | "center" | "right";
   width: number;
   radius: number;
 };
@@ -67,5 +82,20 @@ export type TImageProps = {
 export type TVideoProps = {
   videoSrcType: "youtube" | "upload";
   videoURL: string;
+  videoAlign: "left" | "center" | "right";
   width: number;
+};
+
+export type TDraft = {
+  id: string;
+  title: string;
+  savedAt: string;
+  sections: {
+    byId: Record<string, TSection>;
+    allIds: string[];
+  };
+  elements: {
+    byId: Record<string, TElement>;
+    allIds: string[];
+  };
 };

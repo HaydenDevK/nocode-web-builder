@@ -1,7 +1,5 @@
 "use client";
 
-// LinkButton
-import { Button } from "@mui/material";
 import { useBuilderStore } from "@/app/store/useBuilderStore";
 
 interface LinkProps {
@@ -31,9 +29,11 @@ export default function LinkButton({ elementId }: LinkProps) {
   const isSelected = selectedItemInfo?.itemId === id;
 
   const handleClick = (e: React.MouseEvent) => {
-    e.preventDefault();
     e.stopPropagation();
     setSelectedItemInfo({ type, itemId: id });
+
+    // href 가 있으면 새 창으로 이동
+    if (href) window.open(href, "_blank", "noopener,noreferrer");
   };
 
   return (
@@ -44,13 +44,12 @@ export default function LinkButton({ elementId }: LinkProps) {
         textAlign: "center",
       }}
     >
-      <Button
-        href={href || undefined}
+      <button
         onClick={(e) => {
           e.preventDefault();
           handleClick(e);
         }}
-        sx={{
+        style={{
           backgroundColor: backgroundColor,
           fontSize: `${fontSize}px`,
           color: color,
@@ -66,14 +65,10 @@ export default function LinkButton({ elementId }: LinkProps) {
           wordBreak: "break-word",
           textAlign: "center",
           textTransform: "none",
-          "&:hover": {
-            backgroundColor: "#ffffff",
-            color: "#A64EFF",
-          },
         }}
       >
         {text}
-      </Button>
+      </button>
     </div>
   );
 }

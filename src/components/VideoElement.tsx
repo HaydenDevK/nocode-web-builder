@@ -1,8 +1,12 @@
+"use client";
+
 import React from "react";
 import { useBuilderStore } from "@/app/store/useBuilderStore";
 import type { TVideoProps } from "@/app/model/types";
 import { convertToEmbedURL } from "@/util/video.util";
 import styles from "./VideoElement.module.scss";
+import { PLACEHOLDER_VIDEO } from "@/constants/placeholders";
+import Image from "next/image";
 
 interface VideoElementProps {
   elementId: string;
@@ -23,47 +27,69 @@ const VideoElement: React.FC<VideoElementProps> = ({ elementId }) => {
     e.stopPropagation();
     setSelectedItemInfo({ type: "video", itemId: elementId });
   };
-  // 임시로 사용한 이미지 입니다.
-  const placeholderImage =
-    "https://d2uolguxr56s4e.cloudfront.net/img/kartrapages/video_player_placeholder.gif";
 
   const isValidURL = !!props.videoURL;
 
+  const getAlignmentStyle = (align: string) => {
+    switch (align) {
+      case "left":
+        return "flex-start";
+      case "center":
+        return "center";
+      case "right":
+        return "flex-end";
+      default:
+        return "center";
+    }
+  };
+
   return (
     <div
-      className={`${styles.container}`}
+      className={`${styles.wrapper}`}
       style={{
-        width: `${props.width}%`,
-        ...(isSelected && { outline: "2px dashed #2684FF" }),
+        display: "flex",
+        justifyContent: getAlignmentStyle(props.videoAlign || "center"),
+        width: "100%",
       }}
+      onClick={handleClick}
     >
-      {!isValidURL ? (
-        <img
-          src={placeholderImage}
-          alt="video placeholder"
-          className={styles.placeholder}
-        />
-      ) : props.videoSrcType === "youtube" ? (
-        <div className={styles.youtubeWrapper}>
-          <iframe
-            src={convertToEmbedURL(props.videoURL)}
-            title="YouTube Video"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-            className={styles.iframe}
+      <div
+        style={{
+          width: `${props.width || 100}%`,
+          ...(isSelected && { outline: "2px dashed #2684FF" }),
+          position: "relative",
+        }}
+      >
+        {!isValidURL ? (
+          <Image
+            src={PLACEHOLDER_VIDEO}
+            alt="video placeholder"
+            width={500}
+            height={300}
+            className={styles.placeholder}
           />
-        </div>
-      ) : (
-        <video
-          src={props.videoURL}
-          controls={!isSelected}
-          className={styles.video}
-        >
-          <track kind="captions" label="default" />
-        </video>
-      )}
+        ) : props.videoSrcType === "youtube" ? (
+          <div className={styles.youtubeWrapper}>
+            <iframe
+              src={convertToEmbedURL(props.videoURL)}
+              title="YouTube Video"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              className={styles.iframe}
+            />
+          </div>
+        ) : (
+          <video
+            src={props.videoURL}
+            controls={!isSelected}
+            className={styles.video}
+          >
+            <track kind="captions" label="default" />
+          </video>
+        )}
 
-      <div className={styles.overlay} onClick={handleClick} />
+        <div className={styles.overlay} />
+      </div>
     </div>
   );
 };
