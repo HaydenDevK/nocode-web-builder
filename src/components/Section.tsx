@@ -43,7 +43,6 @@ const Section: React.FC<ISectionProps> = ({ section, elements }) => {
     <div style={{ position: "relative" }}>
       <section
         onClick={() => setSelectedItemInfo({ type: "section", itemId: section.id })}
-        className={`${styles.section} ${mode === "mobile" ? styles.mobile : ""}`}
         style={{
           display: "flex",
           gap: "16px",
@@ -95,7 +94,7 @@ const Section: React.FC<ISectionProps> = ({ section, elements }) => {
           })}
         </div>
       </section>
-      {isSectionSelected && isEditing && <SectionToolButton sectionId={section.id} isActive={isSectionSelected} />}
+      {isSectionSelected && <SectionToolButton sectionId={section.id} isActive={isSectionSelected} />}
     </div>
   );
 };

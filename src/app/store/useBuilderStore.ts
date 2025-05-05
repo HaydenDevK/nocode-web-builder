@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
-import { TSection, TSectionProps, TElement, TSelectedItemInfo, TElementProps, TDraft } from "../model/types";
+import type { TSection, TSectionProps, TElement, TSelectedItemInfo, TElementProps, TDraft } from "../model/types";
 import { nanoid } from "nanoid";
 
 export const INITIAL_SECTION_PROPS: TSectionProps = {
@@ -129,49 +129,7 @@ export const useBuilderStore = create<BuilderState>()(
         const emptyElement = section.elementIds.filter((id) => id.startsWith("empty"));
 
         // 설정하려는 칸 수보다 요소 수가 많으면 설정 불가능
-        if (columnCount > 1 && checkElement.length > columnCount) return;
-
-        section.props.columns = newColumns;
-
-        const emptyCount = columnCount - checkElement.length;
-        const columnEmptyElement = emptyElement.slice(0, emptyCount);
-
-        for (const id of emptyElement.slice(emptyCount)) {
-          delete state.elements.byId[id];
-        }
-
-        section.elementIds = [...checkElement, ...columnEmptyElement];
-        const addEmptyCount = emptyCount - columnEmptyElement.length;
-        if (addEmptyCount > 0) {
-          const emptyIds = Array.from({ length: addEmptyCount }, () => `empty-${nanoid()}`);
-          for (const id of emptyIds) {
-            if (!state.elements.byId[id]) {
-              state.elements.byId[id] = {
-                id,
-                sectionId,
-                type: "empty",
-                props: { backgroundColor: "white" },
-              };
-            }
-          }
-          section.elementIds.push(...emptyIds);
-        }
-        success = true;
-      });
-
-      return success;
-    },
-
-    initializeSectionGrid: (sectionId: string, newColumns: string) => {
-      let success = false;
-      set((state) => {
-        const section = state.sections.byId[sectionId];
-        const columnCount = newColumns.split("-").length;
-        const checkElement = section.elementIds.filter((id) => !id.startsWith("empty"));
-        const emptyElement = section.elementIds.filter((id) => id.startsWith("empty"));
-
-        // 설정하려는 칸 수보다 요소 수가 많으면 설정 불가능
-        if (columnCount > 1 && checkElement.length > columnCount) return;
+        if (checkElement.length > columnCount) return;
 
         section.props.columns = newColumns;
 
