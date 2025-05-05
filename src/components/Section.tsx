@@ -33,7 +33,6 @@ const Section: React.FC<ISectionProps> = ({ section, elements }) => {
   const paddingLeftRight =
     mode === "desktop" ? section.props.paddingDesktopLeftRight ?? 0 : section.props.paddingMobileLeftRight ?? 0;
   const columns = section.props.columns ?? "1";
-  // const columnCount = getColumnCount(columns);
   const hasElements = section.elementIds.length > 0;
 
   useEffect(() => {
@@ -112,24 +111,6 @@ function getGridTemplateColumns(columns: string) {
       return "1fr";
   }
 }
-
-// function getColumnCount(columns: string) {
-//   switch (columns) {
-//     case "1":
-//       return 1;
-//     case "1-1":
-//       return 2;
-//     case "1-1-1":
-//       return 3;
-//     case "1-1-1-1":
-//       return 4;
-//     case "2-1":
-//     case "1-2":
-//       return 2;
-//     default:
-//       return 1;
-//   }
-// }
 
 function shouldApplyMinHeight(elementIds: string[]) {
   return elementIds.length === 0;
