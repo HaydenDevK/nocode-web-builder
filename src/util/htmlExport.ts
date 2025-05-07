@@ -63,6 +63,8 @@ export const generateHTML = (): string => {
     })
     .join("\n");
 
+  /* TODO 모바일 스타일 추가 */
+
   return `<!DOCTYPE html>
 <html lang="ko">
 <head>

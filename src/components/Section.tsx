@@ -46,8 +46,17 @@ const Section: React.FC<ISectionProps> = ({ section, elements }) => {
   }, [section.id, columns]);
 
   return (
-    <div style={{ position: "relative" }}>
+    <div
+      style={{
+        position: "relative",
+      }}
+    >
       <section
+        data-mobile-padding-top-bottom={section.props.paddingMobileTopBottom}
+        data-mobile-padding-left-right={section.props.paddingMobileLeftRight}
+        data-mobile-columns={getGridTemplateColumns(
+          section.props.mobileColumns
+        )}
         onClick={() =>
           setSelectedItemInfo({ type: "section", itemId: section.id })
         }
@@ -79,9 +88,7 @@ const Section: React.FC<ISectionProps> = ({ section, elements }) => {
             alignItems: "stretch",
             gap: "16px",
             width: "100%",
-            margin: "0 auto",
             paddingTop: mode === "desktop" ? "4px" : "0",
-            maxWidth: mode === "desktop" ? "1024px" : "375px",
           }}
         >
           {section.elementIds.map((elementId) => {
@@ -90,7 +97,7 @@ const Section: React.FC<ISectionProps> = ({ section, elements }) => {
               <div
                 key={elementId}
                 style={{
-                  border: "1px dashed #ccc",
+                  border: isEditing ? "1px dashed #ccc" : null,
                   minHeight: shouldApplyMinHeight(section.elementIds)
                     ? "150px"
                     : "150px",
