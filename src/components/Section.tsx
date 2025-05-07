@@ -70,7 +70,7 @@ const Section: React.FC<ISectionProps> = ({ section, elements }) => {
             gridTemplateColumns: getGridTemplateColumns(columns),
             alignItems: "stretch",
             gap: "16px",
-            width: "100%",
+            width: "1024px",
             margin: "0 auto",
             paddingTop: mode === "desktop" ? "4px" : "0",
           }}
@@ -82,7 +82,7 @@ const Section: React.FC<ISectionProps> = ({ section, elements }) => {
                 key={elementId}
                 style={{
                   border: "1px dashed #ccc",
-                  minHeight: shouldApplyMinHeight(section.elementIds) ? "150px" : "150px",
+                  minHeight: shouldApplyMinHeight(section.elementIds) ? "150px" : "65px",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
@@ -121,5 +121,5 @@ function getGridTemplateColumns(columns: string) {
 }
 
 function shouldApplyMinHeight(elementIds: string[]) {
-  return elementIds.length === 0;
+  return elementIds.length === 0 || elementIds.every((id) => id.startsWith("empty"));
 }
