@@ -61,7 +61,8 @@ export default function Home() {
       </header>
 
       <Box className={styles.contentWrapper}>
-        <Box className={styles.section}>
+        {/* 템플릿 저장 가능 시 활성화 */}
+        {/* <Box className={styles.section}>
           <Typography variant="h4" color="mono" gutterBottom>
             템플릿
           </Typography>
@@ -70,9 +71,10 @@ export default function Home() {
               <Card key={item.id} item={{ ...item, type: "template" }} />
             ))}
           </Box>
-        </Box>
+        </Box> */}
 
-        <Box className={styles.section}>
+        {/* 배포된 사이트 관리 가능 시 활성화 */}
+        {/* <Box className={styles.section}>
           <Typography variant="h4" color="mono" gutterBottom>
             배포된 사이트
           </Typography>
@@ -81,7 +83,7 @@ export default function Home() {
               <Card key={item.id} item={{ ...item, type: "deployed" }} />
             ))}
           </Box>
-        </Box>
+        </Box> */}
         <Box className={styles.section}>
           <Typography variant="h4" color="mono" gutterBottom>
             임시 저장 목록
