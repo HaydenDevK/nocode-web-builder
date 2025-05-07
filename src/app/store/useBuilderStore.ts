@@ -23,7 +23,7 @@ export const INITIAL_SECTION_PROPS: TSectionProps = {
   radius: 0,
 };
 
-const INITIAL_SECTION_ID = "section-1";
+const INITIAL_SECTION_ID = nanoid();
 
 interface BuilderState {
   sections: {
