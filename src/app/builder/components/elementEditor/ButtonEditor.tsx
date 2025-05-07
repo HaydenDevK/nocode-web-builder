@@ -125,7 +125,7 @@ export default function ButtonEditor({ elementId }: { elementId: string }) {
         fullWidth
         type="number"
         value={props.minWidth || ""}
-        onChange={(e) => handleNumberChange("width", e.target.value)}
+        onChange={(e) => handleNumberChange("minWidth", e.target.value)}
       />
 
       <Typography variant="h6" color="mono">
@@ -135,7 +135,7 @@ export default function ButtonEditor({ elementId }: { elementId: string }) {
         fullWidth
         type="number"
         value={props.minHeight || ""}
-        onChange={(e) => handleNumberChange("height", e.target.value)}
+        onChange={(e) => handleNumberChange("minHeight", e.target.value)}
       />
     </Stack>
   );
