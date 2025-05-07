@@ -1,24 +1,9 @@
 "use client";
 
-import {
-  Typography,
-  Slider,
-  TextField,
-  Stack,
-  Button,
-  IconButton,
-  Tooltip,
-} from "@mui/material";
+import { Typography, Slider, TextField, Stack, Button, IconButton, Tooltip } from "@mui/material";
 import { useBuilderStore } from "@/app/store/useBuilderStore";
 import { nanoid } from "nanoid";
-import {
-  Columns2,
-  Columns3,
-  Columns4,
-  PanelLeft,
-  PanelRight,
-  Square,
-} from "lucide-react";
+import { Columns2, Columns3, Columns4, PanelLeft, PanelRight, Square } from "lucide-react";
 import { useViewportStore } from "@/app/store/useViewportStore";
 import { useIsEditingStore } from "@/app/store/useIsEditingStore";
 
@@ -38,19 +23,25 @@ const mobileColumnOptions = [
 
 export default function SectionEditor({ sectionId }: { sectionId: string }) {
   const section = useBuilderStore((state) => state.sections.byId[sectionId]);
-  const updateSectionProps = useBuilderStore(
-    (state) => state.updateSectionProps
-  );
+  const updateSectionProps = useBuilderStore((state) => state.updateSectionProps);
   const addElement = useBuilderStore((state) => state.addElement);
   const elements = useBuilderStore((state) => state.elements.byId);
   const mode = useViewportStore((s) => s.mode);
 
   const isEditing = useIsEditingStore((s) => s.isEditing);
+  const { initializeSectionGrid } = useBuilderStore();
 
   if (!section) return null;
 
   const handlePropsChange = (key: keyof typeof section.props, value: any) => {
-    updateSectionProps(sectionId, { [key]: value });
+    const success = initializeSectionGrid(sectionId, value);
+
+    if (success) {
+      updateSectionProps(sectionId, { [key]: value });
+    } else {
+      alert("설정하려는 칸 수보다 현재 요소 수가 많아서 변경할 수 없습니다.");
+      return;
+    }
   };
 
   const handleCloneSection = () => {
@@ -88,50 +79,41 @@ export default function SectionEditor({ sectionId }: { sectionId: string }) {
       </Typography>
 
       <Stack direction="row" flexWrap="wrap" gap={1}>
-        {(mode === "desktop" ? desktopColumnOptions : mobileColumnOptions).map(
-          ({ label, value, icon: Icon }) => (
-            <Tooltip key={value} title={label}>
-              <IconButton
-                onClick={() =>
-                  handlePropsChange(
-                    mode === "desktop" ? "desktopColumns" : "mobileColumns",
-                    value
-                  )
-                }
-                color={
-                  (mode === "desktop"
-                    ? section.props.desktopColumns
-                    : section.props.mobileColumns) === value
-                    ? "primary"
-                    : "default"
-                }
-                sx={{
-                  border: "1px dashed #ccc",
-                  width: "30%",
-                  aspectRatio: "1 / 1",
-                  borderRadius: "8px",
-                  transition: "all 0.2s",
-                  "&:hover": {
-                    borderColor: "#999",
-                  },
-                }}
-              >
-                {Icon ? (
-                  <Icon size={28} />
-                ) : (
-                  <div
-                    style={{
-                      width: "20px",
-                      height: "20px",
-                      backgroundColor: "#ccc",
-                      borderRadius: "4px",
-                    }}
-                  />
-                )}
-              </IconButton>
-            </Tooltip>
-          )
-        )}
+        {(mode === "desktop" ? desktopColumnOptions : mobileColumnOptions).map(({ label, value, icon: Icon }) => (
+          <Tooltip key={value} title={label}>
+            <IconButton
+              onClick={() => handlePropsChange(mode === "desktop" ? "desktopColumns" : "mobileColumns", value)}
+              color={
+                (mode === "desktop" ? section.props.desktopColumns : section.props.mobileColumns) === value
+                  ? "primary"
+                  : "default"
+              }
+              sx={{
+                border: "1px dashed #ccc",
+                width: "30%",
+                aspectRatio: "1 / 1",
+                borderRadius: "8px",
+                transition: "all 0.2s",
+                "&:hover": {
+                  borderColor: "#999",
+                },
+              }}
+            >
+              {Icon ? (
+                <Icon size={28} />
+              ) : (
+                <div
+                  style={{
+                    width: "20px",
+                    height: "20px",
+                    backgroundColor: "#ccc",
+                    borderRadius: "4px",
+                  }}
+                />
+              )}
+            </IconButton>
+          </Tooltip>
+        ))}
       </Stack>
       <Typography variant="h6" color="mono">
         Section Settings
@@ -149,9 +131,7 @@ export default function SectionEditor({ sectionId }: { sectionId: string }) {
           </Typography>
           <Slider
             value={section.props.paddingDesktopTopBottom || 0}
-            onChange={(_, value) =>
-              handlePropsChange("paddingDesktopTopBottom", value)
-            }
+            onChange={(_, value) => handlePropsChange("paddingDesktopTopBottom", value)}
             step={1}
             min={0}
             max={100}
@@ -165,9 +145,7 @@ export default function SectionEditor({ sectionId }: { sectionId: string }) {
           </Typography>
           <Slider
             value={section.props.paddingDesktopLeftRight || 0}
-            onChange={(_, value) =>
-              handlePropsChange("paddingDesktopLeftRight", value)
-            }
+            onChange={(_, value) => handlePropsChange("paddingDesktopLeftRight", value)}
             step={1}
             min={0}
             max={100}
@@ -184,9 +162,7 @@ export default function SectionEditor({ sectionId }: { sectionId: string }) {
           </Typography>
           <Slider
             value={section.props.paddingMobileTopBottom || 0}
-            onChange={(_, value) =>
-              handlePropsChange("paddingMobileTopBottom", value)
-            }
+            onChange={(_, value) => handlePropsChange("paddingMobileTopBottom", value)}
             step={1}
             min={0}
             max={100}
@@ -200,9 +176,7 @@ export default function SectionEditor({ sectionId }: { sectionId: string }) {
           </Typography>
           <Slider
             value={section.props.paddingMobileLeftRight || 0}
-            onChange={(_, value) =>
-              handlePropsChange("paddingMobileLeftRight", value)
-            }
+            onChange={(_, value) => handlePropsChange("paddingMobileLeftRight", value)}
             step={1}
             min={0}
             max={100}

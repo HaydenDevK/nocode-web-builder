@@ -1,5 +1,5 @@
 // 선택된 elementtype
-export type TElementTypes = "section" | "text" | "link" | "image" | "video";
+export type TElementTypes = "section" | "text" | "link" | "image" | "video" | "empty";
 
 export type TSection = {
   id: string;
@@ -15,7 +15,7 @@ export type TSectionProps = {
   paddingDesktopLeftRight: number;
   paddingMobileTopBottom: number;
   paddingMobileLeftRight: number;
-  columns?: string;
+  columns: string;
   radius?: number;
 };
 
@@ -68,6 +68,7 @@ export type TSelectedItemInfo =
   | { type: "link"; itemId: string }
   | { type: "image"; itemId: string }
   | { type: "video"; itemId: string }
+  | { type: "empty"; itemId: string }
   | null;
 
 export type TImageProps = {
