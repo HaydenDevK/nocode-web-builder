@@ -7,6 +7,7 @@ import { useBuilderStore } from "@/app/store/useBuilderStore";
 import { generateHTML } from "@/util/htmlExport";
 import { useViewportStore } from "@/app/store/useViewportStore";
 import { useIsEditingStore } from "@/app/store/useIsEditingStore";
+import DeployButton from "@/components/DeployButton";
 
 export default function Toolbar() {
   const setSelectedItemInfo = useBuilderStore(
@@ -85,13 +86,7 @@ export default function Toolbar() {
           >
             HTML 추출
           </Button>
-          <Button
-            variant="outlined"
-            color="secondary"
-            style={{ marginLeft: 8 }}
-          >
-            배포
-          </Button>
+          <DeployButton />
         </div>
       </MUIToolbar>
     </AppBar>
