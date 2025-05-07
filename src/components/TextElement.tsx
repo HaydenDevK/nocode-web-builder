@@ -34,6 +34,9 @@ const TextElement: React.FC<TextElementProps> = ({ elementId }) => {
 
   return (
     <div
+      data-element-id={elementId}
+      data-mobile-font-size={FONT_SIZE_MAP.body2}
+      data-mobile-font-weight={"lighter"}
       onClick={(e) => {
         e.stopPropagation();
         setSelectedItemInfo({ type: "text", itemId: elementId });

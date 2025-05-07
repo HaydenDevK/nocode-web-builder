@@ -23,15 +23,21 @@ const Section: React.FC<ISectionProps> = ({ section, elements }) => {
   const isEditing = useIsEditingStore((s) => s.isEditing);
   if (!section) return null;
 
-  const isSectionSelected = selectedItemInfo?.type === "section" && selectedItemInfo.itemId === section.id;
+  const isSectionSelected =
+    selectedItemInfo?.type === "section" &&
+    selectedItemInfo.itemId === section.id;
 
   const mode = useViewportStore((s) => s.mode);
 
   const paddingTopBottom =
-    mode === "desktop" ? section.props.paddingDesktopTopBottom ?? 0 : section.props.paddingMobileTopBottom ?? 0;
+    mode === "desktop"
+      ? section.props.paddingDesktopTopBottom ?? 0
+      : section.props.paddingMobileTopBottom ?? 0;
 
   const paddingLeftRight =
-    mode === "desktop" ? section.props.paddingDesktopLeftRight ?? 0 : section.props.paddingMobileLeftRight ?? 0;
+    mode === "desktop"
+      ? section.props.paddingDesktopLeftRight ?? 0
+      : section.props.paddingMobileLeftRight ?? 0;
   const columns = section.props.columns ?? "1";
   const hasElements = section.elementIds.length > 0;
 
@@ -42,7 +48,9 @@ const Section: React.FC<ISectionProps> = ({ section, elements }) => {
   return (
     <div style={{ position: "relative" }}>
       <section
-        onClick={() => setSelectedItemInfo({ type: "section", itemId: section.id })}
+        onClick={() =>
+          setSelectedItemInfo({ type: "section", itemId: section.id })
+        }
         style={{
           display: "flex",
           gap: "16px",
@@ -50,13 +58,13 @@ const Section: React.FC<ISectionProps> = ({ section, elements }) => {
           padding: `${paddingTopBottom}px ${paddingLeftRight}px`,
           borderRadius: section.props.radius,
           cursor: isEditing ? "pointer" : "default",
-          outline: isSectionSelected && isEditing ? "3px dashed #2684FF" : undefined,
+          outline:
+            isSectionSelected && isEditing ? "3px dashed #2684FF" : undefined,
           minHeight: hasElements ? "10px" : "100px",
           width: "100%",
-          margin: isSectionSelected ? "3px auto" : "0 auto",
+          margin: "0 auto",
           transition: "max-width 0.2s ease",
           border: isEditing ? "1px dashed #cccccc" : "none",
-          maxWidth: mode === "desktop" ? "1024px" : "375px",
         }}
         onKeyDown={(e) => {
           if (e.key === "Enter") {
@@ -73,6 +81,7 @@ const Section: React.FC<ISectionProps> = ({ section, elements }) => {
             width: "100%",
             margin: "0 auto",
             paddingTop: mode === "desktop" ? "4px" : "0",
+            maxWidth: mode === "desktop" ? "1024px" : "375px",
           }}
         >
           {section.elementIds.map((elementId) => {
@@ -82,19 +91,28 @@ const Section: React.FC<ISectionProps> = ({ section, elements }) => {
                 key={elementId}
                 style={{
                   border: "1px dashed #ccc",
-                  minHeight: shouldApplyMinHeight(section.elementIds) ? "150px" : "150px",
+                  minHeight: shouldApplyMinHeight(section.elementIds)
+                    ? "150px"
+                    : "150px",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
                 }}
               >
-                <DraggableElement elementId={elementId}>{element ? BuilderElement(element) : null}</DraggableElement>
+                <DraggableElement elementId={elementId}>
+                  {element ? BuilderElement(element) : null}
+                </DraggableElement>
               </div>
             );
           })}
         </div>
       </section>
-      {isSectionSelected && <SectionToolButton sectionId={section.id} isActive={isSectionSelected} />}
+      {isSectionSelected && (
+        <SectionToolButton
+          sectionId={section.id}
+          isActive={isSectionSelected}
+        />
+      )}
     </div>
   );
 };

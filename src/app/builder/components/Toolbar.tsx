@@ -13,10 +13,14 @@ export default function Toolbar() {
     (store) => store.setSelectedItemInfo
   );
   const setIsEditing = useIsEditingStore((store) => store.setIsEditing);
+  const mode = useViewportStore((s) => s.mode);
+  const setMode = useViewportStore((s) => s.setMode);
+  const { saveToLocalStorage } = useBuilderStore();
 
   const handleExportHTML = () => {
     setSelectedItemInfo(null);
     setIsEditing(false);
+    setMode("desktop");
 
     setTimeout(() => {
       const html = generateHTML();
@@ -25,7 +29,7 @@ export default function Toolbar() {
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = "website.html";
+      a.download = "codeit_promo_.html";
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
@@ -35,9 +39,6 @@ export default function Toolbar() {
     }, 200);
   };
 
-  const mode = useViewportStore((s) => s.mode);
-  const setMode = useViewportStore((s) => s.setMode);
-  const { saveToLocalStorage } = useBuilderStore();
   return (
     <AppBar position="static" color="default" className={styles.toolbar}>
       <MUIToolbar className={styles.inner}>
