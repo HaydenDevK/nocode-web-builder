@@ -100,11 +100,12 @@ const Section: React.FC<ISectionProps> = ({ section, elements }) => {
               <div
                 key={elementId}
                 style={{
-                  border: isEditing ? "1px dashed #ccc" : null,
+                  border: isEditing ? "1px dashed #ccc" : undefined,
                   minHeight: shouldApplyMinHeight(section.elementIds)
                     ? "150px"
                     : "65px",
                   display: "flex",
+                  flexDirection: "column",
                   alignItems: "center",
                   justifyContent: "center",
                 }}

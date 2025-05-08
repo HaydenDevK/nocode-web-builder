@@ -4,11 +4,23 @@ import styles from "../../builder/styles/Canvas.module.scss";
 import { useBuilderStore } from "@/app/store/useBuilderStore";
 import { useDraggable, useDroppable } from "@dnd-kit/core";
 
-const DraggableElement = ({ children, elementId }: { children: React.ReactNode; elementId: string }) => {
+const DraggableElement = ({
+  children,
+  elementId,
+}: {
+  children: React.ReactNode;
+  elementId: string;
+}) => {
   const selectedItemInfo = useBuilderStore((s) => s.selectedItemInfo);
   const isSelected = selectedItemInfo?.itemId === elementId;
 
-  const { setNodeRef: dragRef, attributes, listeners, transform, isDragging } = useDraggable({ id: elementId });
+  const {
+    setNodeRef: dragRef,
+    attributes,
+    listeners,
+    transform,
+    isDragging,
+  } = useDraggable({ id: elementId });
 
   const { setNodeRef: dropRef } = useDroppable({ id: elementId });
 
@@ -16,6 +28,11 @@ const DraggableElement = ({ children, elementId }: { children: React.ReactNode; 
     transform: CSS.Transform.toString(transform),
     opacity: isDragging ? 0.5 : 1,
     zIndex: isDragging ? 999 : "auto",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    width: "100%",
+    height: "100%",
   };
 
   return (
@@ -25,12 +42,24 @@ const DraggableElement = ({ children, elementId }: { children: React.ReactNode; 
         dropRef(el);
       }}
       style={style}
-      className={styles.draggableElement}
     >
-      <div className={styles.elementDragHandle}>
+      <div
+        style={{
+          position: "relative",
+          display: "flex",
+          alignItems: "center",
+          gap: "4px",
+          width: "100%",
+        }}
+      >
         {children}
         {elementId && isSelected && (
-          <button type="button" className={styles.iconButton} {...attributes} {...listeners}>
+          <button
+            type="button"
+            className={styles.iconButton}
+            {...attributes}
+            {...listeners}
+          >
             <Move />
           </button>
         )}
