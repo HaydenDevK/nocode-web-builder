@@ -1,11 +1,5 @@
 // 선택된 elementtype
-export type TElementTypes =
-  | "section"
-  | "text"
-  | "link"
-  | "image"
-  | "video"
-  | "empty";
+export type TElementTypes = "section" | "text" | "link" | "image" | "video" | "empty";
 
 export type TSection = {
   id: string;
@@ -21,6 +15,7 @@ export type TSectionProps = {
   paddingDesktopLeftRight: number;
   paddingMobileTopBottom: number;
   paddingMobileLeftRight: number;
+  columns?: string;
   radius?: number;
 };
 
@@ -31,13 +26,7 @@ export type TElement = {
   props: TElementProps;
 };
 
-export type TElementProps =
-  | TTextProps
-  | TLinkProps
-  | TImageProps
-  | TVideoProps
-  | TSection
-  | any;
+export type TElementProps = TTextProps | TLinkProps | TImageProps | TVideoProps | TSection | any;
 
 type TFontSize = "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "body1" | "body2";
 type TFontWeight = "normal" | "bold" | "lighter";

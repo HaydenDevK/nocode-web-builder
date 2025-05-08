@@ -23,25 +23,16 @@ const Section: React.FC<ISectionProps> = ({ section, elements }) => {
   const isEditing = useIsEditingStore((s) => s.isEditing);
   if (!section) return null;
 
-  const isSectionSelected =
-    selectedItemInfo?.type === "section" &&
-    selectedItemInfo.itemId === section.id;
+  const isSectionSelected = selectedItemInfo?.type === "section" && selectedItemInfo.itemId === section.id;
 
   const mode = useViewportStore((s) => s.mode);
 
   const paddingTopBottom =
-    mode === "desktop"
-      ? section.props.paddingDesktopTopBottom ?? 0
-      : section.props.paddingMobileTopBottom ?? 0;
+    mode === "desktop" ? section.props.paddingDesktopTopBottom ?? 0 : section.props.paddingMobileTopBottom ?? 0;
 
   const paddingLeftRight =
-    mode === "desktop"
-      ? section.props.paddingDesktopLeftRight ?? 0
-      : section.props.paddingMobileLeftRight ?? 0;
-  const columns =
-    mode === "desktop"
-      ? section.props.desktopColumns ?? "1"
-      : section.props.mobileColumns ?? "1";
+    mode === "desktop" ? section.props.paddingDesktopLeftRight ?? 0 : section.props.paddingMobileLeftRight ?? 0;
+  const columns = mode === "desktop" ? section.props.desktopColumns ?? "1" : section.props.mobileColumns ?? "1";
   const hasElements = section.elementIds.length > 0;
 
   useEffect(() => {
@@ -57,12 +48,8 @@ const Section: React.FC<ISectionProps> = ({ section, elements }) => {
       <section
         data-mobile-padding-top-bottom={section.props.paddingMobileTopBottom}
         data-mobile-padding-left-right={section.props.paddingMobileLeftRight}
-        data-mobile-columns={getGridTemplateColumns(
-          section.props.mobileColumns
-        )}
-        onClick={() =>
-          setSelectedItemInfo({ type: "section", itemId: section.id })
-        }
+        data-mobile-columns={getGridTemplateColumns(section.props.mobileColumns)}
+        onClick={() => setSelectedItemInfo({ type: "section", itemId: section.id })}
         style={{
           display: "flex",
           gap: "16px",
@@ -70,8 +57,7 @@ const Section: React.FC<ISectionProps> = ({ section, elements }) => {
           padding: `${paddingTopBottom}px ${paddingLeftRight}px`,
           borderRadius: section.props.radius,
           cursor: isEditing ? "pointer" : "default",
-          outline:
-            isSectionSelected && isEditing ? "3px dashed #2684FF" : undefined,
+          outline: isSectionSelected && isEditing ? "3px dashed #2684FF" : undefined,
           minHeight: hasElements ? "10px" : "100px",
           width: "100%",
           margin: "0 auto",
@@ -101,29 +87,20 @@ const Section: React.FC<ISectionProps> = ({ section, elements }) => {
                 key={elementId}
                 style={{
                   border: isEditing ? "1px dashed #ccc" : undefined,
-                  minHeight: shouldApplyMinHeight(section.elementIds)
-                    ? "150px"
-                    : "65px",
+                  minHeight: shouldApplyMinHeight(section.elementIds) ? "150px" : "65px",
                   display: "flex",
                   flexDirection: "column",
                   alignItems: "center",
                   justifyContent: "center",
                 }}
               >
-                <DraggableElement elementId={elementId}>
-                  {element ? BuilderElement(element) : null}
-                </DraggableElement>
+                <DraggableElement elementId={elementId}>{element ? BuilderElement(element) : null}</DraggableElement>
               </div>
             );
           })}
         </div>
       </section>
-      {isSectionSelected && (
-        <SectionToolButton
-          sectionId={section.id}
-          isActive={isSectionSelected}
-        />
-      )}
+      {isSectionSelected && <SectionToolButton sectionId={section.id} isActive={isSectionSelected} />}
     </div>
   );
 };
@@ -150,7 +127,5 @@ function getGridTemplateColumns(columns: string) {
 }
 
 function shouldApplyMinHeight(elementIds: string[]) {
-  return (
-    elementIds.length === 0 || elementIds.every((id) => id.startsWith("empty"))
-  );
+  return elementIds.length === 0 || elementIds.every((id) => id.startsWith("empty"));
 }
