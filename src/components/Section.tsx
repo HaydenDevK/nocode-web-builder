@@ -98,9 +98,7 @@ const Section: React.FC<ISectionProps> = ({ section, elements }) => {
                 key={elementId}
                 style={{
                   border: isEditing ? "1px dashed #ccc" : null,
-                  minHeight: shouldApplyMinHeight(section.elementIds)
-                    ? "150px"
-                    : "150px",
+                  minHeight: shouldApplyMinHeight(section.elementIds) ? "150px" : "65px",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
