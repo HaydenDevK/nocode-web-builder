@@ -46,8 +46,17 @@ const Section: React.FC<ISectionProps> = ({ section, elements }) => {
   }, [section.id, columns]);
 
   return (
-    <div style={{ position: "relative" }}>
+    <div
+      style={{
+        position: "relative",
+      }}
+    >
       <section
+        data-mobile-padding-top-bottom={section.props.paddingMobileTopBottom}
+        data-mobile-padding-left-right={section.props.paddingMobileLeftRight}
+        data-mobile-columns={getGridTemplateColumns(
+          section.props.mobileColumns
+        )}
         onClick={() =>
           setSelectedItemInfo({ type: "section", itemId: section.id })
         }
@@ -62,10 +71,9 @@ const Section: React.FC<ISectionProps> = ({ section, elements }) => {
             isSectionSelected && isEditing ? "3px dashed #2684FF" : undefined,
           minHeight: hasElements ? "10px" : "100px",
           width: "100%",
-          margin: isSectionSelected ? "3px auto" : "0 auto",
+          margin: "0 auto",
           transition: "max-width 0.2s ease",
           border: isEditing ? "1px dashed #cccccc" : "none",
-          maxWidth: mode === "desktop" ? "1024px" : "375px",
         }}
         onKeyDown={(e) => {
           if (e.key === "Enter") {
@@ -80,7 +88,6 @@ const Section: React.FC<ISectionProps> = ({ section, elements }) => {
             alignItems: "stretch",
             gap: "16px",
             width: "100%",
-            margin: "0 auto",
             paddingTop: mode === "desktop" ? "4px" : "0",
           }}
         >
@@ -90,11 +97,8 @@ const Section: React.FC<ISectionProps> = ({ section, elements }) => {
               <div
                 key={elementId}
                 style={{
-                  border: "1px dashed #ccc",
-                  minHeight: shouldApplyMinHeight(section.elementIds)
-                    ? "150px"
-                    : "150px",
-
+                  border: isEditing ? "1px dashed #ccc" : null,
+                  minHeight: shouldApplyMinHeight(section.elementIds) ? "150px" : "65px",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
@@ -140,5 +144,5 @@ function getGridTemplateColumns(columns: string) {
 }
 
 function shouldApplyMinHeight(elementIds: string[]) {
-  return elementIds.length === 0;
+  return elementIds.length === 0 || elementIds.every((id) => id.startsWith("empty"));
 }

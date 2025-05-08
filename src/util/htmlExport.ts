@@ -1,18 +1,69 @@
-// 편집 중에만 보이는 스타일을 제거하는 함수
-export const removeEditorStyles = (html: string): string => {
-  return html
-    .replace(/cursor: pointer;/g, "")
-    .replace(/outline: 2px dashed #2684FF;/g, "")
-    .replace(/outline: 2px solid #2684FF;/g, "");
-};
-
-// 캔버스에서 HTML을 추출하고, 불필요한 스타일을 제거한 후, HTML을 반환하는 함수
 export const generateHTML = (): string => {
   const canvas = document.querySelector("#canvas");
   if (!canvas) return "";
 
   const canvasClone = canvas.cloneNode(true) as HTMLElement;
-  const cleanedHTML = removeEditorStyles(canvasClone.innerHTML);
+
+  // 모바일 반응형 스타일 _ Text
+  const textElements = canvasClone.querySelectorAll("[data-element-id]");
+  const textStyles = Array.from(textElements)
+    .map((element) => {
+      const elementId = element.getAttribute("data-element-id");
+      const mobileFontSize = element.getAttribute("data-mobile-font-size");
+      const mobileFontWeight = element.getAttribute("data-mobile-font-weight");
+
+      if (!elementId || (!mobileFontSize && !mobileFontWeight)) return "";
+
+      return `
+      [data-element-id="${elementId}"] {
+        ${mobileFontSize ? `font-size: ${mobileFontSize} !important;` : ""}
+        ${
+          mobileFontWeight ? `font-weight: ${mobileFontWeight} !important;` : ""
+        }
+      }
+    `;
+    })
+    .join("\n");
+
+  // 모바일 반응형 스타일 _ Section
+  const sections = canvasClone.querySelectorAll("section");
+  const sectionStyles = Array.from(sections)
+    .map((section, index) => {
+      const mobileTopBottom = section.getAttribute(
+        "data-mobile-padding-top-bottom"
+      );
+      const mobileLeftRight = section.getAttribute(
+        "data-mobile-padding-left-right"
+      );
+      const mobileColumns = section.getAttribute("data-mobile-columns");
+
+      return `
+      section:nth-child(${index + 1}) {
+        ${
+          mobileTopBottom
+            ? `padding-top: ${mobileTopBottom}px !important; padding-bottom: ${mobileTopBottom}px !important;`
+            : ""
+        }
+        ${
+          mobileLeftRight
+            ? `padding-left: ${mobileLeftRight}px !important; padding-right: ${mobileLeftRight}px !important;`
+            : ""
+        }
+      }
+      
+      section:nth-child(${index + 1}) > div {
+        ${
+          mobileColumns
+            ? `grid-template-columns: repeat(${mobileColumns}, 1fr) !important;`
+            : ""
+        }
+        gap: 8px !important;
+      }
+    `;
+    })
+    .join("\n");
+
+  /* TODO 모바일 스타일 추가 */
 
   return `<!DOCTYPE html>
 <html lang="ko">
@@ -33,11 +84,18 @@ export const generateHTML = (): string => {
       * {
         box-sizing: border-box;
       }
+      
+      @media (max-width: 768px) {
+        body {
+          padding: 0;
+        }
+        ${textStyles}
+        ${sectionStyles}
+      }
     </style>
 </head>
 <body>
-
-    ${cleanedHTML}
+    ${canvasClone.innerHTML}
 </body>
 </html>`;
 };
