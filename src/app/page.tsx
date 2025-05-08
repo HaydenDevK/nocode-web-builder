@@ -5,6 +5,7 @@ import { Box, Button, Typography } from "@mui/material";
 import Card from "@/components/Card";
 import { useState, useEffect } from "react";
 import { TDraft } from "./model/types";
+import { useRouter } from "next/navigation";
 
 const sampleThumbnail =
   "https://img-wixmp-09d1505942a280459f0fa212.wixmp.com/images/site-snapshotter-web/9942c07d-5870-4eaa-b813-23ec87f4eb28/v1/fit/w_370,h_370/file.jpg";
@@ -27,6 +28,7 @@ const DeployedList = [
 
 export default function Home() {
   const [drafts, setDrafts] = useState<TDraft[]>([]);
+  const router = useRouter();
 
   const loadDrafts = () => {
     const saveDrafts = JSON.parse(
@@ -48,13 +50,19 @@ export default function Home() {
         <Typography variant="h1" color="primary">
           Codelt Web Builder
         </Typography>
-        <Button variant="contained" color="info" size="large">
+        <Button
+          variant="contained"
+          color="info"
+          size="large"
+          onClick={() => router.push("/builder")}
+        >
           새로 만들기
         </Button>
       </header>
 
       <Box className={styles.contentWrapper}>
-        <Box className={styles.section}>
+        {/* 템플릿 저장 가능 시 활성화 */}
+        {/* <Box className={styles.section}>
           <Typography variant="h4" color="mono" gutterBottom>
             템플릿
           </Typography>
@@ -63,9 +71,10 @@ export default function Home() {
               <Card key={item.id} item={{ ...item, type: "template" }} />
             ))}
           </Box>
-        </Box>
+        </Box> */}
 
-        <Box className={styles.section}>
+        {/* 배포된 사이트 관리 가능 시 활성화 */}
+        {/* <Box className={styles.section}>
           <Typography variant="h4" color="mono" gutterBottom>
             배포된 사이트
           </Typography>
@@ -74,7 +83,7 @@ export default function Home() {
               <Card key={item.id} item={{ ...item, type: "deployed" }} />
             ))}
           </Box>
-        </Box>
+        </Box> */}
         <Box className={styles.section}>
           <Typography variant="h4" color="mono" gutterBottom>
             임시 저장 목록
