@@ -7,9 +7,10 @@ import {
   FormControl,
   Select,
   MenuItem,
+  Slider,
 } from "@mui/material";
 import { useBuilderStore } from "@/app/store/useBuilderStore";
-import { TTextProps } from "@/app/model/types";
+import { TLinkProps } from "@/app/model/types";
 
 export default function ButtonEditor({ elementId }: { elementId: string }) {
   const element = useBuilderStore((state) => state.elements.byId[elementId]);
@@ -32,7 +33,7 @@ export default function ButtonEditor({ elementId }: { elementId: string }) {
     }
   };
 
-  const handleChange = (key: keyof TTextProps, value: any) => {
+  const handleChange = (key: keyof TLinkProps, value: any) => {
     updateElementProps(elementId, { [key]: value });
   };
 
@@ -121,12 +122,20 @@ export default function ButtonEditor({ elementId }: { elementId: string }) {
       <Typography variant="h6" color="mono">
         Button Width
       </Typography>
-      <TextField
-        fullWidth
-        type="number"
-        value={props.minWidth || ""}
-        onChange={(e) => handleNumberChange("minWidth", e.target.value)}
-      />
+      <FormControl fullWidth>
+        <Slider
+          value={props.width}
+          onChange={(_, newValue) => {
+            if (typeof newValue === "number") handleChange("width", newValue);
+          }}
+          valueLabelDisplay="auto"
+          min={10}
+          max={100}
+        />
+        <Typography variant="body2" sx={{ color: "mono.dark" }}>
+          Current: {props.swidth}%
+        </Typography>
+      </FormControl>
 
       <Typography variant="h6" color="mono">
         Button Height
