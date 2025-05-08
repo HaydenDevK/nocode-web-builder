@@ -1,6 +1,13 @@
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
-import type { TSection, TSectionProps, TElement, TSelectedItemInfo, TElementProps, TDraft } from "../model/types";
+import type {
+  TSection,
+  TSectionProps,
+  TElement,
+  TSelectedItemInfo,
+  TElementProps,
+  TDraft,
+} from "../model/types";
 import { nanoid } from "nanoid";
 
 export const INITIAL_SECTION_PROPS: TSectionProps = {
@@ -11,7 +18,6 @@ export const INITIAL_SECTION_PROPS: TSectionProps = {
   paddingDesktopLeftRight: 30,
   paddingMobileTopBottom: 10,
   paddingMobileLeftRight: 10,
-  columns: "1",
   radius: 0,
 };
 
@@ -108,16 +114,24 @@ export const useBuilderStore = create<BuilderState>()(
     removeSection: (sectionId) =>
       set((state) => {
         delete state.sections.byId[sectionId];
-        state.sections.allIds = state.sections.allIds.filter((id) => id !== sectionId);
-        state.sections.allIds = state.sections.allIds.filter((id) => id !== sectionId);
+        state.sections.allIds = state.sections.allIds.filter(
+          (id) => id !== sectionId
+        );
+        state.sections.allIds = state.sections.allIds.filter(
+          (id) => id !== sectionId
+        );
 
         for (const el in state.elements.byId) {
           if (state.elements.byId[el].sectionId === sectionId) {
             delete state.elements.byId[el];
           }
         }
-        state.elements.allIds = state.elements.allIds.filter((id) => state.elements.byId[id] !== undefined);
-        state.elements.allIds = state.elements.allIds.filter((id) => state.elements.byId[id] !== undefined);
+        state.elements.allIds = state.elements.allIds.filter(
+          (id) => state.elements.byId[id] !== undefined
+        );
+        state.elements.allIds = state.elements.allIds.filter(
+          (id) => state.elements.byId[id] !== undefined
+        );
       }),
 
     initializeSectionGrid: (sectionId: string, newColumns: string) => {
@@ -125,8 +139,12 @@ export const useBuilderStore = create<BuilderState>()(
       set((state) => {
         const section = state.sections.byId[sectionId];
         const columnCount = newColumns.split("-").length;
-        const checkElement = section.elementIds.filter((id) => !id.startsWith("empty"));
-        const emptyElement = section.elementIds.filter((id) => id.startsWith("empty"));
+        const checkElement = section.elementIds.filter(
+          (id) => !id.startsWith("empty")
+        );
+        const emptyElement = section.elementIds.filter((id) =>
+          id.startsWith("empty")
+        );
 
         // 설정하려는 칸 수보다 요소 수가 많으면 설정 불가능
         if (checkElement.length > columnCount) return;
@@ -145,7 +163,10 @@ export const useBuilderStore = create<BuilderState>()(
         );
         const addEmptyCount = emptyCount - columnEmptyElement.length;
         if (addEmptyCount > 0) {
-          const emptyIds = Array.from({ length: addEmptyCount }, () => `empty-${nanoid()}`);
+          const emptyIds = Array.from(
+            { length: addEmptyCount },
+            () => `empty-${nanoid()}`
+          );
           for (const id of emptyIds) {
             if (!state.elements.byId[id]) {
               state.elements.byId[id] = {
@@ -174,12 +195,18 @@ export const useBuilderStore = create<BuilderState>()(
         const checkSectionColumns = section.props.columns.split("-").length;
 
         // 그리드 칸 수에 요소가 전부 채워지면 요소 추가 불가능
-        if (section.elementIds.filter((id) => !id.startsWith("empty")).length >= checkSectionColumns) return;
+        if (
+          section.elementIds.filter((id) => !id.startsWith("empty")).length >=
+          checkSectionColumns
+        )
+          return;
 
         state.elements.byId[id] = { ...element, id };
         state.elements.allIds.push(id);
 
-        const emptyIndex = section.elementIds.findIndex((id) => id.startsWith("empty"));
+        const emptyIndex = section.elementIds.findIndex((id) =>
+          id.startsWith("empty")
+        );
         if (emptyIndex !== -1) {
           section.elementIds[emptyIndex] = id;
         } else {
@@ -212,7 +239,10 @@ export const useBuilderStore = create<BuilderState>()(
 
         if (activeIndex === -1 || overIndex === -1) return;
 
-        [activeSection.elementIds[activeIndex], overSection.elementIds[overIndex]] = [
+        [
+          activeSection.elementIds[activeIndex],
+          overSection.elementIds[overIndex],
+        ] = [
           overSection.elementIds[overIndex],
           activeSection.elementIds[activeIndex],
         ];
@@ -227,11 +257,15 @@ export const useBuilderStore = create<BuilderState>()(
         const element = state.elements.byId[elementId];
         const sec = state.sections.byId[element.sectionId];
 
-        const deleteElementIndex = sec.elementIds.findIndex((id) => id === elementId);
+        const deleteElementIndex = sec.elementIds.findIndex(
+          (id) => id === elementId
+        );
 
         sec.elementIds.splice(deleteElementIndex, 1);
         delete state.elements.byId[elementId];
-        state.elements.allIds = state.elements.allIds.filter((id) => id !== elementId);
+        state.elements.allIds = state.elements.allIds.filter(
+          (id) => id !== elementId
+        );
 
         const emptyId = `empty-${nanoid()}`;
         sec.elementIds.splice(deleteElementIndex, 0, emptyId);
@@ -250,7 +284,9 @@ export const useBuilderStore = create<BuilderState>()(
     saveToLocalStorage: () => {
       const state = get();
       const { sections, elements, currentDraftId } = state;
-      const drafts = JSON.parse(localStorage.getItem("builder-drafts") || "[]") as TDraft[];
+      const drafts = JSON.parse(
+        localStorage.getItem("builder-drafts") || "[]"
+      ) as TDraft[];
 
       if (currentDraftId) {
         const index = drafts.findIndex((draft) => draft.id === currentDraftId);
@@ -276,7 +312,9 @@ export const useBuilderStore = create<BuilderState>()(
     },
 
     loadDraft: (draftId) => {
-      const drafts = JSON.parse(localStorage.getItem("builder-drafts") || "[]") as TDraft[];
+      const drafts = JSON.parse(
+        localStorage.getItem("builder-drafts") || "[]"
+      ) as TDraft[];
 
       const draft = drafts.find((draft) => draft.id === draftId);
       if (!draft) return;
@@ -296,7 +334,9 @@ export const useBuilderStore = create<BuilderState>()(
       }),
 
     removeDraft: (draftId: string) => {
-      const drafts = JSON.parse(localStorage.getItem("builder-drafts") || "[]") as TDraft[];
+      const drafts = JSON.parse(
+        localStorage.getItem("builder-drafts") || "[]"
+      ) as TDraft[];
       const filtered = drafts.filter((draft) => draft.id !== draftId);
       localStorage.setItem("builder-drafts", JSON.stringify(filtered));
     },
