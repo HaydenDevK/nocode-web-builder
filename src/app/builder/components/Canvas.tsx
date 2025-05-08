@@ -41,6 +41,7 @@ const Canvas: React.FC = () => {
           margin: "0 auto",
           width: "100%",
           maxWidth: mode === "desktop" ? "1024px" : "375px",
+          minHeight: "calc(100vh - 64px)",
         }}
       >
         <div className={styles.canvas} id="canvas">
