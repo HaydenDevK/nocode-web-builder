@@ -1,23 +1,23 @@
 "use client";
 
 import { useBuilderStore } from "@/app/store/useBuilderStore";
-import {
-  horizontalListSortingStrategy,
-  SortableContext,
-} from "@dnd-kit/sortable";
-import SortableElement from "@/app/builder/components/SortableElement";
+import DraggableElement from "@/app/builder/components/DraggableElement";
 import SectionToolButton from "./SectionToolButton";
 import { BuilderElement } from "./BuilderElement";
 import { useViewportStore } from "@/app/store/useViewportStore";
 import { useIsEditingStore } from "@/app/store/useIsEditingStore";
+import type { TElement, TSection } from "@/app/model/types";
+import { useEffect } from "react";
 
-interface SectionProps {
-  sectionId: string;
+interface ISectionProps {
+  section: TSection;
+  elements: {
+    byId: Record<string, TElement>;
+    allIds: string[];
+  };
 }
 
-const Section: React.FC<SectionProps> = ({ sectionId }) => {
-  const section = useBuilderStore((s) => s.sections.byId[sectionId]);
-  const elementsById = useBuilderStore((s) => s.elements.byId);
+const Section: React.FC<ISectionProps> = ({ section, elements }) => {
   const selectedItemInfo = useBuilderStore((s) => s.selectedItemInfo);
   const setSelectedItemInfo = useBuilderStore((s) => s.setSelectedItemInfo);
   const isEditing = useIsEditingStore((s) => s.isEditing);
@@ -25,7 +25,7 @@ const Section: React.FC<SectionProps> = ({ sectionId }) => {
 
   const isSectionSelected =
     selectedItemInfo?.type === "section" &&
-    selectedItemInfo.itemId === sectionId;
+    selectedItemInfo.itemId === section.id;
 
   const mode = useViewportStore((s) => s.mode);
 
@@ -42,15 +42,26 @@ const Section: React.FC<SectionProps> = ({ sectionId }) => {
     mode === "desktop"
       ? section.props.desktopColumns ?? "1"
       : section.props.mobileColumns ?? "1";
-  const columnCount = getColumnCount(columns);
-
   const hasElements = section.elementIds.length > 0;
 
+  useEffect(() => {
+    useBuilderStore.getState().initializeSectionGrid(section.id, columns);
+  }, [section.id, columns]);
+
   return (
-    <div style={{ position: "relative" }}>
+    <div
+      style={{
+        position: "relative",
+      }}
+    >
       <section
+        data-mobile-padding-top-bottom={section.props.paddingMobileTopBottom}
+        data-mobile-padding-left-right={section.props.paddingMobileLeftRight}
+        data-mobile-columns={getGridTemplateColumns(
+          section.props.mobileColumns
+        )}
         onClick={() =>
-          setSelectedItemInfo({ type: "section", itemId: sectionId })
+          setSelectedItemInfo({ type: "section", itemId: section.id })
         }
         style={{
           display: "flex",
@@ -63,10 +74,14 @@ const Section: React.FC<SectionProps> = ({ sectionId }) => {
             isSectionSelected && isEditing ? "3px dashed #2684FF" : undefined,
           minHeight: hasElements ? "10px" : "100px",
           width: "100%",
-          margin: isSectionSelected ? "3px auto" : "0 auto",
+          margin: "0 auto",
           transition: "max-width 0.2s ease",
           border: isEditing ? "1px dashed #cccccc" : "none",
-          maxWidth: mode === "desktop" ? "1024px" : "375px",
+        }}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            () => setSelectedItemInfo({ type: "section", itemId: section.id });
+          }
         }}
       >
         <div
@@ -76,42 +91,34 @@ const Section: React.FC<SectionProps> = ({ sectionId }) => {
             alignItems: "stretch",
             gap: "16px",
             width: "100%",
-            margin: "0 auto",
             paddingTop: mode === "desktop" ? "4px" : "0",
           }}
         >
-          <SortableContext
-            items={section.elementIds}
-            strategy={horizontalListSortingStrategy}
-          >
-            {Array.from({ length: columnCount }).map((_, idx) => {
-              const elementId = section.elementIds[idx];
-              const element = elementId ? elementsById[elementId] : null;
-              return (
-                <div
-                  key={idx}
-                  style={{
-                    border: isEditing ? "1px dashed #cccccc" : "none",
-                    minHeight: shouldApplyMinHeight(section.elementIds)
-                      ? "150px"
-                      : undefined,
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "stretch",
-                    justifyContent: "center",
-                    width: "100%",
-                  }}
-                >
-                  <SortableElement key={elementId} elementId={elementId}>
-                    {element ? BuilderElement(element) : null}
-                  </SortableElement>
-                </div>
-              );
-            })}
-          </SortableContext>
+          {section.elementIds.map((elementId) => {
+            const element = elements.byId[elementId];
+            return (
+              <div
+                key={elementId}
+                style={{
+                  border: isEditing ? "1px dashed #ccc" : undefined,
+                  minHeight: shouldApplyMinHeight(section.elementIds)
+                    ? "150px"
+                    : "65px",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <DraggableElement elementId={elementId}>
+                  {element ? BuilderElement(element) : null}
+                </DraggableElement>
+              </div>
+            );
+          })}
         </div>
       </section>
-      {isSectionSelected && isEditing && (
+      {isSectionSelected && (
         <SectionToolButton
           sectionId={section.id}
           isActive={isSectionSelected}
@@ -129,37 +136,21 @@ function getGridTemplateColumns(columns: string) {
       return "1fr";
     case "1-1":
       return "1fr 1fr";
-    case "1-1-1":
-      return "1fr 1fr 1fr";
-    case "1-1-1-1":
-      return "1fr 1fr 1fr 1fr";
-    case "2-1":
-      return "2fr 1fr";
-    case "1-2":
-      return "1fr 2fr";
-    default:
-      return "1fr";
-  }
-}
-
-function getColumnCount(columns: string) {
-  switch (columns) {
-    case "1":
-      return 1;
-    case "1-1":
-      return 2;
-    case "1-1-1":
-      return 3;
-    case "1-1-1-1":
-      return 4;
-    case "2-1":
-    case "1-2":
-      return 2;
-    default:
-      return 1;
+    // case "1-1-1":
+    //   return "1fr 1fr 1fr";
+    // case "1-1-1-1":
+    //   return "1fr 1fr 1fr 1fr";
+    // case "2-1":
+    //   return "2fr 1fr";
+    // case "1-2":
+    //   return "1fr 2fr";
+    // default:
+    //   return "1fr";
   }
 }
 
 function shouldApplyMinHeight(elementIds: string[]) {
-  return elementIds.length === 0;
+  return (
+    elementIds.length === 0 || elementIds.every((id) => id.startsWith("empty"))
+  );
 }

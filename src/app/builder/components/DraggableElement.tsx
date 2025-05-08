@@ -1,10 +1,10 @@
-import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { GripVertical } from "lucide-react";
+import { Move } from "lucide-react";
 import styles from "../../builder/styles/Canvas.module.scss";
 import { useBuilderStore } from "@/app/store/useBuilderStore";
+import { useDraggable, useDroppable } from "@dnd-kit/core";
 
-const SortableElement = ({
+const DraggableElement = ({
   children,
   elementId,
 }: {
@@ -13,35 +13,54 @@ const SortableElement = ({
 }) => {
   const selectedItemInfo = useBuilderStore((s) => s.selectedItemInfo);
   const isSelected = selectedItemInfo?.itemId === elementId;
+
   const {
+    setNodeRef: dragRef,
     attributes,
     listeners,
-    setNodeRef,
     transform,
-    transition,
     isDragging,
-  } = useSortable({
-    id: elementId,
-  });
+  } = useDraggable({ id: elementId });
+
+  const { setNodeRef: dropRef } = useDroppable({ id: elementId });
 
   const style = {
     transform: CSS.Transform.toString(transform),
-    transition,
     opacity: isDragging ? 0.5 : 1,
+    zIndex: isDragging ? 999 : "auto",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    width: "100%",
+    height: "100%",
   };
 
   return (
-    <div ref={setNodeRef} style={style}>
-      <div className={styles.elementDragHandle}>
+    <div
+      ref={(el) => {
+        dragRef(el);
+        dropRef(el);
+      }}
+      style={style}
+    >
+      <div
+        style={{
+          position: "relative",
+          display: "flex",
+          alignItems: "center",
+          gap: "4px",
+          width: "100%",
+        }}
+      >
         {children}
-        {isSelected && (
+        {elementId && isSelected && (
           <button
             type="button"
             className={styles.iconButton}
             {...attributes}
             {...listeners}
           >
-            <GripVertical />
+            <Move />
           </button>
         )}
       </div>
@@ -49,4 +68,4 @@ const SortableElement = ({
   );
 };
 
-export default SortableElement;
+export default DraggableElement;

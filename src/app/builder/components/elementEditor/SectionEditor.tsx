@@ -25,10 +25,10 @@ import { useIsEditingStore } from "@/app/store/useIsEditingStore";
 const desktopColumnOptions = [
   { label: "1", value: "1", icon: Square },
   { label: "1:1", value: "1-1", icon: Columns2 },
-  { label: "1:1:1", value: "1-1-1", icon: Columns3 },
-  { label: "1:1:1:1", value: "1-1-1-1", icon: Columns4 },
-  { label: "2:1", value: "2-1", icon: PanelLeft },
-  { label: "1:2", value: "1-2", icon: PanelRight },
+  // { label: "1:1:1", value: "1-1-1", icon: Columns3 },
+  // { label: "1:1:1:1", value: "1-1-1-1", icon: Columns4 },
+  // { label: "2:1", value: "2-1", icon: PanelLeft },
+  // { label: "1:2", value: "1-2", icon: PanelRight },
 ];
 
 const mobileColumnOptions = [
@@ -45,12 +45,14 @@ export default function SectionEditor({ sectionId }: { sectionId: string }) {
   const elements = useBuilderStore((state) => state.elements.byId);
   const mode = useViewportStore((s) => s.mode);
 
-  const isEditing = useIsEditingStore((s) => s.isEditing);
-
   if (!section) return null;
 
   const handlePropsChange = (key: keyof typeof section.props, value: any) => {
-    updateSectionProps(sectionId, { [key]: value });
+    if (key === "desktopColumns") {
+      updateSectionProps(sectionId, { [key]: value });
+    } else {
+      updateSectionProps(sectionId, { [key]: value });
+    }
   };
 
   const handleCloneSection = () => {

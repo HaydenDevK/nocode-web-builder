@@ -7,9 +7,11 @@ import {
   FormControl,
   Select,
   MenuItem,
+  Slider,
 } from "@mui/material";
 import { useBuilderStore } from "@/app/store/useBuilderStore";
-import { TTextProps } from "@/app/model/types";
+import { TLinkProps } from "@/app/model/types";
+import { FONT_FAMILIES } from "@/constants/font";
 
 export default function ButtonEditor({ elementId }: { elementId: string }) {
   const element = useBuilderStore((state) => state.elements.byId[elementId]);
@@ -32,7 +34,7 @@ export default function ButtonEditor({ elementId }: { elementId: string }) {
     }
   };
 
-  const handleChange = (key: keyof TTextProps, value: any) => {
+  const handleChange = (key: keyof TLinkProps, value: any) => {
     updateElementProps(elementId, { [key]: value });
   };
 
@@ -50,14 +52,17 @@ export default function ButtonEditor({ elementId }: { elementId: string }) {
       <Typography variant="h6" color="mono">
         Font Family
       </Typography>
+
       <FormControl fullWidth>
         <Select
-          value={props.fontFamily}
+          value={props.fontFamily ?? "Spoqa Han Sans Neo"}
           onChange={(e) => handleChange("fontFamily", e.target.value)}
         >
-          <MenuItem value="sans-serif">Sans-serif</MenuItem>
-          <MenuItem value="serif">Serif</MenuItem>
-          <MenuItem value="monospace">Monospace</MenuItem>
+          {FONT_FAMILIES.map((font) => (
+            <MenuItem key={font.value} value={font.value}>
+              <span style={{ fontFamily: font.value }}>{font.label}</span>
+            </MenuItem>
+          ))}
         </Select>
       </FormControl>
 
@@ -121,12 +126,20 @@ export default function ButtonEditor({ elementId }: { elementId: string }) {
       <Typography variant="h6" color="mono">
         Button Width
       </Typography>
-      <TextField
-        fullWidth
-        type="number"
-        value={props.minWidth || ""}
-        onChange={(e) => handleNumberChange("width", e.target.value)}
-      />
+      <FormControl fullWidth>
+        <Slider
+          value={props.width}
+          onChange={(_, newValue) => {
+            if (typeof newValue === "number") handleChange("width", newValue);
+          }}
+          valueLabelDisplay="auto"
+          min={10}
+          max={100}
+        />
+        <Typography variant="body2" sx={{ color: "mono.dark" }}>
+          Current: {props.swidth}%
+        </Typography>
+      </FormControl>
 
       <Typography variant="h6" color="mono">
         Button Height
@@ -135,7 +148,7 @@ export default function ButtonEditor({ elementId }: { elementId: string }) {
         fullWidth
         type="number"
         value={props.minHeight || ""}
-        onChange={(e) => handleNumberChange("height", e.target.value)}
+        onChange={(e) => handleNumberChange("minHeight", e.target.value)}
       />
     </Stack>
   );

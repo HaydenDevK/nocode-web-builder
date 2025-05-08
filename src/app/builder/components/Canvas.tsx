@@ -6,61 +6,54 @@ import styles from "../styles/Canvas.module.scss";
 import {
   closestCenter,
   DndContext,
-  DragOverlay,
   PointerSensor,
   useSensor,
   useSensors,
   type DragEndEvent,
-  type DragStartEvent,
 } from "@dnd-kit/core";
-import { useState } from "react";
-import {
-  horizontalListSortingStrategy,
-  SortableContext,
-} from "@dnd-kit/sortable";
-import { BuilderElement } from "@/components/BuilderElement";
+import { useViewportStore } from "@/app/store/useViewportStore";
 
 const Canvas: React.FC = () => {
   const sensors = useSensors(useSensor(PointerSensor));
   const sectionIds = useBuilderStore((s) => s.sections.allIds);
-  const elementsById = useBuilderStore((s) => s.elements.byId);
-  const [activeId, setActiveId] = useState<null | string>(null);
-
-  const handleDragStart = (event: DragStartEvent) => {
-    setActiveId(event.active.id.toString());
-  };
+  const { sections, elements, moveElement } = useBuilderStore();
+  const mode = useViewportStore((s) => s.mode);
 
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
 
-    if (!over) return;
+    if (!over || active.id === over.id) return;
 
     const activeId = active.id.toString();
     const overId = over.id.toString();
 
-    useBuilderStore.getState().moveElement(activeId, overId);
+    moveElement(activeId, overId);
   };
 
   return (
     <DndContext
       sensors={sensors}
       collisionDetection={closestCenter}
-      onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
     >
-      <SortableContext
-        items={sectionIds}
-        strategy={horizontalListSortingStrategy}
+      <div
+        style={{
+          margin: "0 auto",
+          width: "100%",
+          maxWidth: mode === "desktop" ? "1024px" : "375px",
+          minHeight: "calc(100vh - 64px)",
+        }}
       >
         <div className={styles.canvas} id="canvas">
           {sectionIds.map((sectionId) => (
-            <Section key={sectionId} sectionId={sectionId} />
+            <Section
+              key={sectionId}
+              section={sections.byId[sectionId]}
+              elements={elements}
+            />
           ))}
         </div>
-      </SortableContext>
-      <DragOverlay>
-        {activeId && BuilderElement(elementsById[activeId])}
-      </DragOverlay>
+      </div>
     </DndContext>
   );
 };

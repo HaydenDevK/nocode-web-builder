@@ -59,6 +59,7 @@ const ImageElement: React.FC<ImageElementProps> = ({ elementId }) => {
           width: `${props.width}%`,
           borderRadius: props.radius,
           cursor: "pointer",
+          objectFit: "contain",
         }}
       />
     </div>

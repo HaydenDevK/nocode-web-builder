@@ -45,7 +45,7 @@ export default function CreateEditor() {
             backgroundColor: "#A64EFF",
             fontSize: 25,
             fontWeight: 500,
-            minWidth: 150,
+            width: 100,
             minHeight: 50,
             borderRadius: 4,
             fontFamily: "sans-serif",
@@ -81,6 +81,8 @@ export default function CreateEditor() {
 
     if (newId) {
       setSelectedItemInfo({ type: label as TElementTypes, itemId: newId });
+    } else if (label !== "section") {
+      alert("각 칸에 요소가 전부 채워져있어 더 이상 추가할 수 없습니다.");
     }
   };
   const icons = [

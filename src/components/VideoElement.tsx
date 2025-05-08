@@ -45,11 +45,11 @@ const VideoElement: React.FC<VideoElementProps> = ({ elementId }) => {
 
   return (
     <div
-      className={`${styles.wrapper}`}
       style={{
         display: "flex",
-        justifyContent: getAlignmentStyle(props.videoAlign || "center"),
+        height: "100%",
         width: "100%",
+        justifyContent: getAlignmentStyle(props.videoAlign || "center"),
       }}
       onClick={handleClick}
     >

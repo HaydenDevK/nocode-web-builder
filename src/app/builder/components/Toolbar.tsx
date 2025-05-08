@@ -7,16 +7,21 @@ import { useBuilderStore } from "@/app/store/useBuilderStore";
 import { generateHTML } from "@/util/htmlExport";
 import { useViewportStore } from "@/app/store/useViewportStore";
 import { useIsEditingStore } from "@/app/store/useIsEditingStore";
+import DeployButton from "@/components/DeployButton";
 
 export default function Toolbar() {
   const setSelectedItemInfo = useBuilderStore(
     (store) => store.setSelectedItemInfo
   );
   const setIsEditing = useIsEditingStore((store) => store.setIsEditing);
+  const mode = useViewportStore((s) => s.mode);
+  const setMode = useViewportStore((s) => s.setMode);
+  const { saveToLocalStorage } = useBuilderStore();
 
   const handleExportHTML = () => {
     setSelectedItemInfo(null);
     setIsEditing(false);
+    setMode("desktop");
 
     setTimeout(() => {
       const html = generateHTML();
@@ -25,7 +30,7 @@ export default function Toolbar() {
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = "website.html";
+      a.download = "codeit_promo_.html";
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
@@ -35,9 +40,6 @@ export default function Toolbar() {
     }, 200);
   };
 
-  const mode = useViewportStore((s) => s.mode);
-  const setMode = useViewportStore((s) => s.setMode);
-  const { saveToLocalStorage } = useBuilderStore();
   return (
     <AppBar position="static" color="default" className={styles.toolbar}>
       <MUIToolbar className={styles.inner}>
@@ -84,13 +86,7 @@ export default function Toolbar() {
           >
             HTML 추출
           </Button>
-          <Button
-            variant="outlined"
-            color="secondary"
-            style={{ marginLeft: 8 }}
-          >
-            배포
-          </Button>
+          <DeployButton />
         </div>
       </MUIToolbar>
     </AppBar>
