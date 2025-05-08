@@ -146,5 +146,5 @@ function getGridTemplateColumns(columns: string) {
 }
 
 function shouldApplyMinHeight(elementIds: string[]) {
-  return elementIds.length === 0;
+  return elementIds.length === 0 || elementIds.every((id) => id.startsWith("empty"));
 }

@@ -140,7 +140,9 @@ export const useBuilderStore = create<BuilderState>()(
           delete state.elements.byId[id];
         }
 
-        section.elementIds = [...checkElement, ...columnEmptyElement];
+        section.elementIds = section.elementIds.filter(
+          (id) => checkElement.includes(id) || columnEmptyElement.includes(id)
+        );
         const addEmptyCount = emptyCount - columnEmptyElement.length;
         if (addEmptyCount > 0) {
           const emptyIds = Array.from({ length: addEmptyCount }, () => `empty-${nanoid()}`);
