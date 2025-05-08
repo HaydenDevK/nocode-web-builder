@@ -34,15 +34,13 @@ export default function SectionEditor({ sectionId }: { sectionId: string }) {
   if (!section) return null;
 
   const handlePropsChange = (key: keyof typeof section.props, value: any) => {
-    if (key === "desktopColumns") {
-      const success = initializeSectionGrid(sectionId, value);
+    const success = initializeSectionGrid(sectionId, value);
 
-      if (!success) {
-        alert("설정하려는 칸 수보다 현재 요소 수가 많아서 변경할 수 없습니다.");
-        return;
-      }
-    } else {
+    if (success) {
       updateSectionProps(sectionId, { [key]: value });
+    } else {
+      alert("설정하려는 칸 수보다 현재 요소 수가 많아서 변경할 수 없습니다.");
+      return;
     }
   };
 
