@@ -21,7 +21,6 @@ export type TSectionProps = {
   paddingDesktopLeftRight: number;
   paddingMobileTopBottom: number;
   paddingMobileLeftRight: number;
-  columns: string;
   radius?: number;
 };
 

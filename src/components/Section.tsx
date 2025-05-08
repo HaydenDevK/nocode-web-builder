@@ -38,7 +38,10 @@ const Section: React.FC<ISectionProps> = ({ section, elements }) => {
     mode === "desktop"
       ? section.props.paddingDesktopLeftRight ?? 0
       : section.props.paddingMobileLeftRight ?? 0;
-  const columns = section.props.columns ?? "1";
+  const columns =
+    mode === "desktop"
+      ? section.props.desktopColumns ?? "1"
+      : section.props.mobileColumns ?? "1";
   const hasElements = section.elementIds.length > 0;
 
   useEffect(() => {
@@ -98,7 +101,9 @@ const Section: React.FC<ISectionProps> = ({ section, elements }) => {
                 key={elementId}
                 style={{
                   border: isEditing ? "1px dashed #ccc" : null,
-                  minHeight: shouldApplyMinHeight(section.elementIds) ? "150px" : "65px",
+                  minHeight: shouldApplyMinHeight(section.elementIds)
+                    ? "150px"
+                    : "65px",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
@@ -130,19 +135,21 @@ function getGridTemplateColumns(columns: string) {
       return "1fr";
     case "1-1":
       return "1fr 1fr";
-    case "1-1-1":
-      return "1fr 1fr 1fr";
-    case "1-1-1-1":
-      return "1fr 1fr 1fr 1fr";
-    case "2-1":
-      return "2fr 1fr";
-    case "1-2":
-      return "1fr 2fr";
-    default:
-      return "1fr";
+    // case "1-1-1":
+    //   return "1fr 1fr 1fr";
+    // case "1-1-1-1":
+    //   return "1fr 1fr 1fr 1fr";
+    // case "2-1":
+    //   return "2fr 1fr";
+    // case "1-2":
+    //   return "1fr 2fr";
+    // default:
+    //   return "1fr";
   }
 }
 
 function shouldApplyMinHeight(elementIds: string[]) {
-  return elementIds.length === 0 || elementIds.every((id) => id.startsWith("empty"));
+  return (
+    elementIds.length === 0 || elementIds.every((id) => id.startsWith("empty"))
+  );
 }
