@@ -54,16 +54,16 @@ export const generateHTML = (): string => {
       section:nth-child(${index + 1}) > div {
         ${
           mobileColumns
-            ? `grid-template-columns: repeat(${mobileColumns}, 1fr) !important;`
+            ? mobileColumns === "1fr"
+              ? `grid-template-columns: 1fr !important;`
+              : `grid-template-columns: repeat(${mobileColumns}, 1fr) !important;`
             : ""
         }
         gap: 8px !important;
       }
-    `;
+        `;
     })
     .join("\n");
-
-  /* TODO 모바일 스타일 추가 */
 
   return `<!DOCTYPE html>
 <html lang="ko">
