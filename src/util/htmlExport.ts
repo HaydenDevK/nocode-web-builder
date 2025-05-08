@@ -84,6 +84,10 @@ export const generateHTML = (): string => {
       * {
         box-sizing: border-box;
       }
+
+      img {
+        object-fit: contain;
+      }
       
       @media (max-width: 768px) {
         body {
