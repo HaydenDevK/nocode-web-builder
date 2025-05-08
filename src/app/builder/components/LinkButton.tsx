@@ -18,7 +18,7 @@ export default function LinkButton({ elementId }: LinkProps) {
       fontSize,
       fontWeight,
       fontFamily,
-      minWidth,
+      width,
       minHeight,
       borderRadius,
       backgroundColor,
@@ -50,13 +50,13 @@ export default function LinkButton({ elementId }: LinkProps) {
           handleClick(e);
         }}
         style={{
+          width: `${width}%`,
+          minHeight: minHeight,
           backgroundColor: backgroundColor,
           fontSize: `${fontSize}px`,
           color: color,
           fontWeight: fontWeight,
           fontFamily: fontFamily,
-          minWidth: minWidth || "auto",
-          minHeight: minHeight || "auto",
           borderRadius: borderRadius || "auto",
           border: isSelected ? "2px solid purple" : "1px solid",
           boxShadow: isSelected ? "0 0 4px purple" : "none",

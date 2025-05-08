@@ -1,5 +1,11 @@
 // 선택된 elementtype
-export type TElementTypes = "section" | "text" | "link" | "image" | "video" | "empty";
+export type TElementTypes =
+  | "section"
+  | "text"
+  | "link"
+  | "image"
+  | "video"
+  | "empty";
 
 export type TSection = {
   id: string;
@@ -51,10 +57,8 @@ export type TTextProps = {
   radius: number;
 };
 
-export type TLinkProps = {
-  text: string;
+export type TLinkProps = TTextProps & {
   href: string;
-  color: string;
   fontSize: number;
   fontWeight: number;
   width: number;
