@@ -11,6 +11,7 @@ import {
 } from "@mui/material";
 import { useBuilderStore } from "@/app/store/useBuilderStore";
 import { TLinkProps } from "@/app/model/types";
+import { FONT_FAMILIES } from "@/constants/font";
 
 export default function ButtonEditor({ elementId }: { elementId: string }) {
   const element = useBuilderStore((state) => state.elements.byId[elementId]);
@@ -51,14 +52,17 @@ export default function ButtonEditor({ elementId }: { elementId: string }) {
       <Typography variant="h6" color="mono">
         Font Family
       </Typography>
+
       <FormControl fullWidth>
         <Select
-          value={props.fontFamily}
+          value={props.fontFamily ?? "Spoqa Han Sans Neo"}
           onChange={(e) => handleChange("fontFamily", e.target.value)}
         >
-          <MenuItem value="sans-serif">Sans-serif</MenuItem>
-          <MenuItem value="serif">Serif</MenuItem>
-          <MenuItem value="monospace">Monospace</MenuItem>
+          {FONT_FAMILIES.map((font) => (
+            <MenuItem key={font.value} value={font.value}>
+              <span style={{ fontFamily: font.value }}>{font.label}</span>
+            </MenuItem>
+          ))}
         </Select>
       </FormControl>
 
