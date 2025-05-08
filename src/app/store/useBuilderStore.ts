@@ -11,7 +11,6 @@ export const INITIAL_SECTION_PROPS: TSectionProps = {
   paddingDesktopLeftRight: 30,
   paddingMobileTopBottom: 10,
   paddingMobileLeftRight: 10,
-  columns: "1",
   radius: 0,
 };
 
@@ -171,6 +170,7 @@ export const useBuilderStore = create<BuilderState>()(
         const id = nanoid();
         const { sectionId } = element;
         const section = state.sections.byId[sectionId];
+        if (!section.props.columns) return;
         const checkSectionColumns = section.props.columns.split("-").length;
 
         // 그리드 칸 수에 요소가 전부 채워지면 요소 추가 불가능
