@@ -1,11 +1,14 @@
 .main {
   display: flex;
   flex: 1;
-  height: calc(100vh - 56px);
-  background-color: white;
+  height: calc(100vh - 64px);
+  background-color: #f8f8f8;
+  border-top: 1px solid #e0e0e0;
 }
 
 .canvasWrapper {
   flex: 1;
   overflow: auto;
+  background-color: #ffffff;
+  border-right: 1px solid #e0e0e0;
 }

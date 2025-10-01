@@ -37,7 +37,20 @@ export default function Sidebar() {
             borderColor: "divider",
           }}
         >
-          <Button variant="contained" color="warning" size="large" onClick={handleDelete} fullWidth>
+          <Button
+            variant="contained"
+            size="large"
+            onClick={handleDelete}
+            fullWidth
+            sx={{
+              backgroundColor: "#000000",
+              color: "#ffffff",
+              fontWeight: 600,
+              "&:hover": {
+                backgroundColor: "#333333",
+              },
+            }}
+          >
             삭제
           </Button>
         </Box>

@@ -22,15 +22,30 @@ declare module "@mui/material/Typography" {
 const theme = createTheme({
   cssVariables: true,
   palette: {
+    mode: "light",
     primary: {
-      main: "#6500c2",
-      dark: "#440083",
-      light: "#8b6efc",
+      main: "#000000",
+      dark: "#000000",
+      light: "#333333",
       contrastText: "#ffffff",
     },
+    secondary: {
+      main: "#ffffff",
+      dark: "#f5f5f5",
+      light: "#ffffff",
+      contrastText: "#000000",
+    },
+    background: {
+      default: "#ffffff",
+      paper: "#ffffff",
+    },
+    text: {
+      primary: "#000000",
+      secondary: "#666666",
+    },
     mono: {
-      main: grey[900],
-      light: grey[600],
+      main: "#000000",
+      light: "#666666",
       dark: "#000000",
       contrastText: "#FFFFFF",
     },

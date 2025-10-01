@@ -1,10 +1,13 @@
 .canvas {
   display: flex;
   flex-direction: column;
-  background-color: #fff;
+  background-color: #ffffff;
   height: 100%;
   box-sizing: border-box;
-  padding: 4px;
+  padding: 8px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  margin: 16px;
 }
 
 .sectionWrap {
@@ -14,28 +17,36 @@
 .image {
   width: 100%;
   height: auto;
-  border-radius: 4px;
-  margin-top: 8px;
+  border-radius: 8px;
+  margin-top: 12px;
+  border: 1px solid #e0e0e0;
 }
 
 .iconButton {
   all: unset;
   position: absolute;
-  right: -14px;
+  right: -16px;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 28px;
-  height: 28px;
-  border-radius: 4px;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
   cursor: pointer;
-  transition: background-color 0.2s ease-in-out;
-  background-color: #2684ff;
+  transition: all 0.2s ease-in-out;
+  background-color: #000000;
+  border: 2px solid #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 
   svg {
-    stroke: white;
-    width: 18px;
-    height: 18px;
+    stroke: #ffffff;
+    width: 20px;
+    height: 20px;
+  }
+
+  &:hover {
+    background-color: #333333;
+    transform: scale(1.05);
   }
 }
 

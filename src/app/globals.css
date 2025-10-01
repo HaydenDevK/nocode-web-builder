@@ -5,14 +5,9 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --foreground: #000000;
+  --border: #e0e0e0;
+  --muted: #666666;
 }
 
 html,
@@ -41,8 +36,4 @@ a {
   text-decoration: none;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
-}
+/* 블랙 앤 화이트 디자인 - 다크모드 비활성화 */
