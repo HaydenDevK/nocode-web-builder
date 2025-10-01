@@ -52,11 +52,11 @@ export default function Home() {
         </Typography>
         <Button
           variant="contained"
-          color="info"
+          color="primary"
           size="large"
           onClick={() => router.push("/builder")}
         >
-          새로 만들기
+          Create New Site
         </Button>
       </header>
 

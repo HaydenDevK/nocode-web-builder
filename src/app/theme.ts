@@ -30,10 +30,10 @@ const theme = createTheme({
       contrastText: "#ffffff",
     },
     secondary: {
-      main: "#ffffff",
-      dark: "#f5f5f5",
-      light: "#ffffff",
-      contrastText: "#000000",
+      main: "#000000",
+      dark: "#000000",
+      light: "#333333",
+      contrastText: "#ffffff",
     },
     background: {
       default: "#ffffff",
@@ -83,6 +83,30 @@ const theme = createTheme({
     body2: {
       fontSize: "12px",
       fontWeight: 300,
+    },
+  },
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        outlined: {
+          borderColor: "#000000",
+          color: "#000000",
+          fontWeight: 600,
+          "&:hover": {
+            backgroundColor: "#f5f5f5",
+            borderColor: "#000000",
+          },
+        },
+        outlinedSecondary: {
+          borderColor: "#000000",
+          color: "#000000",
+          fontWeight: 600,
+          "&:hover": {
+            backgroundColor: "#f5f5f5",
+            borderColor: "#000000",
+          },
+        },
+      },
     },
   },
 });

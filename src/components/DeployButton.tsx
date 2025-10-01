@@ -72,7 +72,7 @@ const DeployButton = () => {
   return (
     <>
       <Button variant="contained" color="primary" onClick={handleDeploy}>
-        Deploy SITE
+        Deploy to Netlify
       </Button>
 
       <Dialog
