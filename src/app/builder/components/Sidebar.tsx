@@ -51,7 +51,7 @@ export default function Sidebar() {
               },
             }}
           >
-            삭제
+            Delete
           </Button>
         </Box>
       )}

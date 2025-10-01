@@ -41,7 +41,7 @@ export default function Card({ item, loadDrafts }: CardProps) {
         className={styles.actionBtn}
         onClick={handleEdit}
       >
-        편집
+        Edit
       </Button>
       <Button
         variant="outlined"
@@ -49,7 +49,7 @@ export default function Card({ item, loadDrafts }: CardProps) {
         className={styles.actionBtn}
         onClick={handleDelete}
       >
-        삭제
+        Delete
       </Button>
     </>
   );
@@ -72,7 +72,7 @@ export default function Card({ item, loadDrafts }: CardProps) {
                   color="info"
                   className={styles.actionBtn}
                 >
-                  이 템플릿으로 만들기
+                  Create with Template
                 </Button>
               )}
             </Box>

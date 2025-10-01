@@ -71,13 +71,8 @@ const DeployButton = () => {
 
   return (
     <>
-      <Button
-        variant="outlined"
-        color="secondary"
-        sx={{ ml: 8 }}
-        onClick={handleDeploy}
-      >
-        배포
+      <Button variant="contained" color="primary" onClick={handleDeploy}>
+        Deploy SITE
       </Button>
 
       <Dialog
@@ -86,9 +81,8 @@ const DeployButton = () => {
         fullWidth
         maxWidth="sm"
       >
-        <DialogTitle>
-          {isDeploying ? "Netlify에 배포 중..." : "🎉 배포 완료!"}
-        </DialogTitle>
+        {isDeploying && <DialogTitle>Netlify에 배포 중...</DialogTitle>}
+
         <DialogContent>
           {isDeploying ? (
             <div style={{ textAlign: "center", padding: "2rem" }}>

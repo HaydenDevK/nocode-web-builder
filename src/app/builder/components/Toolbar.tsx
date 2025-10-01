@@ -53,7 +53,7 @@ export default function Toolbar() {
             style={{ marginLeft: 8 }}
             onClick={saveToLocalStorage}
           >
-            임시 저장
+            Save Draft
           </Button>
         </div>
         <div>
@@ -87,7 +87,7 @@ export default function Toolbar() {
             color="primary"
             onClick={handleExportHTML}
           >
-            HTML 추출
+            Export HTML
           </Button>
           <DeployButton />
         </div>
