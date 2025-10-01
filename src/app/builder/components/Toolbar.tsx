@@ -23,21 +23,24 @@ export default function Toolbar() {
     setIsEditing(false);
     setMode("desktop");
 
-    setTimeout(() => {
-      const html = generateHTML();
+    // React 리렌더링 완료를 기다리기 위해 requestAnimationFrame 사용
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        const html = generateHTML();
 
-      const blob = new Blob([html], { type: "text/html" });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "codeit_promo_.html";
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
+        const blob = new Blob([html], { type: "text/html" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "codeit_promo_.html";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
 
-      setIsEditing(true);
-    }, 200);
+        setIsEditing(true);
+      });
+    });
   };
 
   return (
